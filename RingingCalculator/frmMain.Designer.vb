@@ -1,0 +1,95 @@
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+Partial Class frmMain
+    Inherits System.Windows.Forms.Form
+
+    'Form overrides dispose to clean up the component list.
+    <System.Diagnostics.DebuggerNonUserCode()>
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Try
+            If disposing AndAlso components IsNot Nothing Then
+                components.Dispose()
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
+    End Sub
+
+    'Required by the Windows Form Designer
+    Private components As System.ComponentModel.IContainer
+
+    'NOTE: The following procedure is required by the Windows Form Designer
+    'It can be modified using the Windows Form Designer.  
+    'Do not modify it using the code editor.
+    <System.Diagnostics.DebuggerStepThrough()>
+    Private Sub InitializeComponent()
+        Me.txtBells = New System.Windows.Forms.TextBox()
+        Me.txtCOMs = New System.Windows.Forms.TextBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.btnGenerate = New System.Windows.Forms.Button()
+        Me.SuspendLayout()
+        '
+        'txtBells
+        '
+        Me.txtBells.Location = New System.Drawing.Point(106, 34)
+        Me.txtBells.Name = "txtBells"
+        Me.txtBells.Size = New System.Drawing.Size(100, 20)
+        Me.txtBells.TabIndex = 0
+        '
+        'txtCOMs
+        '
+        Me.txtCOMs.Location = New System.Drawing.Point(106, 60)
+        Me.txtCOMs.Name = "txtCOMs"
+        Me.txtCOMs.Size = New System.Drawing.Size(100, 20)
+        Me.txtCOMs.TabIndex = 1
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(68, 37)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(32, 13)
+        Me.Label1.TabIndex = 2
+        Me.Label1.Text = "Bells:"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(40, 63)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(60, 13)
+        Me.Label2.TabIndex = 3
+        Me.Label2.Text = "COM ports:"
+        '
+        'btnGenerate
+        '
+        Me.btnGenerate.Location = New System.Drawing.Point(106, 86)
+        Me.btnGenerate.Name = "btnGenerate"
+        Me.btnGenerate.Size = New System.Drawing.Size(100, 23)
+        Me.btnGenerate.TabIndex = 4
+        Me.btnGenerate.Text = "Generate"
+        Me.btnGenerate.UseVisualStyleBackColor = True
+        '
+        'frmSettings
+        '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.ClientSize = New System.Drawing.Size(284, 261)
+        Me.Controls.Add(Me.btnGenerate)
+        Me.Controls.Add(Me.Label2)
+        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.txtCOMs)
+        Me.Controls.Add(Me.txtBells)
+        Me.Name = "frmSettings"
+        Me.Text = "Settings"
+        Me.ResumeLayout(False)
+        Me.PerformLayout()
+
+    End Sub
+
+    Friend WithEvents txtBells As TextBox
+    Friend WithEvents txtCOMs As TextBox
+    Friend WithEvents Label1 As Label
+    Friend WithEvents Label2 As Label
+    Friend WithEvents btnGenerate As Button
+End Class

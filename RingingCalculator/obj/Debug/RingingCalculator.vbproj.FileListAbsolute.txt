@@ -1,0 +1,13 @@
+C:\Users\Jon\AppData\Local\Temporary Projects\RingingCalculator\bin\Debug\RingingCalculator.exe.config
+C:\Users\Jon\Documents\Visual Studio 2015\Projects\RingingCalculator\RingingCalculator\bin\Debug\RingingCalculator.exe.config
+C:\Users\Jon\Documents\Visual Studio 2015\Projects\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.vbprojResolveAssemblyReference.cache
+C:\Users\Jon\Documents\Visual Studio 2015\Projects\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.frmSettings.resources
+C:\Users\Jon\Documents\Visual Studio 2015\Projects\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.frmBells.resources
+C:\Users\Jon\Documents\Visual Studio 2015\Projects\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.Resources.resources
+C:\Users\Jon\Documents\Visual Studio 2015\Projects\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.vbproj.GenerateResource.Cache
+C:\Users\Jon\Documents\Visual Studio 2015\Projects\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.xml
+C:\Users\Jon\Documents\Visual Studio 2015\Projects\RingingCalculator\RingingCalculator\bin\Debug\RingingCalculator.exe
+C:\Users\Jon\Documents\Visual Studio 2015\Projects\RingingCalculator\RingingCalculator\bin\Debug\RingingCalculator.pdb
+C:\Users\Jon\Documents\Visual Studio 2015\Projects\RingingCalculator\RingingCalculator\bin\Debug\RingingCalculator.xml
+C:\Users\Jon\Documents\Visual Studio 2015\Projects\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.exe
+C:\Users\Jon\Documents\Visual Studio 2015\Projects\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.pdb
