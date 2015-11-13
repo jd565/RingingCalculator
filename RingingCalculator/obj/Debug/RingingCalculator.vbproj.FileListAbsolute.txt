@@ -11,3 +11,7 @@ C:\Users\Jon\Documents\Visual Studio 2015\Projects\RingingCalculator\RingingCalc
 C:\Users\Jon\Documents\Visual Studio 2015\Projects\RingingCalculator\RingingCalculator\bin\Debug\RingingCalculator.xml
 C:\Users\Jon\Documents\Visual Studio 2015\Projects\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.exe
 C:\Users\Jon\Documents\Visual Studio 2015\Projects\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.pdb
+C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\RingingCalculator.exe.config
+C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.exe
+C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.xml
+C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.pdb
