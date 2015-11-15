@@ -47,6 +47,7 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic.PowerPacks, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -73,20 +74,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bell.vb" />
+    <Compile Include="BellFields.vb" />
     <Compile Include="BellRingingFunctions.vb" />
+    <Compile Include="ChangeTime.vb" />
     <Compile Include="FormBellsFunctions.vb" />
     <Compile Include="FormComFunctions.vb" />
+    <Compile Include="FormConfigureFunctions.vb" />
     <Compile Include="frmMain.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmMain.Designer.vb">
       <DependentUpon>frmMain.vb</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmBells.Designer.vb">
-      <DependentUpon>frmBells.vb</DependentUpon>
-    </Compile>
-    <Compile Include="frmBells.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GeneralFormFunctions.vb" />
@@ -106,14 +104,14 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="PortPin.vb" />
+    <Compile Include="ReportingFunctions.vb" />
     <Compile Include="Switch.vb" />
+    <Compile Include="Testing.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmBells.resx">
-      <DependentUpon>frmBells.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

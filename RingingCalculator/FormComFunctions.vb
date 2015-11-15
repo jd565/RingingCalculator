@@ -7,6 +7,7 @@
     Const COM_COLUMN_1 As Integer = COM_FIELD_GAP
     Const COM_COLUMN_2 As Integer = 2 * COM_FIELD_GAP + COM_FIELD_WIDTH
     Const COM_COLUMN_3 As Integer = 3 * COM_FIELD_GAP + COM_FIELD_WIDTH + COM_LABEL_WIDTH
+    Const COM_MIN_HEIGHT As Integer = 2 * COM_FIELD_GAP + 5 * COM_FIELD_HEIGHT
 
     ' Simple function to return the y coordinate (in pixels) of the row index ii
     Private Function row_height(ii As Integer) As Integer
@@ -16,11 +17,12 @@
     ' Function to initialise the COM ports
     ' Create a form showing a list of the available COM ports,
     ' and then have text boxes for input for as many COM ports as they selected.
-    Public Sub generate_frmCOMs()
+    Public Sub generate_frmCOMs(parent As Form)
         Dim frm As New Form
         Dim list_box As New ListBox
         Dim label As New Label
         Dim button As New Button
+        Dim form_height As Integer
 
         ' ii counts how many rows of our grid we have used
         Dim ii As Integer
@@ -52,8 +54,13 @@
         frm.Controls.Add(label)
         frm.Controls.Add(button)
 
-        frm.ClientSize = New Size(COM_COLUMN_3 + COM_FIELD_WIDTH + COM_FIELD_GAP, row_height(ii))
-        frmSettings.AddOwnedForm(frm)
+        form_height = row_height(ii)
+        If form_height < COM_MIN_HEIGHT Then
+            form_height = COM_MIN_HEIGHT
+        End If
+
+        frm.ClientSize = New Size(COM_COLUMN_3 + COM_FIELD_WIDTH + COM_FIELD_GAP, form_height)
+        parent.AddOwnedForm(frm)
         frm.Text = "COM port settings"
         frm.Name = "frmCOM"
         AddHandler frm.FormClosing, AddressOf dispose_of_form

@@ -27,6 +27,7 @@ Partial Class frmMain
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.btnGenerate = New System.Windows.Forms.Button()
+        Me.btnTest = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'txtBells
@@ -70,17 +71,27 @@ Partial Class frmMain
         Me.btnGenerate.Text = "Generate"
         Me.btnGenerate.UseVisualStyleBackColor = True
         '
-        'frmSettings
+        'btnTest
+        '
+        Me.btnTest.Location = New System.Drawing.Point(197, 226)
+        Me.btnTest.Name = "btnTest"
+        Me.btnTest.Size = New System.Drawing.Size(75, 23)
+        Me.btnTest.TabIndex = 5
+        Me.btnTest.Text = "Run tests"
+        Me.btnTest.UseVisualStyleBackColor = True
+        '
+        'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(284, 261)
+        Me.Controls.Add(Me.btnTest)
         Me.Controls.Add(Me.btnGenerate)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.txtCOMs)
         Me.Controls.Add(Me.txtBells)
-        Me.Name = "frmSettings"
+        Me.Name = "frmMain"
         Me.Text = "Settings"
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -92,4 +103,5 @@ Partial Class frmMain
     Friend WithEvents Label1 As Label
     Friend WithEvents Label2 As Label
     Friend WithEvents btnGenerate As Button
+    Friend WithEvents btnTest As Button
 End Class
