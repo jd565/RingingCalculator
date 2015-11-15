@@ -1,4 +1,8 @@
 ﻿Module GeneralFormFunctions
+    Const DEFAULT_FONT_SIZE As Integer = 12
+    Const DEFAULT_FONT_STYLE As FontStyle = FontStyle.Regular
+    Const DEFAULT_FONT_FONT As String = "Microsft Sans Serif"
+    Public DEFAULT_FONT As New Font(DEFAULT_FONT_FONT, DEFAULT_FONT_SIZE, DEFAULT_FONT_STYLE)
 
     ' Function to dispose of a Form that is no longer being used, e.g. if it has been closed.
     ' Make sure that if we are being disposed of, the owner of this form is being shown,

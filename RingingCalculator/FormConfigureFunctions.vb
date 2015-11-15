@@ -17,6 +17,7 @@
 
         waiting_form.Text = "Configure"
         waiting_form.Name = "frmConfigure"
+        waiting_form.Font = DEFAULT_FONT
         waiting_form.ClientSize = New Size(140, 140)
         waiting_form.Controls.Add(cancel)
         waiting_form.Controls.Add(label)

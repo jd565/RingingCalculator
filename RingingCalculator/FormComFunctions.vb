@@ -63,6 +63,7 @@
         parent.AddOwnedForm(frm)
         frm.Text = "COM port settings"
         frm.Name = "frmCOM"
+        frm.Font = DEFAULT_FONT
         AddHandler frm.FormClosing, AddressOf dispose_of_form
         frm.Show()
 

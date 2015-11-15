@@ -1,16 +1,17 @@
 ﻿Module FormBellsFunctions
 
     Const BELL_FIELD_GAP As Integer = 35
-    Const BELL_FIELD_WIDTH As Integer = 115
     Const BELL_FIELD_HEIGHT As Integer = 50
     Const BELL_UPDOWN_WIDTH As Integer = 40
     Const BELL_LABEL_WIDTH As Integer = 65
+    Const BELL_FIELD_WIDTH As Integer = BELL_LABEL_WIDTH + BELL_UPDOWN_WIDTH
+    Const BELL_LIGHT_DIAMETER As Integer = 65
     Const BELL_ROW_1 As Integer = BELL_FIELD_GAP
     Const BELL_ROW_2 As Integer = BELL_ROW_1 + BELL_FIELD_GAP + BELL_FIELD_HEIGHT
     Const BELL_ROW_3 As Integer = BELL_ROW_2 + BELL_FIELD_GAP + BELL_FIELD_HEIGHT
     Const BELL_ROW_4 As Integer = BELL_ROW_3 + BELL_FIELD_GAP + BELL_FIELD_HEIGHT
     Const BELL_ROW_5 As Integer = BELL_ROW_4 + BELL_FIELD_GAP + BELL_FIELD_HEIGHT
-    Const BELL_FORM_HEIGHT As Integer = BELL_ROW_5 + BELL_FIELD_GAP + BELL_FIELD_WIDTH
+    Const BELL_FORM_HEIGHT As Integer = BELL_ROW_5 + BELL_FIELD_GAP + BELL_LIGHT_DIAMETER
 
     ' Function to return the x coordinate (in pixels) of the column index ii
     Private Function column_width(ii As Integer) As Integer
@@ -54,6 +55,7 @@
 
         frm.Text = "Ringing Simulator"
         frm.Name = "frmBells"
+        frm.Font = DEFAULT_FONT
         frm.ClientSize = New Size(column_width(ii), BELL_FORM_HEIGHT)
         parent.AddOwnedForm(frm)
         AddHandler frm.FormClosing, AddressOf dispose_of_form
@@ -80,8 +82,8 @@
         bell.fields.button.Size = New Size(BELL_FIELD_WIDTH, BELL_FIELD_HEIGHT)
         bell.fields.button.Location = New Point(coordinate, BELL_ROW_4)
 
-        bell.fields.blob.Size = New Size(BELL_FIELD_WIDTH, BELL_FIELD_WIDTH)
-        bell.fields.blob.Location = New Point(coordinate, BELL_ROW_5)
+        bell.fields.blob.Size = New Size(BELL_LIGHT_DIAMETER, BELL_LIGHT_DIAMETER)
+        bell.fields.blob.Location = New Point(coordinate + (BELL_FIELD_WIDTH - BELL_LIGHT_DIAMETER) / 2, BELL_ROW_5)
 
         form.Controls.Add(bell.fields.button)
         form.Controls.Add(bell.fields.handstroke_delay)

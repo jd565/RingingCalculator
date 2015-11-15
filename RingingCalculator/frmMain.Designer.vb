@@ -85,6 +85,7 @@ Partial Class frmMain
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(284, 261)
+        Me.Font = DEFAULT_FONT
         Me.Controls.Add(Me.btnTest)
         Me.Controls.Add(Me.btnGenerate)
         Me.Controls.Add(Me.Label2)
