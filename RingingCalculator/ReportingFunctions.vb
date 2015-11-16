@@ -1,18 +1,45 @@
 ﻿Module ReportingFunctions
 
-    ' Function to print a certain row of the ringing.
-    ' It does this by creating a list of the times of each change,
-    ' and then sorting the list before returning the row
-    Public Function print_change(change_id As Integer) As String
+    ' Function to create a single row, as a list of change times.
+    Public Function get_row(change_id As Integer) As List(Of ChangeTime)
         Dim change As New List(Of ChangeTime)
-        Dim row_to_print As String = ""
 
+        ' We may be part way through a change when this function is called.
+        ' If we are we will try and find items in a list above the max of the list,
+        ' so handle exceptions here
         For Each bell In GlobalVariables.bells
-            change.Add(bell.change_times(change_id - 1))
+            Try
+                change.Add(bell.change_times(change_id - 1))
+            Catch
+                Exit For
+            End Try
         Next
 
         ' we now have a list of the time of every bell for this change.
         change.Sort()
+
+        Return change
+    End Function
+
+    ' Function to find the location of a bell in a certain row
+    ' If the bell is not found in the list (unlikely) the function returns 0
+    Public Function get_bell_location_in_row(change_id As Integer, bell_number As Integer) As Integer
+        Dim change As List(Of ChangeTime) = get_row(change_id)
+
+        For ii As Integer = 1 To change.Count
+            If change(ii - 1).bell = bell_number Then
+                Return ii
+            End If
+        Next
+        Return 0
+    End Function
+
+    ' Function to print a certain row of the ringing.
+    ' It does this by creating a list of the times of each change,
+    ' and then sorting the list before returning the row
+    Public Function print_change(change_id As Integer) As String
+        Dim row_to_print As String = ""
+        Dim change As List(Of ChangeTime) = get_row(change_id)
 
         ' Now go through this list and create a string.
         ' We do have to convert each bell number to the string representation
@@ -29,7 +56,7 @@
         If bell_number = 10 Then Return "0"
         If bell_number = 11 Then Return "E"
         If bell_number = 12 Then Return "T"
-        Return "A" - 13 + bell_number
+        Return Convert.ToChar(Convert.ToInt32(CChar("A")) - 13 + bell_number).ToString()
     End Function
 
 End Module

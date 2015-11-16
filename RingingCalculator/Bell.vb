@@ -146,7 +146,7 @@ EXIT_LABEL:
 
         current_time = DateTime.Now()
         time_diff = (current_time.Ticks - GlobalVariables.start_time.Ticks) / TimeSpan.TicksPerMillisecond
-        Me.change_times.Add(New ChangeTime(Me.bell_number, time_diff))
+        Me.change_times.Add(New ChangeTime(Me.bell_number, Me.change_times.Count + 1, time_diff))
     End Sub
 
     ' Function to handle when the bell sensor changes state.

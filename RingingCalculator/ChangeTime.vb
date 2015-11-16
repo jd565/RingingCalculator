@@ -15,8 +15,16 @@
         End Get
     End Property
 
-    Public Sub New(bell_number As Integer, change_time As Integer)
+    Private change_number As Integer
+    Public ReadOnly Property change As Integer
+        Get
+            Return Me.change_number
+        End Get
+    End Property
+
+    Public Sub New(bell_number As Integer, change_number As Integer, change_time As Integer)
         Me.bell_number = bell_number
+        Me.change_number = change_number
         Me.change_time = change_time
     End Sub
 

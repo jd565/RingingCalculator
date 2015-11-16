@@ -88,6 +88,8 @@ EXIT_LABEL:
         Return False
     End Function
 
+    ' Function to start a timer with the specified interval, to call proc
+    ' when it finishes
     Public Sub start_new_timer(interval As Integer, proc As EventHandler)
         Dim timer As New Timer
         timer.Interval = interval
@@ -95,6 +97,7 @@ EXIT_LABEL:
         timer.Enabled = True
     End Sub
 
+    ' Function wrapper for debounce timers
     Public Sub start_debounce_timer(proc As EventHandler)
         start_new_timer(GlobalVariables.debounce_time, proc)
     End Sub

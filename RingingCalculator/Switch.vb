@@ -68,8 +68,10 @@ EXIT_LABEL:
         GlobalVariables.start_time = DateTime.Now()
     End Sub
 
+    ' Function to handle when the program stops recording
     Private Sub stop_running()
         Me.switch_running = False
+        GlobalVariables.recording = False
     End Sub
 
     ' Function to handle when the configure button is pressed.

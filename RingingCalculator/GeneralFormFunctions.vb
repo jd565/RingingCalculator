@@ -10,6 +10,9 @@
     Public Sub dispose_of_form(frm As Form, e As EventArgs)
         frm.Owner.Show()
         frm.Owner.RemoveOwnedForm(frm)
+        For Each form In frm.OwnedForms
+            form.Close()
+        Next
         frm.Dispose()
     End Sub
 
