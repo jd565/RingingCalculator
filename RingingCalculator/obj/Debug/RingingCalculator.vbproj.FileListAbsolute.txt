@@ -24,3 +24,15 @@ C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\Ring
 C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\RingingCalculator.xml
 C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\Microsoft.VisualBasic.PowerPacks.dll
 C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\Microsoft.VisualBasic.PowerPacks.xml
+C:\Users\Martin\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\RingingCalculator.exe.config
+C:\Users\Martin\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.exe
+C:\Users\Martin\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.xml
+C:\Users\Martin\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.pdb
+C:\Users\Martin\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\RingingCalculator.exe
+C:\Users\Martin\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\RingingCalculator.pdb
+C:\Users\Martin\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\RingingCalculator.xml
+C:\Users\Martin\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\Microsoft.VisualBasic.PowerPacks.xml
+C:\Users\Martin\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.vbprojResolveAssemblyReference.cache
+C:\Users\Martin\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.frmMain.resources
+C:\Users\Martin\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.Resources.resources
+C:\Users\Martin\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.vbproj.GenerateResource.Cache

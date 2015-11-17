@@ -34,14 +34,14 @@ Partial Class frmMain
         '
         Me.txtBells.Location = New System.Drawing.Point(106, 34)
         Me.txtBells.Name = "txtBells"
-        Me.txtBells.Size = New System.Drawing.Size(100, 20)
+        Me.txtBells.Size = New System.Drawing.Size(100, 26)
         Me.txtBells.TabIndex = 0
         '
         'txtCOMs
         '
         Me.txtCOMs.Location = New System.Drawing.Point(106, 60)
         Me.txtCOMs.Name = "txtCOMs"
-        Me.txtCOMs.Size = New System.Drawing.Size(100, 20)
+        Me.txtCOMs.Size = New System.Drawing.Size(100, 26)
         Me.txtCOMs.TabIndex = 1
         '
         'Label1
@@ -49,7 +49,7 @@ Partial Class frmMain
         Me.Label1.AutoSize = True
         Me.Label1.Location = New System.Drawing.Point(68, 37)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(32, 13)
+        Me.Label1.Size = New System.Drawing.Size(47, 20)
         Me.Label1.TabIndex = 2
         Me.Label1.Text = "Bells:"
         '
@@ -58,7 +58,7 @@ Partial Class frmMain
         Me.Label2.AutoSize = True
         Me.Label2.Location = New System.Drawing.Point(40, 63)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(60, 13)
+        Me.Label2.Size = New System.Drawing.Size(89, 20)
         Me.Label2.TabIndex = 3
         Me.Label2.Text = "COM ports:"
         '
@@ -82,16 +82,16 @@ Partial Class frmMain
         '
         'frmMain
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(284, 261)
-        Me.Font = DEFAULT_FONT
+        Me.ClientSize = New System.Drawing.Size(292, 269)
         Me.Controls.Add(Me.btnTest)
         Me.Controls.Add(Me.btnGenerate)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.txtCOMs)
         Me.Controls.Add(Me.txtBells)
+        Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!)
         Me.Name = "frmMain"
         Me.Text = "Settings"
         Me.ResumeLayout(False)
