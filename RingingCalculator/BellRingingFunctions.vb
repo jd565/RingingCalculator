@@ -102,4 +102,40 @@ EXIT_LABEL:
         start_new_timer(GlobalVariables.debounce_time, proc)
     End Sub
 
+    ' Function to see if we should begin recording
+    Public Function should_we_start_recording(bell As Bell) As Boolean
+        Dim frm As Form
+        If bell.bell_number = 2 Then
+            Console.WriteLine("We are bell 2. Start recording.")
+            GlobalVariables.recording = True
+            frm = find_form("frmBells")
+            If frm Is Nothing Then
+                generate_frmBells(frmMain)
+                frm = find_form("frmBells")
+            End If
+            generate_frmStats(frm)
+            frm.Hide()
+            Return True
+        End If
+        Return False
+    End Function
+
+    ' Function to call when a bell has just rung
+    Public Sub bell_has_just_rung(bell As Bell)
+
+        ' Do stats checking if this is the treble.
+        If bell.bell_number = 1 Then
+            treble_has_just_rung()
+        End If
+
+        ' If we are waiting for a full row check if this completes it.
+        If Statistics.waiting_for_full_row Then
+            If get_row(Statistics.changes - 1).Count = GlobalVariables.bells.Count Then
+                ' We now have an entry for every bell in this row.
+                ' Call to the printing function
+                row_is_full()
+            End If
+        End If
+    End Sub
+
 End Module

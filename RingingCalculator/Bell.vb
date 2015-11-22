@@ -89,16 +89,6 @@
         timer.Enabled = False
     End Sub
 
-    ' Function to see if we should begin recording
-    Private Function should_we_start_recording() As Boolean
-        If Me.bell_number = 2 Then
-            Console.WriteLine("We are bell 1 or 2. Start recording.")
-            GlobalVariables.recording = True
-            Return True
-        End If
-        Return False
-    End Function
-
     ' Function to handle the delay timers popping.
     Private Sub delay_timer_timeout(timer As Timer, e As EventArgs)
         Console.WriteLine("{0} delay timer timeout", Me.name)
@@ -111,7 +101,7 @@
         ' We set the program to record when bell 2 is rung after the switch starts running
         If Not (GlobalVariables.switch.isRunning = GlobalVariables.recording) Then
             Console.WriteLine("Switch is on but not recording.")
-            If Not Me.should_we_start_recording() Then
+            If Not should_we_start_recording(Me) Then
                 GoTo EXIT_LABEL
             End If
         End If
@@ -125,6 +115,7 @@
             ' If we are running then check to see if we add to the list
             If GlobalVariables.recording Then
                 Me.add_change_to_list()
+                bell_has_just_rung(Me)
             End If
         Else
             Me.fields.blob.BackColor = Color.Gray

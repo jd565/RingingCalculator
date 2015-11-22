@@ -9,7 +9,7 @@
         ' so handle exceptions here
         For Each bell In GlobalVariables.bells
             Try
-                change.Add(bell.change_times(change_id - 1))
+                change.Add(bell.change_times(change_id))
             Catch
                 Exit For
             End Try
@@ -19,6 +19,19 @@
         change.Sort()
 
         Return change
+    End Function
+
+    ' Function to convert a time in seconds to a string of hours and minutes and seconds
+    Public Function time_to_string(time As Integer) As String
+        Dim hours As String
+        Dim minutes As String
+        Dim seconds As String
+
+        hours = (time \ 3600000).ToString
+        minutes = ((time - (time \ 3600000) * 3600000) \ 60000).ToString
+        seconds = ((time Mod 60000) \ 1000).ToString
+        Return hours + ":" + minutes + ":" + seconds
+
     End Function
 
     ' Function to find the location of a bell in a certain row

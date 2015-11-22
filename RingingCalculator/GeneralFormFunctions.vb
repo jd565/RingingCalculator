@@ -26,4 +26,21 @@
         End If
     End Sub
 
+    Public Function find_form(name As String, Optional parent As Form = Nothing) As Form
+        Dim ret As Form
+        If parent Is Nothing Then
+            parent = frmMain
+        End If
+        If name.Equals(parent.Name) Then
+            Return parent
+        End If
+        For Each frm In frmMain.OwnedForms
+            ret = find_form(name, frm)
+            If ret IsNot Nothing Then
+                Return ret
+            End If
+        Next
+        Return Nothing
+    End Function
+
 End Module

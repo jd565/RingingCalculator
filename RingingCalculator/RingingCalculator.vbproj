@@ -80,6 +80,7 @@
     <Compile Include="FormBellsFunctions.vb" />
     <Compile Include="FormComFunctions.vb" />
     <Compile Include="FormConfigureFunctions.vb" />
+    <Compile Include="FormStatsFunctions.vb" />
     <Compile Include="frmMain.vb">
       <SubType>Form</SubType>
     </Compile>

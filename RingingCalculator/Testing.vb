@@ -5,7 +5,45 @@ Module Testing
     ' Main function for running the tests
     Public Sub run_tests(parent As Form)
         frmBells_tests(parent)
-        test_print_big_row()
+        test_wait(2000)
+        'test_print_big_row()
+        test_ring_hunt_mini()
+    End Sub
+
+    Private Sub test_ring_hunt_mini()
+        Dim bells As Integer = 4
+        Dim ports As Integer = 1
+
+        global_variables_test(bells, ports)
+
+        generate_frmBells(frmMain)
+
+        Dim switch_port_pin As New PortPin("COM1", 0)
+        configure_switch_test(switch_port_pin)
+
+        Dim bell_port_pin As New List(Of PortPin)
+        For ii As Integer = 1 To bells
+            bell_port_pin.Add(New PortPin("COM2", ii))
+        Next
+        configure_bells_test(bell_port_pin)
+
+        start_timer_test(switch_port_pin)
+
+        Dim hunt_mini As New List(Of Array)
+        hunt_mini.Add({2, 1, 4, 3})
+        hunt_mini.Add({2, 4, 1, 3})
+        hunt_mini.Add({4, 2, 3, 1})
+        hunt_mini.Add({4, 3, 2, 1})
+        hunt_mini.Add({3, 4, 1, 2})
+        hunt_mini.Add({3, 1, 4, 2})
+        hunt_mini.Add({1, 3, 2, 4})
+        hunt_mini.Add({1, 2, 3, 4})
+
+        For Each row In hunt_mini
+            test_ring_this_row(row, bell_port_pin)
+        Next
+
+
     End Sub
 
     Private Sub test_print_big_row()
@@ -101,7 +139,7 @@ Module Testing
     End Sub
 
     Private Sub test_ring_this_row(row As Array, bell_ports As List(Of PortPin))
-        Dim gap_between_bells As Integer = 250
+        Dim gap_between_bells As Integer = 150
         Dim output_string As String
         For Each ii In row
             port_pin_changed(bell_ports(ii - 1))

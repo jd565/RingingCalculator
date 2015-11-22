@@ -22,6 +22,12 @@
         End Get
     End Property
 
+    Public ReadOnly Property string_time As String
+        Get
+            Return time_to_string(Me.time)
+        End Get
+    End Property
+
     Public Sub New(bell_number As Integer, change_number As Integer, change_time As Integer)
         Me.bell_number = bell_number
         Me.change_number = change_number
