@@ -13,7 +13,7 @@
         Dim port As IO.Ports.SerialPort
 
         ' Make sure all the COM ports are closed
-        For Each port In COM_ports
+        For Each port In GlobalVariables.COM_ports
             If port.IsOpen Then
                 port.Close()
             End If
@@ -22,6 +22,7 @@
         GlobalVariables.COM_ports.Clear()
         For ii As Integer = 1 To ports
             port = New IO.Ports.SerialPort
+            port.RtsEnable = True
             AddHandler port.PinChanged, AddressOf port_pin_changed_wrapper
             GlobalVariables.COM_ports.Add(New IO.Ports.SerialPort())
         Next

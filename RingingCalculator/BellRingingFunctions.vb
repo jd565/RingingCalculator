@@ -8,6 +8,7 @@
 
     ' Function to handle a pin on a COM port changing.
     Public Sub port_pin_changed(port_pin As PortPin)
+        Console.WriteLine("Port pin has changed")
 
         ' A pin on a port changing can mean a few things:
         ' A bell is waiting to be configured and this event sets the configuration
