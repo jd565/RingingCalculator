@@ -21,7 +21,6 @@
         GlobalVariables.COM_ports.Clear()
         For ii As Integer = 1 To ports
             port = New IO.Ports.SerialPort
-            AddHandler port.PinChanged, AddressOf port_pin_changed_wrapper
             GlobalVariables.COM_ports.Add(New IO.Ports.SerialPort())
         Next
     End Sub
