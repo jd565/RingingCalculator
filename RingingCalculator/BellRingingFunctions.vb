@@ -3,6 +3,7 @@
     ' Wrapper function for a pin on a port changing
     Public Sub port_pin_changed_wrapper(port As IO.Ports.SerialPort, e As IO.Ports.SerialPinChangedEventArgs)
         Dim port_pin As New PortPin(port.PortName, e.EventType)
+        Console.WriteLine("Port pin changed wrapper")
         port_pin_changed(port_pin)
     End Sub
 
