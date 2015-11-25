@@ -79,6 +79,11 @@
         Me.can_be_configured = False
         Me.handstroke_delay_value = 10
         Me.backstroke_delay_value = 10
+        Me.new_fields()
+    End Sub
+
+    ' Function to generate new fields for use on a new form.
+    Public Sub new_fields()
         Me.fields = New BellFields(Me)
     End Sub
 

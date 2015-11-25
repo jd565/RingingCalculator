@@ -27,6 +27,9 @@
         Dim debounce_time As New NumericUpDown
         Dim debounce_label As New Label
 
+        GlobalVariables.switch.new_button()
+        GlobalVariables.bells.ForEach(Sub(bell) bell.new_fields())
+
         GlobalVariables.switch.button.Size = New Size(BELL_FIELD_WIDTH, BELL_FIELD_HEIGHT)
         GlobalVariables.switch.button.Location = New Point(column_width(ii), BELL_ROW_1)
         ii += 1
