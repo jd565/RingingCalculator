@@ -1,6 +1,4 @@
-﻿' This is a test comment for a new branch
-
-Public Class Bell
+﻿Public Class Bell
     Private port_pin_value As PortPin
     Public Property port_pin As PortPin
         Get
