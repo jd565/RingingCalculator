@@ -113,17 +113,20 @@
 
         state += 1
 
-        ' We arent running so change the colour of the light
-        If (Me.state Mod 2 = 1) Then
-            Me.fields.blob.BackColor = Color.Red
-
-            ' If we are running then check to see if we add to the list
-            If GlobalVariables.recording Then
+        ' If we are recording then check to see if we add to the list
+        If GlobalVariables.recording Then
+            If Me.state Mod 2 = 1 Then
                 Me.add_change_to_list()
                 bell_has_just_rung(Me)
             End If
-        Else
-            Me.fields.blob.BackColor = Color.Gray
+        End If
+        If GlobalVariables.switch.isRunning Then
+            ' We arent running so change the colour of the light
+            If (Me.state Mod 2 = 1) Then
+                Me.fields.blob.BackColor = Color.Red
+            Else
+                Me.fields.blob.BackColor = Color.Gray
+            End If
         End If
 
         ' If we have reached state 4, set the state back to 0.

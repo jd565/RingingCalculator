@@ -3,9 +3,22 @@
     ' Wrapper function for a pin on a port changing
     Public Sub port_pin_changed_wrapper(port As IO.Ports.SerialPort, e As IO.Ports.SerialPinChangedEventArgs)
         Dim port_pin As New PortPin(port.PortName, e.EventType)
+        Dim frm As Form
         Console.WriteLine("Port pin changed wrapper")
-        port_pin_changed(port_pin)
+        frm = Form.ActiveForm
+        If frm.InvokeRequired Then
+            frm.Invoke(New port_pin_changed_del(AddressOf port_pin_changed_wrapper), New Object() {port, e})
+        Else
+            ' Even if we are on the active form this still may throw an exception, so catch it here
+            Try
+                port_pin_changed(port_pin)
+            Catch ex As System.InvalidOperationException
+                Console.WriteLine("Hit an InvalidOperationException")
+            End Try
+        End If
     End Sub
+
+    Delegate Sub port_pin_changed_del(port As IO.Ports.SerialPort, e As IO.Ports.SerialPinChangedEventArgs)
 
     ' Function to handle a pin on a COM port changing.
     Public Sub port_pin_changed(port_pin As PortPin)

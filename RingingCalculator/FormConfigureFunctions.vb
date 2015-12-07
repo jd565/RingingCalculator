@@ -50,11 +50,7 @@
         Dim frm As Form
 
         frm = find_form("frmConfigure")
-        If frm.InvokeRequired Then
-            frm.Invoke(New MethodInvoker(AddressOf item_has_been_configured))
-        Else
-            frm.Close()
-        End If
+        frm.Close()
     End Sub
 
 End Module
