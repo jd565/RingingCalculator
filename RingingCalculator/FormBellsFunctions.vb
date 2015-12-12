@@ -5,13 +5,14 @@
     Const BELL_UPDOWN_WIDTH As Integer = 40
     Const BELL_LABEL_WIDTH As Integer = 65
     Const BELL_FIELD_WIDTH As Integer = BELL_LABEL_WIDTH + BELL_UPDOWN_WIDTH
-    Const BELL_LIGHT_DIAMETER As Integer = 65
+    Const BELL_LIGHT_DIAMETER As Integer = 50
     Const BELL_ROW_1 As Integer = BELL_FIELD_GAP
     Const BELL_ROW_2 As Integer = BELL_ROW_1 + BELL_FIELD_GAP + BELL_FIELD_HEIGHT
     Const BELL_ROW_3 As Integer = BELL_ROW_2 + BELL_FIELD_GAP + BELL_FIELD_HEIGHT
     Const BELL_ROW_4 As Integer = BELL_ROW_3 + BELL_FIELD_GAP + BELL_FIELD_HEIGHT
     Const BELL_ROW_5 As Integer = BELL_ROW_4 + BELL_FIELD_GAP + BELL_FIELD_HEIGHT
-    Const BELL_FORM_HEIGHT As Integer = BELL_ROW_5 + BELL_FIELD_GAP + BELL_LIGHT_DIAMETER
+    const BELL_ROW_6 As Integer = BELL_ROW_5 + BELL_FIELD_GAP + BELL_LIGHT_DIAMETER
+    Const BELL_FORM_HEIGHT As Integer = BELL_ROW_6 + BELL_FIELD_GAP + 2 * BELL_FIELD_HEIGHT
 
     ' Function to return the x coordinate (in pixels) of the column index ii
     Private Function column_width(ii As Integer) As Integer
@@ -26,6 +27,17 @@
         Dim ii As Integer = 0
         Dim debounce_time As New NumericUpDown
         Dim debounce_label As New Label
+	Dim changes_per_lead as new textbox;
+	dim lbl_changes_per_lead as new label;
+
+        lbl_changes_per_lead.Text = "Changes per lead:"
+	lbl_changes_per_lead.Size = New Size(BELL_FIELD_WIDTH, BELL_FIELD_HEIGHT)
+	lbl_changes_per_lead.Location = New Point(column_width(0), BELL_ROW_6)
+
+	changes_per_lead.Text = "40"
+	changes_per_lead.Size = New Size(BELL_field_width, BELL_FIELD_HEIGHT)
+	changes_per_lead.Location = New Point(column_width(0), BELL_ROW_6 + BELL_FIELD_HEIGHT)
+	AddHandler changes_per_lead.ValueChanged, AddressOf changes_per_lead_changed
 
         GlobalVariables.switch.new_button()
         GlobalVariables.bells.ForEach(Sub(bell) bell.new_fields())
@@ -55,6 +67,8 @@
         frm.Controls.Add(GlobalVariables.switch.button)
         frm.Controls.Add(debounce_time)
         frm.Controls.Add(debounce_label)
+	frm.controls.add(lbl_changes_per_lead)
+	frm.controls.add(changes_per_lead)
 
         frm.Text = "Ringing Simulator"
         frm.Name = "frmBells"
@@ -100,5 +114,14 @@
     Private Sub debounce_time_changed(debounce_time As NumericUpDown, e As EventArgs)
         GlobalVariables.debounce_time_changed(debounce_time.Value)
     End Sub
+
+    Private Sub changes_per_lead_changed(txt as textbox, e as eventargs)
+	if GlobalVariables.switch.is_running() then
+	    console.writeline("Tried to change chages per lead, but we are running")
+	    txt.Text = globalVariables.changes_per_lead
+	else
+	    GlobalVariables.changes_per_lead = val(txt.text)
+	end if
+    end sub
 
 End Module

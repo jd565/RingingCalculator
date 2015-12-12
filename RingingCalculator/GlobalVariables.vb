@@ -7,6 +7,7 @@
     Public Shared recording As Boolean = False
     Public Shared debounce_time As Integer = 25
     Public Shared changes_per_peal As Integer = 5040
+    Public Shared changes_per_lead as integer = 40
 
     ' Function to fill the Global Variable COM port list with the number of ports specified.
     Public Shared Sub generate_COM_ports(ByVal ports As Integer)

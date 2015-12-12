@@ -1,13 +1,11 @@
 ﻿Public Class Statistics
-    Public Shared lead_end_times As New List(Of ChangeTime)
+    Public Shared rows as new List(of Row)
     Public Shared estimate_method_data As Boolean = True
     Public Shared changes_per_lead As Integer
-    Public Shared lwb As Bell
     Public Shared leads_per_course As Integer
-    Public Shared waiting_for_full_row As Boolean = False
 
-    Public Shared changes As Integer
-    Public Shared leads As Integer
+    Public Shared changes As Integer=0
+    Public Shared leads As Integer=0
     Public Shared time As Integer
     Public Shared peal_speed As Integer
 

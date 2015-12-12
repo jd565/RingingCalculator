@@ -137,20 +137,11 @@ EXIT_LABEL:
 
     ' Function to call when a bell has just rung
     Public Sub bell_has_just_rung(bell As Bell)
-
-        ' Do stats checking if this is the treble.
-        If bell.bell_number = 1 Then
-            treble_has_just_rung()
-        End If
-
-        ' If we are waiting for a full row check if this completes it.
-        If Statistics.waiting_for_full_row Then
-            If get_row(Statistics.changes - 1).Count = GlobalVariables.bells.Count Then
-                ' We now have an entry for every bell in this row.
-                ' Call to the printing function
-                row_is_full()
-            End If
-        End If
+    dim row as Row
+    row = get_row(bell.change_times.count-1)
+	If row.size = GlobalVariables.bells.count then
+	    row_is_full(row)
+	end if
     End Sub
 
 End Module
