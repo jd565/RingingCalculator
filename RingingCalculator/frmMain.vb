@@ -12,4 +12,9 @@
     Private Sub btnTest_Click(sender As Object, e As EventArgs) Handles btnTest.Click
         run_tests(sender.parent)
     End Sub
+
+    Private Sub txtCOMs_TextChanged(sender As Object, e As EventArgs) Handles txtCOMs.TextChanged
+
+
+    End Sub
 End Class
