@@ -7,6 +7,7 @@
     Public Shared recording As Boolean = False
     Public Shared debounce_time As Integer = 25
     Public Shared changes_per_peal As Integer = 5040
+    Public Shared changes_per_lead as integer = 40
 
     ' Function to fill the Global Variable COM port list with the number of ports specified.
     Public Shared Sub generate_COM_ports(ByVal ports As Integer)
@@ -22,9 +23,8 @@
         GlobalVariables.COM_ports.Clear()
         For ii As Integer = 1 To ports
             port = New IO.Ports.SerialPort
-            port.RtsEnable = True
             AddHandler port.PinChanged, AddressOf port_pin_changed_wrapper
-            GlobalVariables.COM_ports.Add(New IO.Ports.SerialPort())
+            GlobalVariables.COM_ports.Add(port)
         Next
     End Sub
 

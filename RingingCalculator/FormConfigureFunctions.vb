@@ -47,15 +47,10 @@
     ' We expect the waiting form to be open, but check this.
     ' If the waiting form is open, then close it, as the bell has been configured.
     Public Sub item_has_been_configured()
+        Dim frm As Form
 
-        ' Loop through all open forms, in case the waiting form has been sent to the background.
-        For Each frm As Form In My.Application.OpenForms
-            If frm.Name.Equals("frmConfigure") Then
-                Console.WriteLine("Found form to close")
-                frm.Close()
-                Exit For
-            End If
-        Next
+        frm = find_form("frmConfigure")
+        frm.Close()
     End Sub
 
 End Module

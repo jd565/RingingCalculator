@@ -27,9 +27,15 @@
         Me.name = name
         Me.switch_running = False
 
-        button.Name = Me.name + "_btn"
-        button.Text = "Configure switch"
-        AddHandler button.Click, AddressOf configure_button_pressed
+        Me.new_button()
+    End Sub
+
+    ' Function to reset the button as it will be used on a new form.
+    Public Sub new_button()
+        Me.button = New Button
+        Me.button.Name = Me.name + "_btn"
+        Me.button.Text = "Configure switch"
+        AddHandler Me.button.Click, AddressOf configure_button_pressed
     End Sub
 
     Private Sub debounce_timer_tick(timer As Timer, e As EventArgs)

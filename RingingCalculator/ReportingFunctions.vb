@@ -1,8 +1,8 @@
 ﻿Module ReportingFunctions
 
     ' Function to create a single row, as a list of change times.
-    Public Function get_row(change_id As Integer) As List(Of ChangeTime)
-        Dim change As New List(Of ChangeTime)
+    Public Function get_row(change_id As Integer) As Row
+        Dim change As New row
 
         ' We may be part way through a change when this function is called.
         ' If we are we will try and find items in a list above the max of the list,

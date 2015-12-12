@@ -3,8 +3,22 @@
     ' Wrapper function for a pin on a port changing
     Public Sub port_pin_changed_wrapper(port As IO.Ports.SerialPort, e As IO.Ports.SerialPinChangedEventArgs)
         Dim port_pin As New PortPin(port.PortName, e.EventType)
-        port_pin_changed(port_pin)
+        Dim frm As Form
+        Console.WriteLine("Port pin changed wrapper")
+        frm = Form.ActiveForm
+        If frm.InvokeRequired Then
+            frm.Invoke(New port_pin_changed_del(AddressOf port_pin_changed_wrapper), New Object() {port, e})
+        Else
+            ' Even if we are on the active form this still may throw an exception, so catch it here
+            Try
+                port_pin_changed(port_pin)
+            Catch ex As System.InvalidOperationException
+                Console.WriteLine("Hit an InvalidOperationException")
+            End Try
+        End If
     End Sub
+
+    Delegate Sub port_pin_changed_del(port As IO.Ports.SerialPort, e As IO.Ports.SerialPinChangedEventArgs)
 
     ' Function to handle a pin on a COM port changing.
     Public Sub port_pin_changed(port_pin As PortPin)
@@ -123,20 +137,11 @@ EXIT_LABEL:
 
     ' Function to call when a bell has just rung
     Public Sub bell_has_just_rung(bell As Bell)
-
-        ' Do stats checking if this is the treble.
-        If bell.bell_number = 1 Then
-            treble_has_just_rung()
-        End If
-
-        ' If we are waiting for a full row check if this completes it.
-        If Statistics.waiting_for_full_row Then
-            If get_row(Statistics.changes - 1).Count = GlobalVariables.bells.Count Then
-                ' We now have an entry for every bell in this row.
-                ' Call to the printing function
-                row_is_full()
-            End If
-        End If
+    dim row as Row
+    row = get_row(bell.change_times.count-1)
+	If row.size = GlobalVariables.bells.count then
+	    row_is_full(row)
+	end if
     End Sub
 
 End Module

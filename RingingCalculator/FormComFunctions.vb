@@ -126,6 +126,7 @@
             ' Try to open a port. If it fails, run the code in the Catch part.
             Try
                 port.Open()
+                port.RtsEnable = True
             Catch ex As Exception
                 Console.WriteLine("Tried to open port " & port.PortName & ", but failed.")
                 success = False
