@@ -81,7 +81,7 @@
 
         ' We have now (hopefully) filled each port with a COM port name.
         ' Try and connect all the COM ports.
-        If connect_COM_ports() Then
+        If GlobalVariables.connect_COM_ports() Then
             ' We have successfully opened all the COM ports.
             ' close this form and return to the main form.
             GlobalVariables.COM_ports_configured = True
@@ -113,37 +113,6 @@
 
 
     End Sub
-
-    ' Function to connect the COM ports.
-    ' This should only be called after the ports have been filled in.
-    ' This function returns a boolean of whether it has succeeded in connecting all ports.
-    Private Function connect_COM_ports() As Boolean
-        Dim success As Boolean = True
-
-        ' Connect the ports one at a time.
-        For Each port In GlobalVariables.COM_ports
-
-            ' Try to open a port. If it fails, run the code in the Catch part.
-            Try
-                port.Open()
-                port.RtsEnable = True
-            Catch ex As Exception
-                Console.WriteLine("Tried to open port " & port.PortName & ", but failed.")
-                success = False
-            End Try
-        Next
-
-        ' If any of the ports have failed then we should make sure all ports are closed.
-        If Not success Then
-            For Each port In GlobalVariables.COM_ports
-                If port.IsOpen Then
-                    port.Close()
-                End If
-            Next
-        End If
-
-        Return success
-    End Function
 
     ' Function to put in a text box in the specified location for creating frmCOMs
     Private Sub generate_COM_field(frm As Form, coordinate As Integer, index As Integer)

@@ -36,3 +36,6 @@ C:\Users\Martin\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\R
 C:\Users\Martin\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.frmMain.resources
 C:\Users\Martin\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.Resources.resources
 C:\Users\Martin\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.vbproj.GenerateResource.Cache
+C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\Newtonsoft.Json.pdb
+C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\Newtonsoft.Json.xml

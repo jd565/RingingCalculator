@@ -17,4 +17,8 @@
 
 
     End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles btnLoadConfig.Click
+        load_config()
+    End Sub
 End Class

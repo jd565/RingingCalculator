@@ -32,60 +32,34 @@ EXIT_LABEL:
     Public Sub save_config()
         Dim file = My.Computer.FileSystem.OpenTextFileWriter(
             "ringingcalculator.conf", False)
-        file.WriteLine("{")
-        file.WriteLine("  ""COM_ports"":")
-        file.WriteLine("  [")
-        file.WriteLine("    {")
-        For Each port In GlobalVariables.COM_ports
-            file.WriteLine("      ""PortName"":""{0}""", port.PortName)
-            file.WriteLine("    }")
-            If Not port.Equals(GlobalVariables.COM_ports.Last) Then
-                file.Write(",")
-            End If
-        Next
-        file.WriteLine("  ],")
-        file.WriteLine("  ""Bells:"":")
-        file.WriteLine("  [")
-        file.WriteLine("    {")
-        For Each bell In GlobalVariables.bells
-            file.WriteLine("      ""name"":""{0}"",",
-                           bell.name)
-            file.WriteLine("      ""bell_number"":{0},",
-                           bell.bell_number.ToString)
-            file.WriteLine("      ""port_pin"":")
-            file.WriteLine("      {")
-            file.WriteLine("        ""port"":""{0}"",", bell.port_pin.port)
-            file.WriteLine("        ""pin"":{0}", bell.port_pin.pin.ToString)
-            file.WriteLine("      },")
-            file.WriteLine("      ""handstroke_delay"":{0},",
-                           bell.handstroke_delay.ToString)
-            file.WriteLine("      ""backstroke_delay"":{0}",
-                           bell.backstroke_delay.ToString)
-            file.WriteLine("    }")
-            If Not bell.Equals(GlobalVariables.bells.Last) Then
-                file.Write(",")
-            End If
-        Next
-        file.WriteLine("  ],")
-        file.WriteLine("  ""Switch:"":")
-        file.WriteLine("  {")
-        file.WriteLine("    ""name"":""{0}"",",
-                       GlobalVariables.switch.name)
-        file.WriteLine("      ""port_pin"":")
-        file.WriteLine("      {")
-        file.WriteLine("        ""port"":""{0}"",", GlobalVariables.switch.port_pin.port)
-        file.WriteLine("        ""pin"":{0}", GlobalVariables.switch.port_pin.pin.ToString)
-        file.WriteLine("      },")
-        file.WriteLine("  },")
-        file.WriteLine("  ""debounce_time"":{0},",
-                       GlobalVariables.debounce_time.ToString)
-        file.WriteLine("  ""changes_per_lead"":{0},",
-                       GlobalVariables.changes_per_lead.ToString)
-        file.WriteLine("  ""leads_per_course"":{0}",
-                       GlobalVariables.leads_per_course.ToString)
-        file.WriteLine("}")
+        Dim writer As New Newtonsoft.Json.JsonTextWriter(file)
+        writer.Formatting = Newtonsoft.Json.Formatting.Indented
+        Dim serializer As New Newtonsoft.Json.JsonSerializer
+
+        Dim config As New Config(GlobalVariables.COM_ports,
+                                 GlobalVariables.bells,
+                                 GlobalVariables.switch,
+                                 GlobalVariables.debounce_time,
+                                 GlobalVariables.changes_per_lead,
+                                 GlobalVariables.leads_per_course)
+
+        serializer.Serialize(writer, config)
 
         file.Close()
+    End Sub
+
+    ' Function to read the config file.
+    ' This is saved in a JSON format, so read it in here
+    Public Sub load_config()
+        Dim file = My.Computer.FileSystem.OpenTextFileReader(
+            "ringingcalculator.conf")
+        Dim reader As New Newtonsoft.Json.JsonTextReader(file)
+        Dim serializer As New Newtonsoft.Json.JsonSerializer
+
+        Dim config As Config
+        config = serializer.Deserialize(Of Config)(reader)
+        config.initialize()
+
     End Sub
 
 End Module

@@ -28,6 +28,7 @@ Partial Class frmMain
         Me.Label2 = New System.Windows.Forms.Label()
         Me.btnGenerate = New System.Windows.Forms.Button()
         Me.btnTest = New System.Windows.Forms.Button()
+        Me.btnLoadConfig = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'txtBells
@@ -84,11 +85,21 @@ Partial Class frmMain
         Me.btnTest.Text = "Run tests"
         Me.btnTest.UseVisualStyleBackColor = True
         '
+        'btnLoadConfig
+        '
+        Me.btnLoadConfig.Location = New System.Drawing.Point(180, 232)
+        Me.btnLoadConfig.Name = "btnLoadConfig"
+        Me.btnLoadConfig.Size = New System.Drawing.Size(100, 47)
+        Me.btnLoadConfig.TabIndex = 6
+        Me.btnLoadConfig.Text = "Load Config"
+        Me.btnLoadConfig.UseVisualStyleBackColor = True
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(439, 329)
+        Me.Controls.Add(Me.btnLoadConfig)
         Me.Controls.Add(Me.btnTest)
         Me.Controls.Add(Me.btnGenerate)
         Me.Controls.Add(Me.Label2)
@@ -109,4 +120,5 @@ Partial Class frmMain
     Friend WithEvents Label2 As Label
     Friend WithEvents btnGenerate As Button
     Friend WithEvents btnTest As Button
+    Friend WithEvents btnLoadConfig As Button
 End Class

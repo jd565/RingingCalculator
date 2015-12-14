@@ -42,5 +42,14 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-.RingingCalculator\bin
-.RingingCalculator\obj
+.vs/RingingCalculator/v14/.suo
+RingingCalculator/bin/Debug/ringingcalculator.conf
+RingingCalculator/bin/Debug/RingingCalculator.pdb
+RingingCalculator/bin/Debug/RingingCalculator.exe
+RingingCalculator/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+*.cache
+RingingCalculator/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+*.exe
+RingingCalculator/obj/Debug/RingingCalculator.pdb
+*.Cache
+RingingCalculator/obj/Debug/RingingCalculator.vbprojResolveAssemblyReference.cache
