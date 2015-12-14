@@ -104,7 +104,7 @@
         ' If the switch is running but we aren't recording then drop out.
         ' We do this to avoid recording the first change as e.g. 67821435
         ' We set the program to record when bell 2 is rung after the switch starts running
-        If Not (GlobalVariables.switch.isRunning = GlobalVariables.recording) Then
+        If (GlobalVariables.switch.isRunning = True And GlobalVariables.recording = False) Then
             Console.WriteLine("Switch is on but not recording.")
             If Not should_we_start_recording(Me) Then
                 GoTo EXIT_LABEL
@@ -120,7 +120,7 @@
                 bell_has_just_rung(Me)
             End If
         End If
-        If GlobalVariables.switch.isRunning Then
+        If Not GlobalVariables.switch.isRunning Then
             ' We arent running so change the colour of the light
             If (Me.state Mod 2 = 1) Then
                 Me.fields.blob.BackColor = Color.Red

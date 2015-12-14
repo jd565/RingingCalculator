@@ -90,7 +90,6 @@
     </Compile>
     <Compile Include="GeneralFormFunctions.vb" />
     <Compile Include="GlobalVariables.vb" />
-    <Compile Include="MethodEstimatingFunctions.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -108,6 +107,8 @@
     </Compile>
     <Compile Include="PortPin.vb" />
     <Compile Include="ReportingFunctions.vb" />
+    <Compile Include="Row.vb" />
+    <Compile Include="Saving.vb" />
     <Compile Include="Statistics.vb" />
     <Compile Include="Switch.vb" />
     <Compile Include="Testing.vb" />

@@ -17,7 +17,7 @@
         Dim x As Integer = 0
         Dim y As Integer = 0
 
-        Statistics.reset_stats()
+        Statistics.reset_stats_fields()
 
         add_key_value_labels(Statistics.changes_key, Statistics.changes_value, "Changes", frm, x, y)
         x += 1
@@ -33,9 +33,17 @@
         x += 1
 
         add_key_value_labels(Statistics.lead_end_row_key, Statistics.lead_end_row_value, "Lead End Row", frm, x, y)
+        x = 0
+        y += 1
+
+        add_key_value_labels(Statistics.last_course_peal_speed_key, Statistics.last_course_peal_speed_value,
+                             "Last Course Peal Speed", frm, x, y)
+        x += 1
+
+        add_key_value_labels(Statistics.last_course_time_key, Statistics.last_course_time_value, "Last Course Time", frm, x, y)
 
         button.Size = New Size(STATS_FIELD_WIDTH, STATS_FIELD_HEIGHT)
-        button.Location = coordinate(1, 2)
+        button.Location = coordinate(1, 3)
         button.Text = "Close"
         AddHandler button.Click, AddressOf close_parent_form
 
@@ -45,7 +53,7 @@
         frm.Text = "Statistics"
         frm.Name = "frmStats"
         frm.Font = New Font(DEFAULT_FONT.OriginalFontName, STATS_FONT_SIZE, DEFAULT_FONT.Style)
-        frm.ClientSize = Point.op_Explicit(coordinate(3, 3))
+        frm.ClientSize = Point.op_Explicit(coordinate(3, 4))
         parent.AddOwnedForm(frm)
         AddHandler frm.FormClosing, AddressOf dispose_of_form
         frm.Show()

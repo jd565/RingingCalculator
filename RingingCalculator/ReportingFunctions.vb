@@ -1,26 +1,5 @@
 ﻿Module ReportingFunctions
 
-    ' Function to create a single row, as a list of change times.
-    Public Function get_row(change_id As Integer) As Row
-        Dim change As New row
-
-        ' We may be part way through a change when this function is called.
-        ' If we are we will try and find items in a list above the max of the list,
-        ' so handle exceptions here
-        For Each bell In GlobalVariables.bells
-            Try
-                change.Add(bell.change_times(change_id))
-            Catch
-                Exit For
-            End Try
-        Next
-
-        ' we now have a list of the time of every bell for this change.
-        change.Sort()
-
-        Return change
-    End Function
-
     ' Function to convert a time in seconds to a string of hours and minutes and seconds
     Public Function time_to_string(time As Integer) As String
         Dim hours As String
@@ -34,42 +13,44 @@
 
     End Function
 
-    ' Function to find the location of a bell in a certain row
-    ' If the bell is not found in the list (unlikely) the function returns 0
-    Public Function get_bell_location_in_row(change_id As Integer, bell_number As Integer) As Integer
-        Dim change As List(Of ChangeTime) = get_row(change_id)
+    ' Function to be called once all bells have rung a certain row.
+    ' This happens for every row, and the sorted row is put into the rows
+    ' list.
+    Public Sub row_is_full(change_id As Integer)
+        Console.WriteLine("Row is full")
+        Statistics.rows(change_id).sort()
+        ' If the switch has been pressed to stop running then stop recording here
+        If Not GlobalVariables.switch.isRunning Then
+            GlobalVariables.recording = False
+            update_statistics(change_id)
+        End If
+        If is_this_lead_end(change_id) Then
+            update_statistics(change_id)
+        End If
+    End Sub
 
-        For ii As Integer = 1 To change.Count
-            If change(ii - 1).bell = bell_number Then
-                Return ii
-            End If
-        Next
-        Return 0
+    ' Function for checking if this is a lead end
+    Public Function is_this_lead_end(change_id As Integer) As Boolean
+        Return ((change_id + 1) Mod GlobalVariables.changes_per_lead = 0)
     End Function
 
-    ' Function to print a certain row of the ringing.
-    ' It does this by creating a list of the times of each change,
-    ' and then sorting the list before returning the row
-    Public Function print_change(change_id As Integer) As String
-        Dim row_to_print As String = ""
-        Dim change As List(Of ChangeTime) = get_row(change_id)
+    Private Sub update_statistics(change_id As Integer)
+        Console.WriteLine("Update lead end stats")
 
-        ' Now go through this list and create a string.
-        ' We do have to convert each bell number to the string representation
-        For Each change_time In change
-            row_to_print += bell_number_to_string(change_time.bell)
-        Next
-
-        Return row_to_print
-    End Function
-
-    ' Function to return the string representation of the bell number
-    Private Function bell_number_to_string(bell_number As Integer) As String
-        If bell_number < 10 Then Return bell_number.ToString()
-        If bell_number = 10 Then Return "0"
-        If bell_number = 11 Then Return "E"
-        If bell_number = 12 Then Return "T"
-        Return Convert.ToChar(Convert.ToInt32(CChar("A")) - 13 + bell_number).ToString()
-    End Function
+        Statistics.time = Statistics.rows(change_id).time
+        Statistics.peal_speed = Statistics.rows(change_id).time * GlobalVariables.changes_per_peal / (change_id + 1)
+        Statistics.lead_end_row_value.Text = Statistics.rows(change_id).print
+        Statistics.leads_value.Text = Statistics.leads.ToString
+        Statistics.changes_value.Text = Statistics.changes.ToString
+        Statistics.time_value.Text = time_to_string(Statistics.time)
+        Statistics.peal_speed_value.Text = time_to_string(Statistics.peal_speed)
+        If change_id - GlobalVariables.changes_per_course >= 0 Then
+            Statistics.last_course_time_value.Text = time_to_string(Statistics.rows(change_id).time -
+                                                                Statistics.rows(change_id - GlobalVariables.changes_per_course).time)
+            Statistics.last_course_peal_speed_value.Text = time_to_string(Val(Statistics.last_course_time_value.Text) *
+                                                                              GlobalVariables.changes_per_peal /
+                                                                              GlobalVariables.changes_per_course)
+        End If
+    End Sub
 
 End Module

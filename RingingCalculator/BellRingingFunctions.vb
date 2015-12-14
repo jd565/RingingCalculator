@@ -136,12 +136,26 @@ EXIT_LABEL:
     End Function
 
     ' Function to call when a bell has just rung
+    ' We add the bell straight to the row we expect it to be in
+    ' Need to make sure that the row does actually exist
     Public Sub bell_has_just_rung(bell As Bell)
-    dim row as Row
-    row = get_row(bell.change_times.count-1)
-	If row.size = GlobalVariables.bells.count then
-	    row_is_full(row)
-	end if
+        Dim change_id As Integer = bell.change_times.Count - 1
+
+        ' This is checking that we have a row to put our bell in.
+        ' If this is the first bell in a row, we need to add a new row to
+        ' the list.
+        If Statistics.rows.Count <= change_id Then
+            Statistics.rows.Add(New Row)
+        End If
+
+        ' This is sufficient as we should never get in the state of trying to add
+        ' a change that is more than 1 ahead of the size of the rows.
+        ' If we do, this will raise an exception and everything will fail.
+        Statistics.rows(change_id).add(bell.change_times.Last)
+
+        If Statistics.rows(change_id).row_is_full Then
+            row_is_full(change_id)
+        End If
     End Sub
 
 End Module

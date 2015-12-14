@@ -1,0 +1,10 @@
+﻿8 changes rung in 0:0:8.
+Printing every 1 rows.
+2143
+2413
+4231
+4321
+3412
+3142
+1324
+1234

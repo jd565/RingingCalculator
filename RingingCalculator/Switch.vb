@@ -70,6 +70,7 @@ EXIT_LABEL:
         For Each bell In GlobalVariables.bells
             bell.reset()
         Next
+        Statistics.reset_stats()
         Me.switch_running = True
         GlobalVariables.start_time = DateTime.Now()
     End Sub
@@ -77,7 +78,6 @@ EXIT_LABEL:
     ' Function to handle when the program stops recording
     Private Sub stop_running()
         Me.switch_running = False
-        GlobalVariables.recording = False
     End Sub
 
     ' Function to handle when the configure button is pressed.

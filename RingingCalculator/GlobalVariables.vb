@@ -7,7 +7,9 @@
     Public Shared recording As Boolean = False
     Public Shared debounce_time As Integer = 25
     Public Shared changes_per_peal As Integer = 5040
-    Public Shared changes_per_lead as integer = 40
+    Public Shared changes_per_lead As Integer = 40
+    Public Shared changes_per_course As Integer = 360
+    Public Shared leads_per_course As Integer = 9
 
     ' Function to fill the Global Variable COM port list with the number of ports specified.
     Public Shared Sub generate_COM_ports(ByVal ports As Integer)
@@ -39,6 +41,11 @@
     ' Function to handle the debounce time changing
     Public Shared Sub debounce_time_changed(debounce_time As Integer)
         GlobalVariables.debounce_time = debounce_time
+    End Sub
+
+    ' Function to update changes per course
+    Public Shared Sub update_changes_per_course()
+        GlobalVariables.changes_per_course = GlobalVariables.changes_per_lead * GlobalVariables.leads_per_course
     End Sub
 
 End Class

@@ -34,7 +34,7 @@
         If name.Equals(parent.Name) Then
             Return parent
         End If
-        For Each frm In frmMain.OwnedForms
+        For Each frm In parent.OwnedForms
             ret = find_form(name, frm)
             If ret IsNot Nothing Then
                 Return ret

@@ -37,13 +37,29 @@ Module Testing
         hunt_mini.Add({3, 4, 1, 2})
         hunt_mini.Add({3, 1, 4, 2})
         hunt_mini.Add({1, 3, 2, 4})
-        hunt_mini.Add({1, 2, 3, 4})
 
         For Each row In hunt_mini
             test_ring_this_row(row, bell_port_pin)
         Next
 
+        test_stop_timer(switch_port_pin)
 
+        test_ring_this_row({1, 2, 3, 4}, bell_port_pin)
+
+        test_save_rows()
+
+        test_save_config()
+
+    End Sub
+
+    ' Function to test saving the rows to a file
+    Private Sub test_save_rows()
+        save_statistics()
+    End Sub
+
+    ' Function to test saving the config
+    Private Sub test_save_config()
+        save_config()
     End Sub
 
     Private Sub test_print_big_row()
@@ -105,9 +121,19 @@ Module Testing
         ' ring a change, check that the row is correct
         test_ring_this_row({2, 1, 3, 4, 5, 6}, bell_port_pin)
 
+        test_stop_timer(switch_port_pin)
+
         ' Before closing the forms cleanup the state of the program
         test_cleanup()
 
+    End Sub
+
+    Private Sub test_stop_timer(pp As PortPin)
+        ' Only stop the switch if it is running
+        If GlobalVariables.switch.isRunning Then
+            port_pin_changed(pp)
+        End If
+        Debug.Assert(Not GlobalVariables.switch.isRunning)
     End Sub
 
     Private Sub test_cleanup()
@@ -149,7 +175,7 @@ Module Testing
             port_pin_changed(bell_ports(ii - 1))
             test_wait(gap_between_bells)
         Next
-        output_string = print_change(GlobalVariables.bells(0).change_times.Count)
+        output_string = Statistics.rows(Statistics.changes - 1).print
         Debug.WriteLine(output_string)
     End Sub
 
