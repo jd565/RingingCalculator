@@ -6,86 +6,100 @@
     Const BELL_FIELD_HEIGHT As Integer = BELL_LABEL_HEIGHT + BELL_UPDOWN_HEIGHT
     Const BELL_FIELD_WIDTH As Integer = 100
     Const BELL_LIGHT_DIAMETER As Integer = 50
-    Const BELL_ROW_1 As Integer = BELL_FIELD_GAP
-    Const BELL_ROW_2 As Integer = BELL_ROW_1 + BELL_FIELD_GAP + BELL_FIELD_HEIGHT
-    Const BELL_ROW_3 As Integer = BELL_ROW_2 + BELL_FIELD_GAP + BELL_FIELD_HEIGHT
-    Const BELL_ROW_4 As Integer = BELL_ROW_3 + BELL_FIELD_GAP + BELL_FIELD_HEIGHT
-    Const BELL_ROW_5 As Integer = BELL_ROW_4 + BELL_FIELD_GAP + BELL_FIELD_HEIGHT
-    const BELL_ROW_6 As Integer = BELL_ROW_5 + BELL_FIELD_GAP + BELL_LIGHT_DIAMETER
-    Const BELL_FORM_HEIGHT As Integer = BELL_ROW_6
+    Private BELL_LABEL_SIZE As New Size(BELL_FIELD_WIDTH, BELL_LABEL_HEIGHT)
+    Private BELL_UPDOWN_SIZE As New Size(BELL_FIELD_WIDTH, BELL_UPDOWN_HEIGHT)
+    Private BELL_UPDOWN_OFFSET As New Point(0, BELL_LABEL_HEIGHT)
+    Private BELL_GENERAL_SIZE As New Size(BELL_FIELD_WIDTH, BELL_FIELD_HEIGHT)
+    Private BELL_LIGHT_SIZE As New Size(Math.Min(Math.Min(BELL_LIGHT_DIAMETER, BELL_FIELD_HEIGHT), BELL_FIELD_WIDTH),
+                                        Math.Min(Math.Min(BELL_LIGHT_DIAMETER, BELL_FIELD_HEIGHT), BELL_FIELD_WIDTH))
+    Private BELL_LIGHT_OFFSET As New Point((BELL_FIELD_WIDTH - BELL_LIGHT_SIZE.Width) / 2,
+                                           (BELL_FIELD_HEIGHT - BELL_LIGHT_SIZE.Height) / 2)
+    Private debounce_time As New NumericUpDown
+    Private debounce_label As New Label
+    Private changes_per_lead As New TextBox
+    Private lbl_changes_per_lead As New Label
+    Private leads_per_course As New TextBox
+    Private lbl_leads_per_course As New Label
+    Private changes_per_Peal As New TextBox
+    Private lbl_changes_per_Peal As New Label
+    Private save_file As New SaveFileDialog
+    Private save As New Button
+    Private frm As New Form
 
-    ' Function to return the x coordinate (in pixels) of the column index ii
-    Private Function column_width(ii As Integer) As Integer
-        Return BELL_FIELD_GAP + ii * (BELL_FIELD_GAP + BELL_FIELD_WIDTH)
+    ' Function to return the coordinate of a point on the grid
+    Private Function coordinate(x As Integer, y As Integer) As Point
+        Return New Point(BELL_FIELD_GAP + x * (BELL_FIELD_GAP + BELL_FIELD_WIDTH),
+                         BELL_FIELD_GAP + y * (BELL_FIELD_GAP + BELL_FIELD_HEIGHT))
     End Function
 
     ' Function to generate the bells form with the required number of bells
     ' We decide a required width per bell, and set the overall form width.
     ' We then generate the required boxes for each bell.
     Public Sub generate_frmBells(parent As Form)
-        Dim frm As New Form
         Dim ii As Integer = 0
-        Dim debounce_time As New NumericUpDown
-        Dim debounce_label As New Label
-        Dim changes_per_lead As New TextBox
-        Dim lbl_changes_per_lead As New Label
-        Dim leads_per_course As New TextBox
-        Dim lbl_leads_per_course As New Label
-        Dim changes_per_Peal As New TextBox
-        Dim lbl_changes_per_Peal As New Label
 
-
-        lbl_changes_per_lead.Text = "Changes per lead:"
-        lbl_changes_per_lead.Size = New Size(BELL_FIELD_WIDTH, BELL_LABEL_HEIGHT)
-        lbl_changes_per_lead.Location = New Point(column_width(2), BELL_ROW_1)
-
-        changes_per_lead.Text = GlobalVariables.changes_per_lead.ToString
-        changes_per_lead.Size = New Size(BELL_FIELD_WIDTH, BELL_UPDOWN_HEIGHT)
-        changes_per_lead.Location = New Point(column_width(2), BELL_ROW_1 + BELL_LABEL_HEIGHT)
-        AddHandler changes_per_lead.TextChanged, AddressOf changes_per_lead_changed
-
-        lbl_leads_per_course.Text = "Leads per course:"
-        lbl_leads_per_course.Size = New Size(BELL_FIELD_WIDTH, BELL_LABEL_HEIGHT)
-        lbl_leads_per_course.Location = New Point(column_width(3), BELL_ROW_1)
-
-        leads_per_course.Text = GlobalVariables.leads_per_course.ToString
-        leads_per_course.Size = New Size(BELL_FIELD_WIDTH, BELL_UPDOWN_HEIGHT)
-        leads_per_course.Location = New Point(column_width(3), BELL_ROW_1 + BELL_LABEL_HEIGHT)
-        AddHandler leads_per_course.TextChanged, AddressOf leads_per_course_changed
-
-        lbl_changes_per_Peal.Text = "Peal length:"
-        lbl_changes_per_Peal.Size = New Size(BELL_FIELD_WIDTH, BELL_LABEL_HEIGHT)
-        lbl_changes_per_Peal.Location = New Point(column_width(4), BELL_ROW_1)
-
-        changes_per_Peal.Text = GlobalVariables.changes_per_peal.ToString
-        changes_per_Peal.Size = New Size(BELL_FIELD_WIDTH, BELL_UPDOWN_HEIGHT)
-        changes_per_Peal.Location = New Point(column_width(4), BELL_ROW_1 + BELL_LABEL_HEIGHT)
-        AddHandler changes_per_Peal.TextChanged, AddressOf changes_per_peal_changed
-
+        ' Switch
         GlobalVariables.switch.new_button()
-        GlobalVariables.bells.ForEach(Sub(bell) bell.new_fields())
+        GlobalVariables.switch.button.Size = BELL_GENERAL_SIZE
+        GlobalVariables.switch.button.Location = coordinate(0, 0)
 
-        GlobalVariables.switch.button.Size = New Size(BELL_FIELD_WIDTH, BELL_FIELD_HEIGHT)
-        GlobalVariables.switch.button.Location = New Point(column_width(ii), BELL_ROW_1)
-        ii += 1
-
-        debounce_time.Name = "debounce_time_updown"
-        debounce_time.Value = 25
-        debounce_time.Size = New Size(BELL_FIELD_WIDTH, BELL_UPDOWN_HEIGHT)
-        debounce_time.Location = New Point(column_width(ii), BELL_ROW_1 + BELL_LABEL_HEIGHT)
-        AddHandler debounce_time.ValueChanged, AddressOf debounce_time_changed
-
+        ' Debounce time
         debounce_label.Name = "debounce_time_label"
         debounce_label.Text = "Debounce delay:"
-        debounce_label.Size = New Size(BELL_FIELD_WIDTH, BELL_LABEL_HEIGHT)
-        debounce_label.Location = New Point(column_width(ii), BELL_ROW_1)
+        debounce_label.Size = BELL_LABEL_SIZE
+        debounce_label.Location = coordinate(1, 0)
+        debounce_time.Name = "debounce_time_updown"
+        debounce_time.Value = 25
+        debounce_time.Size = BELL_UPDOWN_SIZE
+        debounce_time.Location = coordinate(1, 0) + BELL_UPDOWN_OFFSET
+        AddHandler debounce_time.ValueChanged, AddressOf debounce_time_changed
 
+        ' Changes per lead
+        lbl_changes_per_lead.Text = "Changes per lead:"
+        lbl_changes_per_lead.Size = BELL_LABEL_SIZE
+        lbl_changes_per_lead.Location = coordinate(2, 0)
+        changes_per_lead.Text = GlobalVariables.changes_per_lead.ToString
+        changes_per_lead.Size = BELL_UPDOWN_SIZE
+        changes_per_lead.Location = coordinate(2, 0) + BELL_UPDOWN_OFFSET
+        AddHandler changes_per_lead.TextChanged, AddressOf changes_per_lead_changed
+
+        ' leads per course
+        lbl_leads_per_course.Text = "Leads per course:"
+        lbl_leads_per_course.Size = BELL_LABEL_SIZE
+        lbl_leads_per_course.Location = coordinate(3, 0)
+        leads_per_course.Text = GlobalVariables.leads_per_course.ToString
+        leads_per_course.Size = BELL_UPDOWN_SIZE
+        leads_per_course.Location = coordinate(3, 0) + BELL_UPDOWN_OFFSET
+        AddHandler leads_per_course.TextChanged, AddressOf leads_per_course_changed
+
+        ' changes per peal
+        lbl_changes_per_Peal.Text = "Peal length:"
+        lbl_changes_per_Peal.Size = BELL_LABEL_SIZE
+        lbl_changes_per_Peal.Location = coordinate(4, 0)
+        changes_per_Peal.Text = GlobalVariables.changes_per_peal.ToString
+        changes_per_Peal.Size = BELL_UPDOWN_SIZE
+        changes_per_Peal.Location = coordinate(4, 0) + BELL_UPDOWN_OFFSET
+        AddHandler changes_per_Peal.TextChanged, AddressOf changes_per_peal_changed
+
+        ' Bells
+        ' Add new fields to the bell to stop errors where fields are on more than 1 form
+        GlobalVariables.bells.ForEach(Sub(bell) bell.new_fields())
         ' Reset the column width as the bells go on the row below these configs
         ii = 0
         For Each bell In GlobalVariables.bells
-            add_bell_field(column_width(ii), bell, frm)
+            add_bell_field(ii, bell, frm)
             ii += 1
         Next
+
+        ' Config file saving
+        save.Text = "Save configuration"
+        save.Size = BELL_GENERAL_SIZE
+        save.Location = coordinate(0, 5)
+        AddHandler save.Click, AddressOf save_button_pressed
+        save_file.FileName = "ringingcalculator.conf"
+        save_file.Filter = "Conf files|*.conf|All files|*.*"
+        save_file.Title = "Configuration File"
+        save_file.DefaultExt = "conf"
 
         frm.Controls.Add(GlobalVariables.switch.button)
         frm.Controls.Add(debounce_time)
@@ -96,11 +110,12 @@
         frm.Controls.Add(changes_per_Peal)
         frm.Controls.Add(lbl_leads_per_course)
         frm.Controls.Add(leads_per_course)
+        frm.Controls.Add(save)
 
         frm.Text = "Ringing Simulator"
         frm.Name = "frmBells"
         frm.Font = DEFAULT_FONT
-        frm.ClientSize = New Size(column_width(ii), BELL_FORM_HEIGHT)
+        frm.ClientSize = New Size(coordinate(ii, 6))
         parent.AddOwnedForm(frm)
         AddHandler frm.FormClosing, AddressOf dispose_of_form
         frm.Show()
@@ -109,25 +124,27 @@
 
     ' Function to add one bell. The bell fields will be placed at the coordinate specified,
     ' and named using bell_name
-    Private Sub add_bell_field(coordinate As Integer, bell As Bell, form As Form)
+    Private Sub add_bell_field(x As Integer, bell As Bell, form As Form)
 
-        bell.fields.handstroke_delay.Size = New Size(BELL_FIELD_WIDTH, BELL_UPDOWN_HEIGHT)
-        bell.fields.handstroke_delay.Location = New Point(coordinate, BELL_ROW_2 + BELL_LABEL_HEIGHT)
+        ' Hnadstroke delay
+        bell.fields.handstroke_delay.Size = BELL_UPDOWN_SIZE
+        bell.fields.handstroke_delay.Location = coordinate(x, 1) + BELL_UPDOWN_OFFSET
+        bell.fields.handstroke_label.Size = BELL_LABEL_SIZE
+        bell.fields.handstroke_label.Location = coordinate(x, 1)
 
-        bell.fields.handstroke_label.Size = New Size(BELL_FIELD_WIDTH, BELL_LABEL_HEIGHT)
-        bell.fields.handstroke_label.Location = New Point(coordinate, BELL_ROW_2)
+        ' Backstroke delay
+        bell.fields.backstroke_delay.Size = BELL_UPDOWN_SIZE
+        bell.fields.backstroke_delay.Location = coordinate(x, 2) + BELL_UPDOWN_OFFSET
+        bell.fields.backstroke_label.Size = BELL_LABEL_SIZE
+        bell.fields.backstroke_label.Location = coordinate(x, 2)
 
-        bell.fields.backstroke_delay.Size = New Size(BELL_FIELD_WIDTH, BELL_UPDOWN_HEIGHT)
-        bell.fields.backstroke_delay.Location = New Point(coordinate, BELL_ROW_3 + BELL_LABEL_HEIGHT)
+        ' configure port pin button
+        bell.fields.button.Size = BELL_GENERAL_SIZE
+        bell.fields.button.Location = coordinate(x, 3)
 
-        bell.fields.backstroke_label.Size = New Size(BELL_FIELD_WIDTH, BELL_LABEL_HEIGHT)
-        bell.fields.backstroke_label.Location = New Point(coordinate, BELL_ROW_3)
-
-        bell.fields.button.Size = New Size(BELL_FIELD_WIDTH, BELL_FIELD_HEIGHT)
-        bell.fields.button.Location = New Point(coordinate, BELL_ROW_4)
-
-        bell.fields.blob.Size = New Size(BELL_LIGHT_DIAMETER, BELL_LIGHT_DIAMETER)
-        bell.fields.blob.Location = New Point(coordinate + (BELL_FIELD_WIDTH - BELL_LIGHT_DIAMETER) / 2, BELL_ROW_5)
+        ' Light
+        bell.fields.blob.Size = BELL_LIGHT_SIZE
+        bell.fields.blob.Location = coordinate(x, 4) + BELL_LIGHT_OFFSET
 
         form.Controls.Add(bell.fields.button)
         form.Controls.Add(bell.fields.handstroke_delay)
@@ -169,6 +186,16 @@
         Else
             GlobalVariables.changes_per_peal = Val(txt.Text)
         End If
+    End Sub
+
+    Private Sub save_button_pressed(obj As Object, e As EventArgs)
+        get_file_to_save_to()
+        save_config(save_file.FileName)
+        MsgBox("Configuration saved to " & save_file.FileName & ".",, "File Saved")
+    End Sub
+
+    Private Sub get_file_to_save_to()
+        save_file.ShowDialog()
     End Sub
 
 End Module

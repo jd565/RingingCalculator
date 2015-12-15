@@ -19,6 +19,10 @@
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles btnLoadConfig.Click
-        load_config()
+        load_config(Me.OpenFileDialog1.FileName)
+    End Sub
+
+    Private Sub btnConfFile_Click(sender As Object, e As EventArgs) Handles btnConfFile.Click
+        Me.OpenFileDialog1.ShowDialog()
     End Sub
 End Class

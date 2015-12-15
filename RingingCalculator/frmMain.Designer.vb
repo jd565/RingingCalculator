@@ -29,6 +29,8 @@ Partial Class frmMain
         Me.btnGenerate = New System.Windows.Forms.Button()
         Me.btnTest = New System.Windows.Forms.Button()
         Me.btnLoadConfig = New System.Windows.Forms.Button()
+        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
+        Me.btnConfFile = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'txtBells
@@ -89,16 +91,33 @@ Partial Class frmMain
         '
         Me.btnLoadConfig.Location = New System.Drawing.Point(180, 232)
         Me.btnLoadConfig.Name = "btnLoadConfig"
-        Me.btnLoadConfig.Size = New System.Drawing.Size(100, 47)
+        Me.btnLoadConfig.Size = New System.Drawing.Size(100, 72)
         Me.btnLoadConfig.TabIndex = 6
         Me.btnLoadConfig.Text = "Load Config"
         Me.btnLoadConfig.UseVisualStyleBackColor = True
+        '
+        'OpenFileDialog1
+        '
+        Me.OpenFileDialog1.DefaultExt = "conf"
+        Me.OpenFileDialog1.FileName = "ringingcalculator.conf"
+        Me.OpenFileDialog1.Filter = "Conf files|*.conf|All files|*.*"
+        Me.OpenFileDialog1.Title = "Configuration File"
+        '
+        'btnConfFile
+        '
+        Me.btnConfFile.Location = New System.Drawing.Point(74, 233)
+        Me.btnConfFile.Name = "btnConfFile"
+        Me.btnConfFile.Size = New System.Drawing.Size(100, 72)
+        Me.btnConfFile.TabIndex = 7
+        Me.btnConfFile.Text = "Choose Config File"
+        Me.btnConfFile.UseVisualStyleBackColor = True
         '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(439, 329)
+        Me.Controls.Add(Me.btnConfFile)
         Me.Controls.Add(Me.btnLoadConfig)
         Me.Controls.Add(Me.btnTest)
         Me.Controls.Add(Me.btnGenerate)
@@ -121,4 +140,6 @@ Partial Class frmMain
     Friend WithEvents btnGenerate As Button
     Friend WithEvents btnTest As Button
     Friend WithEvents btnLoadConfig As Button
+    Friend WithEvents OpenFileDialog1 As OpenFileDialog
+    Friend WithEvents btnConfFile As Button
 End Class

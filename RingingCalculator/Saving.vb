@@ -29,9 +29,9 @@ EXIT_LABEL:
 
     ' Function to save all your configuration to a file that can be read
     ' This is essentially a list of all the globalvariables
-    Public Sub save_config()
+    Public Sub save_config(Optional filename As String = "ringingcalculator.conf")
         Dim file = My.Computer.FileSystem.OpenTextFileWriter(
-            "ringingcalculator.conf", False)
+            filename, False)
         Dim writer As New Newtonsoft.Json.JsonTextWriter(file)
         writer.Formatting = Newtonsoft.Json.Formatting.Indented
         Dim serializer As New Newtonsoft.Json.JsonSerializer
@@ -50,9 +50,9 @@ EXIT_LABEL:
 
     ' Function to read the config file.
     ' This is saved in a JSON format, so read it in here
-    Public Sub load_config()
+    Public Sub load_config(Optional filename As String = "ringingcalculator.conf")
         Dim file = My.Computer.FileSystem.OpenTextFileReader(
-            "ringingcalculator.conf")
+            filename)
         Dim reader As New Newtonsoft.Json.JsonTextReader(file)
         Dim serializer As New Newtonsoft.Json.JsonSerializer
 

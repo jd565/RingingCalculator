@@ -53,3 +53,6 @@ RingingCalculator/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
 RingingCalculator/obj/Debug/RingingCalculator.pdb
 *.Cache
 RingingCalculator/obj/Debug/RingingCalculator.vbprojResolveAssemblyReference.cache
+RingingCalculator/bin/Debug/RingingCalculator.exe
+.vs/RingingCalculator/v14/.suo
+RingingCalculator/bin/Debug/RingingCalculator.pdb
