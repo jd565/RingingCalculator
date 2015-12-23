@@ -44,7 +44,7 @@ Public Class Row
     End Function
 
     ' Function to print this row
-    Public Function print()
+    Public Function print() As String
         Dim str As String = ""
         For Each change_time In Me.bells
             str += bell_number_to_string(change_time.bell)
@@ -52,12 +52,10 @@ Public Class Row
         Return str
     End Function
 
-    ' Function to return the string representation of the bell number
-    Private Function bell_number_to_string(bell_number As Integer) As String
-        If bell_number < 10 Then Return bell_number.ToString()
-        If bell_number = 10 Then Return "0"
-        If bell_number = 11 Then Return "E"
-        If bell_number = 12 Then Return "T"
-        Return Convert.ToChar(Convert.ToInt32(CChar("A")) - 13 + bell_number).ToString()
+    Public Function is_this_rounds() As Boolean
+        For ii As Integer = 0 To Me.bells.Count - 1
+            If Me.bells(ii).bell <> ii + 1 Then Return False
+        Next
+        Return True
     End Function
 End class

@@ -53,4 +53,24 @@
         End If
     End Sub
 
+    ' Function to return the string representation of the bell number
+    Public Function bell_number_to_string(bell_number As Integer) As String
+        If bell_number < 10 Then Return bell_number.ToString()
+        If bell_number = 10 Then Return "0"
+        If bell_number = 11 Then Return "E"
+        If bell_number = 12 Then Return "T"
+        If bell_number <= 16 Then Return Convert.ToChar(Convert.ToInt32(CChar("A")) - 13 + bell_number).ToString()
+        Return Convert.ToChar(Convert.ToInt32(CChar("F")) - 17 + bell_number).ToString()
+    End Function
+
+    ' Function to return the integer representation of the bell based on the string val
+    Public Function bell_string_to_number(str As String) As Integer
+        If (str(0) >= CChar("1") And str(0) <= CChar("9")) Then Return Val(str(0))
+        If str(0) = CChar("0") Then Return 10
+        If str(0) = CChar("E") Then Return 11
+        If str(0) = CChar("T") Then Return 12
+        If (str(0) >= CChar("A") And str(0) <= CChar("D")) Then Return (Convert.ToInt32(str(0)) - Convert.ToInt32(CChar("A")) + 13)
+        Return (Convert.ToInt32(str(0)) - Convert.ToInt32(CChar("F")) + 17)
+    End Function
+
 End Module

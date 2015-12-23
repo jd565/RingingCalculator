@@ -94,6 +94,7 @@
     </Compile>
     <Compile Include="GeneralFormFunctions.vb" />
     <Compile Include="GlobalVariables.vb" />
+    <Compile Include="Method.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -109,6 +110,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Parsers.vb" />
+    <Compile Include="PlaceNotation.vb" />
     <Compile Include="PortPin.vb" />
     <Compile Include="ReportingFunctions.vb" />
     <Compile Include="Row.vb" />

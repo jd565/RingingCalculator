@@ -120,7 +120,7 @@ EXIT_LABEL:
     ' Function to see if we should begin recording
     Public Function should_we_start_recording(bell As Bell) As Boolean
         Dim frm As Form
-        If bell.bell_number = 2 Then
+        If bell.bell_number = 2 Or GlobalVariables.bells.Count = 1 Then
             Console.WriteLine("We are bell 2. Start recording.")
             GlobalVariables.recording = True
             frm = find_form("frmBells")

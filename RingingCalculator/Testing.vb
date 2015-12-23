@@ -4,10 +4,42 @@ Module Testing
 
     ' Main function for running the tests
     Public Sub run_tests(parent As Form)
-        frmBells_tests(parent)
-        test_wait(2000)
+        'frmBells_tests(parent)
+        'test_wait(2000)
         'test_print_big_row()
-        test_ring_hunt_mini()
+        'test_ring_hunt_mini()
+        'test_notation()
+        test_method_gen()
+    End Sub
+
+    Private Sub test_method_gen()
+        Dim method As New Method("X14", 4)
+        method.generate()
+        Debug.WriteLine(method.rows.Count)
+        For Each row In method.rows
+            Debug.WriteLine(row.print())
+        Next
+    End Sub
+
+    Private Sub test_notation()
+        Dim n As New PlaceNotation("1,7&1,34x5X02403")
+        n.parse()
+        For Each s In n.notation
+            Debug.Write(s.notation & ",")
+        Next
+        Debug.WriteLine("")
+
+        For Each s In n.notation
+            Debug.Write(s.fill_notation(10) & ",")
+        Next
+        Debug.WriteLine("")
+
+        For Each s In n.notation
+            For Each i In s.change_hash(10)
+                Debug.Write(i.ToString & ", ")
+            Next
+            Debug.WriteLine("")
+        Next
     End Sub
 
     Private Sub test_ring_hunt_mini()
