@@ -28,6 +28,7 @@
         If obj.GetType() IsNot GetType(PortPin) Then Return False
 
         Dim port_pin As PortPin = CType(obj, PortPin)
+        If port_pin.port Is Nothing Then Return False
         Return (port_pin.port.Equals(Me.port) And port_pin.pin = Me.pin)
 
     End Function

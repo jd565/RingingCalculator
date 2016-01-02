@@ -1,45 +1,61 @@
-﻿Module FormConfigureFunctions
+﻿Partial Class frmConfigure
+    Inherits Form
+
+    'Form overrides dispose to clean up the component list.
+    <System.Diagnostics.DebuggerNonUserCode()>
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Try
+            If disposing AndAlso components IsNot Nothing Then
+                components.Dispose()
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
+    End Sub
+
+    'Required by the Windows Form Designer
+    Private components As System.ComponentModel.IContainer
+
+    Friend label As Label
+    Friend cancel As Button
+    Public input As Input
+
+    Public Sub New(ByRef i As Input)
+        Me.input = i
+    End Sub
 
     'Function to create a form to show while waiting for the config to be set
-    Public Sub generate_frmConfigure(parent As Form)
-        Dim waiting_form As New Form
-        Dim label As New Label
-        Dim cancel As New Button
+    Public Sub generate(parent As Form)
+        Me.label = New Label
+        Me.cancel = New Button
 
-        label.Text = "Please ring bell or press switch"
-        label.Size = New Size(70, 40)
-        label.Location = New Point(35, 30)
+        Me.label.Text = "Please ring bell or press switch"
+        Me.label.Size = New Size(70, 40)
+        Me.label.Location = New Point(35, 30)
 
-        cancel.Text = "Cancel"
-        cancel.Size = New Size(70, 40)
-        cancel.Location = New Point(35, 70)
+        Me.cancel.Text = "Cancel"
+        Me.cancel.Size = New Size(70, 40)
+        Me.cancel.Location = New Point(35, 70)
         AddHandler cancel.Click, AddressOf close_parent_form
 
-        waiting_form.Text = "Configure"
-        waiting_form.Name = "frmConfigure"
-        waiting_form.Font = DEFAULT_FONT
-        waiting_form.ClientSize = New Size(140, 140)
-        waiting_form.Controls.Add(cancel)
-        waiting_form.Controls.Add(label)
-        parent.AddOwnedForm(waiting_form)
-        AddHandler waiting_form.FormClosing, AddressOf cancel_config_waiting_form
+        Me.Text = "Configure"
+        Me.Name = "frmConfigure"
+        Me.Font = DEFAULT_FONT
+        Me.ClientSize = New Size(140, 140)
+        Me.Controls.Add(cancel)
+        Me.Controls.Add(label)
+        parent.AddOwnedForm(Me)
+        AddHandler Me.FormClosing, AddressOf Me.cancel_self
 
         parent.Hide()
-        waiting_form.Show()
+        Me.Show()
     End Sub
 
     ' Function to cancel the config waiting form and show the previous form
     ' We first set all bells to be not configurable,
     ' then delete this form.
-    Private Sub cancel_config_waiting_form(frm As Form, e As EventArgs)
-        For Each bell In GlobalVariables.bells
-            If bell.can_be_configured Then
-                bell.can_be_configured = False
-            End If
-        Next
-
-        GlobalVariables.switch.can_be_configured = False
-
+    Private Sub cancel_self(frm As Form, e As EventArgs)
+        Me.input.can_be_configured = False
         dispose_of_form(frm, e)
     End Sub
 
@@ -47,10 +63,7 @@
     ' We expect the waiting form to be open, but check this.
     ' If the waiting form is open, then close it, as the bell has been configured.
     Public Sub item_has_been_configured()
-        Dim frm As Form
-
-        frm = find_form("frmConfigure")
-        frm.Close()
+        Me.Close()
     End Sub
 
-End Module
+End Class

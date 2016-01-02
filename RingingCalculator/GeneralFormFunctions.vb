@@ -20,22 +20,24 @@
     Public Sub close_parent_form(ctl As Control, e As EventArgs)
         Dim frm As Form
 
-        If (ctl.Parent.GetType() Is GetType(Form)) Then
+        If TypeOf ctl.Parent Is Form Then
             frm = ctl.Parent
             frm.Close()
         End If
     End Sub
 
-    Public Function find_form(name As String, Optional parent As Form = Nothing) As Form
+    ' Looks through the tree of forms to find one that is the same type as the one we are searching for.
+    ' Returns the form, or nothing.
+    Public Function find_form(t As Type, Optional parent As Form = Nothing) As Form
         Dim ret As Form
         If parent Is Nothing Then
-            parent = frmMain
+            parent = frmPerf
         End If
-        If name.Equals(parent.Name) Then
+        If parent.GetType = t Then
             Return parent
         End If
         For Each frm In parent.OwnedForms
-            ret = find_form(name, frm)
+            ret = find_form(t, frm)
             If ret IsNot Nothing Then
                 Return ret
             End If

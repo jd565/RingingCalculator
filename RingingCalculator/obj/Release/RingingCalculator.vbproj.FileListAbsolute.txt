@@ -1,0 +1,14 @@
+C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Release\RingingCalculator.exe.config
+C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Release\RingingCalculator.Resources.resources
+C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Release\RingingCalculator.vbproj.GenerateResource.Cache
+C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Release\RingingCalculator.exe
+C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Release\RingingCalculator.pdb
+C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Release\RingingCalculator.xml
+C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Release\Microsoft.VisualBasic.PowerPacks.dll
+C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Release\Newtonsoft.Json.dll
+C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Release\Microsoft.VisualBasic.PowerPacks.xml
+C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Release\Newtonsoft.Json.pdb
+C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Release\Newtonsoft.Json.xml
+C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Release\RingingCalculator.exe
+C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Release\RingingCalculator.xml
+C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Release\RingingCalculator.pdb

@@ -1,8 +1,8 @@
 ﻿Public Class ChangeTime
     Implements IComparable(Of ChangeTime)
 
-    Private change_time As Integer
-    Public ReadOnly Property time() As Integer
+    Private change_time As TimeSpan
+    Public ReadOnly Property time() As TimeSpan
         Get
             Return change_time
         End Get
@@ -22,13 +22,7 @@
         End Get
     End Property
 
-    Public ReadOnly Property string_time As String
-        Get
-            Return time_to_string(Me.time)
-        End Get
-    End Property
-
-    Public Sub New(bell_number As Integer, change_number As Integer, change_time As Integer)
+    Public Sub New(bell_number As Integer, change_number As Integer, change_time As TimeSpan)
         Me.bell_number = bell_number
         Me.change_number = change_number
         Me.change_time = change_time

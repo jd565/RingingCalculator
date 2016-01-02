@@ -12,7 +12,7 @@
         End If
         file.WriteLine("{0} changes rung in {1}.",
                        Statistics.changes.ToString,
-                       time_to_string(Statistics.time))
+                       Statistics.time.ToString("hh\:mm\:ss"))
         file.WriteLine("Printing every {0} rows.", frequency)
 
         ' Start printing at the first frequency.
@@ -50,16 +50,22 @@ EXIT_LABEL:
 
     ' Function to read the config file.
     ' This is saved in a JSON format, so read it in here
-    Public Sub load_config(Optional filename As String = "ringingcalculator.conf")
+    ' Returns a true/false value depending on whether it succeeded
+    Public Function load_config(Optional filename As String = "ringingcalculator.conf") As Boolean
         Dim file = My.Computer.FileSystem.OpenTextFileReader(
             filename)
         Dim reader As New Newtonsoft.Json.JsonTextReader(file)
         Dim serializer As New Newtonsoft.Json.JsonSerializer
+        Dim ret As Boolean
 
         Dim config As Config
         config = serializer.Deserialize(Of Config)(reader)
-        config.initialize()
-
-    End Sub
+        ret = config.initialize()
+        If ret = False Then
+            MsgBox("Failed to open " & filename,, "Error")
+        End If
+        file.Close()
+        Return ret
+    End Function
 
 End Module

@@ -1,6 +1,9 @@
 ﻿Public Class PlaceNotation
     Public full_notation As String
-    Public notation As New List(Of Notation)
+    Public main_block As New List(Of Notation)
+    Public lead_end As New List(Of Notation)
+    Public bob_end As New List(Of Notation)
+    Public single_end As New List(Of Notation)
 
     Public Sub New(notation As String)
         Me.full_notation = notation
@@ -9,29 +12,36 @@
 
     ' Function to parse the full notation and split it into smaller parts
     Public Sub parse()
+        Dim temp_pn As PlaceNotation
         Dim c As String = Me.full_notation
         Dim temp As String
         Dim ii As Integer = 0
         Dim block_done As Boolean
         Dim block_idx As Integer = 0
         Dim rev_block As Integer = -1
-        Me.notation.Clear()
+        Dim separating_chars As Char() = {",", ".", "-", "&", " "}
+        Dim x As Char() = {"x", "X"}
+        Me.main_block.Clear()
+        Dim notation_len As Integer
 
+        ' Get the length of the starting notation. This is maybe ended with a space
+        notation_len = c.IndexOf(" ")
+        If notation_len = -1 Then notation_len = c.Count
         ' Now move through the notation and extract each block
         ' Blocks are separated by commas, or if the next input is smaller.
-        While (ii < c.Count)
+        While (ii < notation_len)
             block_done = False
             temp = ""
-            If (c(ii) = CChar("x") Or c(ii) = CChar("X")) Then
+            If (x.Contains(c(ii))) Then
                 block_done = True
                 temp = "X"
                 ii += 1
             End If
-            If (c(ii) = CChar(",")) Then
+            If (separating_chars.Contains(c(ii))) Then
                 ii += 1
             End If
             While Not block_done
-                If c(ii) = CChar("&") Then
+                If c(ii) = "&" Then
                     ii += 1
                     rev_block = block_idx
                 End If
@@ -46,21 +56,82 @@
                     Exit While
                 End If
 
-                If (c(ii + 1) = CChar("x") Or c(ii + 1) = CChar("X") Or c(ii + 1) = CChar(",") Or c(ii + 1) = CChar("&")) Then
+                If (separating_chars.Contains(c(ii + 1)) Or x.Contains(c(ii + 1))) Then
+                    Console.WriteLine("found separator")
                     block_done = True
                 ElseIf (bell_string_to_number(c(ii + 1)) < bell_string_to_number(c(ii))) Then
                     block_done = True
                 End If
                 ii += 1
             End While
-            Me.notation.Add(New Notation(temp))
+            Me.main_block.Add(New Notation(temp))
             block_idx += 1
         End While
 
-        ' Now deal with there being a reversed part of the notation
+        ' If we have reached the end of the count then drop out here
+        If ii = c.Count Then
+            Exit Sub
+        End If
+
+        ' Otherwise, the method is reversed and has a specified lead end, or there are bobs and singles defined
+        ' Check for a specified lead end
+        ii = c.IndexOf("le")
+        If ii <> -1 Then
+            ' We have found the lead end specifier. Extract it here
+            ii += "le ".Count
+            temp = ""
+            While (ii < c.Count)
+                If (c(ii) = " ") Then
+                    Exit While
+                End If
+                temp += c(ii)
+                ii += 1
+            End While
+            temp_pn = New PlaceNotation(temp)
+            Me.lead_end = temp_pn.main_block
+            If rev_block = -1 Then
+                ' We only expet the lead end block if we are reversing the notation
+                rev_block = 0
+            End If
+        End If
+
+        ' Check for a specified bob
+        ii = c.IndexOf("b")
+        If ii <> -1 Then
+            ' We have found the lead end specifier. Extract it here
+            ii += "b ".Count
+            temp = ""
+            While (ii < c.Count)
+                If (c(ii) = " ") Then
+                    Exit While
+                End If
+                temp += c(ii)
+                ii += 1
+            End While
+            temp_pn = New PlaceNotation(temp)
+            Me.bob_end = temp_pn.main_block
+        End If
+
+        ' Check for a specified single
+        ii = c.IndexOf("s")
+        If ii <> -1 Then
+            ' We have found the lead end specifier. Extract it here
+            ii += "s ".Count
+            temp = ""
+            While (ii < c.Count)
+                If (c(ii) = " ") Then
+                    Exit While
+                End If
+                temp += c(ii)
+                ii += 1
+            End While
+            temp_pn = New PlaceNotation(temp)
+            Me.single_end = temp_pn.main_block
+        End If
+
         If rev_block <> -1 Then
-            For ii = Me.notation.Count - 2 To rev_block Step -1
-                Me.notation.Add(Me.notation(ii))
+            For ii = Me.main_block.Count - 2 To rev_block Step -1
+                Me.main_block.Add(Me.main_block(ii))
             Next
         End If
     End Sub
@@ -80,12 +151,11 @@ Public Class Notation
         Dim temp As String
         Dim string_len As Integer
         Dim ii As Integer = 0
-        If c(0) = CChar("x") Or c(0) = CChar("X") Then
-            Return CChar("X").ToString
+        If c(0) = "x" Or c(0) = "X" Then
+            Return "X".ToString
         End If
         string_len = c.Count
         While (ii < string_len)
-            Console.WriteLine(ii.ToString)
             If (Val(c(ii).ToString) Mod 2 = ii Mod 2) Then
                 If ii = 0 Then
                     temp = "1"
@@ -99,9 +169,10 @@ Public Class Notation
             ii += 1
         End While
 
-        ' Check that the last character in the notation is even. If it is not then add a character to the end.
+        ' Check that the last character in the notation is same oddness as the number of bells.
+        ' If it Is Not Then add a character to the end.
         ' This is the same as checking the length of the list is even.
-        If c.Count Mod 2 = 1 Then
+        If c.Count Mod 2 <> bells Mod 2 Then
             c = c.Insert(c.Count, bell_number_to_string(bells))
         End If
         Return c

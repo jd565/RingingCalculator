@@ -1,18 +1,15 @@
 ﻿Public Class Statistics
     Public Shared rows As New List(Of Row)
 
-    Public Shared ReadOnly Property changes As Integer
-        Get
-            Return Statistics.rows.Count
-        End Get
-    End Property
+    Public Shared changes As Integer = 0
+
     Public Shared ReadOnly Property leads As Integer
         Get
-            Return Statistics.changes Mod GlobalVariables.changes_per_lead
+            Return Statistics.changes \ GlobalVariables.changes_per_lead
         End Get
     End Property
-    Public Shared time As Integer
-    Public Shared peal_speed As Integer
+    Public Shared time As TimeSpan
+    Public Shared peal_speed As TimeSpan
 
     Public Shared changes_key As Label
     Public Shared changes_value As Label
@@ -28,11 +25,16 @@
     Public Shared last_course_time_value As Label
     Public Shared last_course_peal_speed_key As Label
     Public Shared last_course_peal_speed_value As Label
+    Public Shared changes_per_minute_key As Label
+    Public Shared changes_per_minute_value As Label
+    Public Shared last_minute_changes_key As Label
+    Public Shared last_minute_changes_value As Label
 
     Public Shared Sub reset_stats()
         Statistics.rows.Clear()
-        Statistics.time = 0
-        Statistics.peal_speed = 0
+        Statistics.time = TimeSpan.Zero
+        Statistics.peal_speed = TimeSpan.Zero
+        Statistics.changes = 0
     End Sub
 
     Public Shared Sub reset_stats_fields()
@@ -50,6 +52,10 @@
         Statistics.last_course_time_value = New Label
         Statistics.last_course_peal_speed_key = New Label
         Statistics.last_course_peal_speed_value = New Label
+        Statistics.changes_per_minute_key = New Label
+        Statistics.changes_per_minute_value = New Label
+        Statistics.last_minute_changes_key = New Label
+        Statistics.last_minute_changes_value = New Label
     End Sub
 
 End Class

@@ -1,7 +1,7 @@
 ﻿Public Class GlobalVariables
     Public Shared bells As New List(Of Bell)
-    Public Shared COM_ports As New List(Of IO.Ports.SerialPort)
-    Public Shared COM_ports_configured As Boolean = False
+    Public Shared COM_ports As New List(Of COMPort)
+    Public Shared config_loaded As Boolean = False
     Public Shared switch As New Switch("switch1")
     Public Shared start_time As DateTime
     Public Shared recording As Boolean = False
@@ -10,15 +10,33 @@
     Public Shared changes_per_lead As Integer = 40
     Public Shared changes_per_course As Integer = 360
     Public Shared leads_per_course As Integer = 9
+    Public Shared cpm_string_format As String = "##0.0"
+    Public Shared time_string_format As String = "hh\:mm"
+    Public Shared bell_light_time As Integer = 200
+    Public Shared previous_changetime As ChangeTime
 
     ' Function to reset the global variables, and clear all lists.
     Public Shared Sub reset()
         GlobalVariables.bells.Clear()
         GlobalVariables.close_COM_ports()
         GlobalVariables.COM_ports.Clear()
-        GlobalVariables.COM_ports_configured = False
+        GlobalVariables.config_loaded = False
         GlobalVariables.switch = New Switch("switch1")
         GlobalVariables.recording = False
+    End Sub
+
+    Public Shared Sub wait(time As Integer)
+        Dim timer As New Timer
+        timer.Interval = time
+        timer.Enabled = True
+        AddHandler timer.Tick, AddressOf GlobalVariables.stop_timer
+        While timer.Enabled = True
+            Application.DoEvents()
+        End While
+    End Sub
+
+    Private Shared Sub stop_timer(t As Timer, e As EventArgs)
+        t.Enabled = False
     End Sub
 
     ' Function to close all COM ports
@@ -32,14 +50,14 @@
 
     ' Function to fill the Global Variable COM port list with the number of ports specified.
     Public Shared Sub generate_COM_ports(ByVal ports As Integer)
-        Dim port As IO.Ports.SerialPort
+        Dim port As COMPort
 
         ' Make sure all the COM ports are closed
         GlobalVariables.close_COM_ports()
 
         GlobalVariables.COM_ports.Clear()
         For ii As Integer = 1 To ports
-            port = New IO.Ports.SerialPort
+            port = New COMPort
             AddHandler port.PinChanged, AddressOf port_pin_changed_wrapper
             GlobalVariables.COM_ports.Add(port)
         Next
@@ -78,6 +96,7 @@
                 port.RtsEnable = True
             Catch ex As Exception
                 Console.WriteLine("Tried to open port " & port.PortName & ", but failed.")
+                MsgBox("Failed to open port " & port.PortName & ".",, "Error")
                 success = False
             End Try
         Next

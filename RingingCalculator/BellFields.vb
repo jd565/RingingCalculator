@@ -23,16 +23,16 @@
     Public Sub New(ByRef bell As Bell)
         Me.parent_reference = bell
 
+        handstroke_delay.Maximum = 1000
         handstroke_delay.Name = bell.name + "_hnd"
         handstroke_delay.Value = bell.handstroke_delay
-        handstroke_delay.Maximum = 1000
         AddHandler handstroke_delay.ValueChanged, AddressOf handstroke_delay_changed_wrapper
 
         handstroke_label.Text = "Handstroke delay:"
 
+        backstroke_delay.Maximum = 1000
         backstroke_delay.Name = bell.name + "_bck"
         backstroke_delay.Value = bell.backstroke_delay
-        backstroke_delay.Maximum = 1000
         AddHandler backstroke_delay.ValueChanged, AddressOf backstroke_delay_changed_wrapper
 
         backstroke_label.Text = "Backstroke delay:"
@@ -52,10 +52,11 @@
     ' Function to handle when the configure button is pressed.
     ' This could be triggered by a bell or the switch
     Private Sub configure_button_pressed(btn As Button, e As EventArgs)
+        Dim frm As New frmConfigure(Me.parent)
         Me.parent.can_be_configured = True
 
         ' We only want 1 configuration happening at a time, so pop out another form to stop this happening
-        generate_frmConfigure(btn.Parent)
+        frm.generate(btn.Parent)
     End Sub
 
     Private Sub handstroke_delay_changed_wrapper(updown As NumericUpDown, e As EventArgs)

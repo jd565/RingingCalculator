@@ -7,13 +7,13 @@ Module Testing
         'frmBells_tests(parent)
         'test_wait(2000)
         'test_print_big_row()
-        'test_ring_hunt_mini()
+        test_ring_hunt_mini()
         'test_notation()
         test_method_gen()
     End Sub
 
     Private Sub test_method_gen()
-        Dim method As New Method("X14", 4)
+        Dim method As New Method("x36x14x12x36x14x56 le 12", 6)
         method.generate()
         Debug.WriteLine(method.rows.Count)
         For Each row In method.rows
@@ -22,20 +22,20 @@ Module Testing
     End Sub
 
     Private Sub test_notation()
-        Dim n As New PlaceNotation("1,7&1,34x5X02403")
+        Dim n As New PlaceNotation("71.71.71.7 le 1")
         n.parse()
-        For Each s In n.notation
+        For Each s In n.main_block
             Debug.Write(s.notation & ",")
         Next
         Debug.WriteLine("")
 
-        For Each s In n.notation
-            Debug.Write(s.fill_notation(10) & ",")
+        For Each s In n.main_block
+            Debug.Write(s.fill_notation(7) & ",")
         Next
         Debug.WriteLine("")
 
-        For Each s In n.notation
-            For Each i In s.change_hash(10)
+        For Each s In n.main_block
+            For Each i In s.change_hash(7)
                 Debug.Write(i.ToString & ", ")
             Next
             Debug.WriteLine("")
@@ -45,10 +45,11 @@ Module Testing
     Private Sub test_ring_hunt_mini()
         Dim bells As Integer = 4
         Dim ports As Integer = 1
+        Dim frm As New frmBells
 
         global_variables_test(bells, ports)
 
-        generate_frmBells(frmMain)
+        frm.generate(frmPerf)
 
         Dim switch_port_pin As New PortPin("COM1", 0)
         configure_switch_test(switch_port_pin)
@@ -100,7 +101,7 @@ Module Testing
 
         global_variables_test(bells, ports)
 
-        generate_frmBells(frmMain)
+        'generate_frmBells(frmMain)
 
         Dim switch_port_pin As New PortPin("COM1", 8)
         configure_switch_test(switch_port_pin)
@@ -125,7 +126,7 @@ Module Testing
         global_variables_test(bells, ports)
 
         ' Open the form
-        generate_frmBells(parent)
+        'generate_frmBells(parent)
 
         ' Configure the switch
         Dim switch_port_pin As New PortPin("COM1", 8)
@@ -162,10 +163,13 @@ Module Testing
 
     Private Sub test_stop_timer(pp As PortPin)
         ' Only stop the switch if it is running
-        If GlobalVariables.switch.isRunning Then
+        If GlobalVariables.switch.is_running Then
+            port_pin_changed(pp)
+            ' Unpress the switch
+            test_wait(50)
             port_pin_changed(pp)
         End If
-        Debug.Assert(Not GlobalVariables.switch.isRunning)
+        Debug.Assert(Not GlobalVariables.switch.is_running)
     End Sub
 
     Private Sub test_cleanup()
@@ -181,7 +185,7 @@ Module Testing
         GlobalVariables.debounce_time = 25
 
         ' Close all forms apart from the main one
-        For Each form In frmMain.OwnedForms
+        For Each form In frmPerf.OwnedForms
             form.Close()
         Next
     End Sub
@@ -226,7 +230,10 @@ Module Testing
 
     Private Sub start_timer_test(port_pin As PortPin)
         port_pin_changed(port_pin)
-        Debug.Assert(GlobalVariables.switch.isRunning)
+        Debug.Assert(GlobalVariables.switch.is_running)
+        ' Unpress switch
+        test_wait(50)
+        port_pin_changed(port_pin)
     End Sub
 
     ' Tests changing state on a bell and checks everything works.
@@ -332,6 +339,8 @@ Module Testing
         port_pin_changed(port_pin)
         Debug.Assert(bell.port_pin.Equals(port_pin))
         Debug.Assert(bell.can_be_configured = False)
+        ' Now move the bell back to state 0
+        test_set_bell_state(bell, port_pin, 0)
     End Sub
 
     Private Sub configure_switch_test(test_port_pin As PortPin)
@@ -342,6 +351,9 @@ Module Testing
         ' Now check that the switch has been configured
         Debug.Assert(GlobalVariables.switch.port_pin.Equals(test_port_pin))
         Debug.Assert(GlobalVariables.switch.can_be_configured = False)
+        ' Now unpress the switch
+        test_wait(50)
+        port_pin_changed(test_port_pin)
     End Sub
 
     Private Sub global_variables_test(bells As Integer, ports As Integer)
@@ -352,7 +364,6 @@ Module Testing
         ' Generate COMs
         GlobalVariables.generate_COM_ports(ports)
         Debug.Assert(GlobalVariables.COM_ports.Count = ports)
-        Debug.Assert(GlobalVariables.COM_ports_configured = False)
     End Sub
 
 End Module

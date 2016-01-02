@@ -1,13 +1,19 @@
 ﻿Module BellRingingFunctions
 
     ' Wrapper function for a pin on a port changing
-    Public Sub port_pin_changed_wrapper(port As IO.Ports.SerialPort, e As IO.Ports.SerialPinChangedEventArgs)
+    Public Sub port_pin_changed_wrapper(port As COMPort, e As IO.Ports.SerialPinChangedEventArgs)
         Dim port_pin As New PortPin(port.PortName, e.EventType)
         Dim frm As Form
-        Console.WriteLine("Port pin changed wrapper")
         frm = Form.ActiveForm
+        If frm Is Nothing Then
+            Exit Sub
+        End If
         If frm.InvokeRequired Then
-            frm.Invoke(New port_pin_changed_del(AddressOf port_pin_changed_wrapper), New Object() {port, e})
+            Try
+                frm.Invoke(New port_pin_changed_del(AddressOf port_pin_changed_wrapper), New Object() {port, e})
+            Catch ex As System.InvalidOperationException
+                Console.WriteLine("Hit an InvalidOperationException")
+            End Try
         Else
             ' Even if we are on the active form this still may throw an exception, so catch it here
             Try
@@ -30,41 +36,29 @@
         ' The switch is being configured and this event sets the config
         ' The switch is being pressed to start or stop recording
         ' We are recording and a bell has just been rung
-        If Not GlobalVariables.switch.isRunning Then
-            If event_configures_bell(port_pin) Then
-                GoTo EXIT_LABEL
-            End If
-            If event_rings_bell(port_pin) Then
-                GoTo EXIT_LABEL
-            End If
-            If event_configures_switch(port_pin) Then
-                GoTo EXIT_LABEL
-            End If
-            If event_triggers_switch(port_pin) Then
-                GoTo EXIT_LABEL
-            End If
-        Else
-            If event_rings_bell(port_pin) Then
-                GoTo EXIT_LABEL
-            End If
-            If event_triggers_switch(port_pin) Then
-                GoTo EXIT_LABEL
-            End If
+
+        If event_rings_bell(port_pin) Then
+            Exit Sub
+        End If
+        If event_triggers_switch(port_pin) Then
+            Exit Sub
+        End If
+        If event_configures_input(port_pin) Then
+            Exit Sub
         End If
 
-EXIT_LABEL:
     End Sub
 
     ' Function to check if a bell can be configured, and if it can to configure it.
-    Private Function event_configures_bell(port_pin As PortPin) As Boolean
-        For Each bell In GlobalVariables.bells
-            If bell.can_be_configured Then
-                Console.WriteLine("Configuring bell {0}", bell.bell_number)
-                bell.port_pin = port_pin
-                item_has_been_configured()
-                Return True
-            End If
-        Next
+    Private Function event_configures_input(port_pin As PortPin) As Boolean
+        Dim frm As frmConfigure
+        frm = find_form(GetType(frmConfigure))
+        If frm IsNot Nothing Then
+            Console.WriteLine("Configuring {0}", frm.input.name)
+            frm.input.configure(port_pin)
+            frm.item_has_been_configured()
+            Return True
+        End If
 
         ' If we have got here then we haven't found any bells to configure.
         Return False
@@ -75,21 +69,10 @@ EXIT_LABEL:
         For Each bell In GlobalVariables.bells
             If port_pin.Equals(bell.port_pin) Then
                 Console.WriteLine("Ringing bell {0}", bell.bell_number)
-                bell.trigger_bell()
+                bell.trigger_input()
                 Return True
             End If
         Next
-        Return False
-    End Function
-
-    ' Function to check if we are configuring the switch.
-    Private Function event_configures_switch(port_pin As PortPin) As Boolean
-        If GlobalVariables.switch.can_be_configured Then
-            Console.WriteLine("Configuring switch")
-            GlobalVariables.switch.port_pin = port_pin
-            item_has_been_configured()
-            Return True
-        End If
         Return False
     End Function
 
@@ -97,14 +80,14 @@ EXIT_LABEL:
     Private Function event_triggers_switch(port_pin As PortPin) As Boolean
         If port_pin.Equals(GlobalVariables.switch.port_pin) Then
             Console.WriteLine("Triggering switch.")
-            GlobalVariables.switch.trigger_switch()
+            GlobalVariables.switch.trigger_input()
             Return True
         End If
         Return False
     End Function
 
-    ' Function to start a timer with the specified interval, to call proc
-    ' when it finishes
+    ' Function to start a timer with the specified interval in ms
+    ' calls proc when it finishes
     Public Sub start_new_timer(interval As Integer, proc As EventHandler)
         Dim timer As New Timer
         timer.Interval = interval
@@ -118,20 +101,30 @@ EXIT_LABEL:
     End Sub
 
     ' Function to see if we should begin recording
-    Public Function should_we_start_recording(bell As Bell) As Boolean
-        Dim frm As Form
-        If bell.bell_number = 2 Or GlobalVariables.bells.Count = 1 Then
-            Console.WriteLine("We are bell 2. Start recording.")
+    ' This checks for either:
+    '   There is only 1 bell, so start now
+    '   We have hit 21.
+    ' To achieve this, we store off the previous changetime for all bells that ring,
+    ' Then compare against the previous one.
+    Public Function should_we_start_recording(ct As ChangeTime) As Boolean
+        If GlobalVariables.bells.Count = 1 Then
+            Console.WriteLine("Start recording.")
             GlobalVariables.recording = True
-            frm = find_form("frmBells")
-            If frm Is Nothing Then
-                generate_frmBells(frmMain)
-                frm = find_form("frmBells")
-            End If
-            generate_frmStats(frm)
-            frm.Hide()
             Return True
         End If
+        If GlobalVariables.previous_changetime IsNot Nothing Then
+            If GlobalVariables.previous_changetime.bell = 2 And
+                    ct.bell = 1 Then
+                Console.WriteLine("Start recording.")
+                GlobalVariables.recording = True
+                GlobalVariables.start_time = DateTime.Now()
+                GlobalVariables.bells(GlobalVariables.previous_changetime.bell - 1).change_times.Add(
+                    GlobalVariables.previous_changetime)
+                bell_has_just_rung(GlobalVariables.bells(GlobalVariables.previous_changetime.bell - 1))
+                Return True
+            End If
+        End If
+        GlobalVariables.previous_changetime = ct
         Return False
     End Function
 

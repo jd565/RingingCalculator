@@ -1,6 +1,22 @@
-﻿Module FormStatsFunctions
+﻿Partial Class frmStats
+    Inherits Form
 
-    Const STATS_FONT_SIZE As Integer = 14
+    'Form overrides dispose to clean up the component list.
+    <System.Diagnostics.DebuggerNonUserCode()>
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Try
+            If disposing AndAlso components IsNot Nothing Then
+                components.Dispose()
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
+    End Sub
+
+    'Required by the Windows Form Designer
+    Private components As System.ComponentModel.IContainer
+
+    Const STATS_FONT_SIZE As Integer = 11
     Const STATS_FIELD_WIDTH As Integer = 200
     Const STATS_KEY_HEIGHT As Integer = 40
     Const STATS_VALUE_HEIGHT As Integer = 40
@@ -11,57 +27,76 @@
     Private STATS_VALUE_SIZE As New Size(STATS_FIELD_WIDTH, STATS_VALUE_HEIGHT)
     Private STATS_VALUE_OFFSET As New Point(0, STATS_KEY_HEIGHT + STATS_PAIR_GAP)
 
-    Public Sub generate_frmStats(parent As Form)
-        Dim frm As New Form
-        Dim button As New Button
+    Friend button As Button
+
+    Public Sub generate(parent As Form)
+        Me.button = New Button
         Dim x As Integer = 0
         Dim y As Integer = 0
+        Dim frm_lights As New frmLights
+
+        ' We want to generate the lights to go alongside this form
+        frm_lights.generate(Me)
 
         Statistics.reset_stats_fields()
 
-        add_key_value_labels(Statistics.changes_key, Statistics.changes_value, "Changes", frm, x, y)
+        Me.add_key_value_labels(Statistics.changes_key, Statistics.changes_value, "Changes", x, y)
         x += 1
 
-        add_key_value_labels(Statistics.leads_key, Statistics.leads_value, "Leads", frm, x, y)
+        Me.add_key_value_labels(Statistics.leads_key, Statistics.leads_value, "Leads", x, y)
         x += 1
 
-        add_key_value_labels(Statistics.time_key, Statistics.time_value, "Time", frm, x, y)
+        Me.add_key_value_labels(Statistics.time_key, Statistics.time_value, "Time", x, y)
         x = 0
         y += 1
 
-        add_key_value_labels(Statistics.peal_speed_key, Statistics.peal_speed_value, "Peal Speed", frm, x, y)
+        Me.add_key_value_labels(Statistics.peal_speed_key, Statistics.peal_speed_value, "Peal Speed", x, y)
         x += 1
 
-        add_key_value_labels(Statistics.lead_end_row_key, Statistics.lead_end_row_value, "Lead End Row", frm, x, y)
+        Me.add_key_value_labels(Statistics.lead_end_row_key, Statistics.lead_end_row_value, "Lead End Row", x, y)
         x = 0
         y += 1
 
-        add_key_value_labels(Statistics.last_course_peal_speed_key, Statistics.last_course_peal_speed_value,
-                             "Last Course Peal Speed", frm, x, y)
+        Me.add_key_value_labels(Statistics.last_course_peal_speed_key, Statistics.last_course_peal_speed_value,
+                             "Last Course Peal Speed", x, y)
         x += 1
 
-        add_key_value_labels(Statistics.last_course_time_key, Statistics.last_course_time_value, "Last Course Time", frm, x, y)
+        Me.add_key_value_labels(Statistics.last_course_time_key, Statistics.last_course_time_value, "Last Course Time", x, y)
 
-        button.Size = New Size(STATS_FIELD_WIDTH, STATS_FIELD_HEIGHT)
-        button.Location = coordinate(1, 3)
-        button.Text = "Close"
-        AddHandler button.Click, AddressOf close_parent_form
+        x = 0
+        y += 1
 
-        frm.Controls.Add(button)
+        Me.add_key_value_labels(Statistics.changes_per_minute_key, Statistics.changes_per_minute_value, "Changes per minute", x, y)
+
+        x += 1
+
+        Me.add_key_value_labels(Statistics.last_minute_changes_key, Statistics.last_minute_changes_value, "Changes in the last minute", x, y)
+
+        x += 1
+        y += 1
+
+        Me.button.Size = New Size(STATS_FIELD_WIDTH, STATS_FIELD_HEIGHT)
+        Me.button.Location = coordinate(1, y)
+        Me.button.Text = "Close"
+        AddHandler Me.button.Click, AddressOf close_parent_form
+
+        y += 1
+
+        Me.Controls.Add(button)
 
 
-        frm.Text = "Statistics"
-        frm.Name = "frmStats"
-        frm.Font = New Font(DEFAULT_FONT.OriginalFontName, STATS_FONT_SIZE, DEFAULT_FONT.Style)
-        frm.ClientSize = Point.op_Explicit(coordinate(3, 4))
-        parent.AddOwnedForm(frm)
-        AddHandler frm.FormClosing, AddressOf dispose_of_form
-        frm.Show()
+        Me.Text = "Statistics"
+        Me.Name = "frmStats"
+        Me.Font = New Font(DEFAULT_FONT.OriginalFontName, STATS_FONT_SIZE, DEFAULT_FONT.Style)
+        Me.ClientSize = New Size(coordinate(3, y))
+        parent.AddOwnedForm(Me)
+        AddHandler Me.FormClosing, AddressOf dispose_of_form
+        Me.Show()
 
     End Sub
 
     ' Function to generate a key/value pair of labels
-    Private Sub add_key_value_labels(key As Label, value As Label, name As String, frm As Form, x As Integer, y As Integer)
+    Private Sub add_key_value_labels(key As Label, value As Label, name As String, x As Integer, y As Integer)
         key.Text = name + ":"
         key.Size = STATS_KEY_SIZE
         key.Location = coordinate(x, y)
@@ -70,8 +105,8 @@
         value.Location = coordinate(x, y) + STATS_VALUE_OFFSET
         value.Name = "stats_" + name.ToLower().Replace(" ", "_")
 
-        frm.Controls.Add(key)
-        frm.Controls.Add(value)
+        Me.Controls.Add(key)
+        Me.Controls.Add(value)
     End Sub
 
     ' Function to return the coordinate of a certain row and column
@@ -80,4 +115,4 @@
                         STATS_FIELD_GAP + y * (STATS_FIELD_GAP + STATS_FIELD_HEIGHT))
     End Function
 
-End Module
+End Class
