@@ -4,6 +4,8 @@
     ' Takes an input of how often you want to print a row
     Public Sub save_statistics(Optional frequency As Integer = 1)
         Dim current_index As Integer = 0
+        Dim time_format As String = GlobalVariables.full_time
+        Dim ii As Integer = 1
         Dim file = My.Computer.FileSystem.OpenTextFileWriter(
             "ringing_stats.txt", False)
         If frequency < 1 Then
@@ -12,12 +14,38 @@
         End If
         file.WriteLine("{0} changes rung in {1}.",
                        Statistics.changes.ToString,
-                       Statistics.time.ToString("hh\:mm\:ss"))
+                       Statistics.time.ToString(time_format))
         file.WriteLine("Printing every {0} rows.", frequency)
+        file.WriteLine()
+
+        ' Print out the numbers of the lead ends and the time taken for them
+        file.WriteLine("Lead end".PadRight(20) &
+                       "Row".PadRight(20) &
+                       "Time at lead end".PadRight(20) &
+                       "Time of lead".PadRight(20))
+        current_index = GlobalVariables.changes_per_lead + GlobalVariables.start_row - 1
+        file.WriteLine(ii.ToString.PadRight(20, "-") &
+                       Statistics.rows(current_index).print.PadRight(20, "-") &
+                       Statistics.rows(current_index).time.ToString(time_format).PadRight(20, "-") &
+                       Statistics.rows(current_index).time.ToString(time_format).PadRight(20, "-"))
+        current_index += GlobalVariables.changes_per_lead
+        ii += 1
+        While current_index < Statistics.rows.Count
+            file.WriteLine(ii.ToString.PadRight(20, "-") &
+                           Statistics.rows(current_index).print.PadRight(20, "-") &
+                           Statistics.rows(current_index).time.ToString(time_format).PadRight(20, "-") &
+                           (Statistics.rows(current_index).time -
+                               Statistics.rows(current_index - GlobalVariables.changes_per_lead).time).
+                               ToString(time_format).PadRight(20, "-"))
+            ii += 1
+            current_index += GlobalVariables.changes_per_lead
+        End While
+
+        file.WriteLine()
 
         ' Start printing at the first frequency.
         ' We require the -1 to move it to a 0 based index.
-        current_index = frequency - 1
+        current_index = frequency + GlobalVariables.start_row - 1
         While current_index < Statistics.rows.Count
             file.WriteLine(Statistics.rows(current_index).print)
             current_index += frequency

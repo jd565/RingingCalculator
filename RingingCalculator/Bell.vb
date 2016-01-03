@@ -61,7 +61,6 @@
 
     ' Function to handle the delay timers popping.
     Private Sub delay_timer_timeout(timer As Timer, e As EventArgs)
-        Dim frm_lights As frmLights
         Dim ct As ChangeTime
         Console.WriteLine("{0} delay timer timeout", Me.name)
 
@@ -71,36 +70,19 @@
         ct = Me.generate_changetime
         Me.state = (Me.state + 1) Mod 4
 
-        ' If the switch is running but we aren't recording then drop out.
-        ' We do this to avoid recording the first change as e.g. 67821435
-        If (GlobalVariables.switch.is_running = True And GlobalVariables.recording = False) Then
-            Console.WriteLine("Switch is on but not recording.")
-            If Not should_we_start_recording(ct) Then
-                Exit Sub
-            End If
-        End If
-
-        ' See if the lights form exists
-        frm_lights = find_form(GetType(frmLights))
-
         ' If we are recording then check to see if we add to the list
-        If GlobalVariables.recording Then
+        If GlobalVariables.switch.is_running Then
             If Me.state Mod 2 = 1 Then
                 Me.change_times.Add(ct)
                 bell_has_just_rung(Me)
             End If
-            If frm_lights IsNot Nothing Then
-                Me.update_blob()
-            End If
         End If
-        If Not GlobalVariables.switch.is_running Then
-            ' We arent running so change the colour of the light
-            Me.update_blob()
-        End If
+        Me.update_blob()
     End Sub
 
     ' Function to update the colour of the blob
     Private Sub update_blob()
+        If Me.fields.blob.IsDisposed Then Exit Sub
         If Me.state = 1 Then
             Me.fields.blob.BackColor = Color.Red
             start_new_timer(GlobalVariables.bell_light_time, AddressOf Me.gray_blob)
@@ -121,11 +103,9 @@
     ' and the time now.
     Private Function generate_changetime() As ChangeTime
         Dim current_time As DateTime
-        Dim time_diff As TimeSpan
 
         current_time = DateTime.Now()
-        time_diff = current_time.Subtract(GlobalVariables.start_time)
-        Return (New ChangeTime(Me.bell_number, Me.change_times.Count + 1, time_diff))
+        Return (New ChangeTime(Me.bell_number, Me.change_times.Count + 1, current_time))
     End Function
 
     ' Function to handle when the bell sensor changes state.
@@ -135,11 +115,12 @@
         Console.WriteLine("{0} triggered", Me.name)
 
         ' Only do something if the debounce timer isn't running
-        If Me.debounce_state_value = True Then
+        If Me.debounce_state = True Then
             Console.WriteLine("Debounce drop")
             Exit Sub
         End If
         start_debounce_timer(AddressOf Me.debounce_timer_tick)
+        Me.debounce_state_value = True
 
         Console.WriteLine("State {0}", Me.state)
         ' Depending on the state we need different times on the timer.

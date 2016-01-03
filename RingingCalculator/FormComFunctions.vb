@@ -46,18 +46,18 @@
         Dim ii As Integer
 
         Me.list_box.Size = COM_LIST_SIZE
-        Me.list_box.Location = Me.coordinate(0, 1)
+        Me.list_box.Location = Me.coordinate(0, 0)
         For Each port_name In IO.Ports.SerialPort.GetPortNames()
             Me.list_box.Items.Add(port_name)
         Next
 
         Me.label.Text = "Please choose a port on the left for each connection shown below"
         Me.label.Size = COM_TITLE_SIZE
-        Me.label.Location = Me.coordinate(0, 0)
+        Me.label.Location = Me.coordinate(1, 0)
 
         ii = 1
         For Each port In GlobalVariables.COM_ports
-            Me.generate_COM_field(port, ii, ii + 1)
+            Me.generate_COM_field(port, ii, ii)
             ii += 1
         Next
 
@@ -72,7 +72,7 @@
         Me.Controls.Add(Me.label)
         Me.Controls.Add(Me.button)
 
-        Me.ClientSize = New Size(coordinate(3, Math.Max(ii, 5)))
+        Me.ClientSize = New Size(coordinate(3, Math.Max(ii, 2)))
         parent.AddOwnedForm(Me)
         Me.parent_frm = parent
         Me.Text = "COM port settings"
@@ -116,14 +116,14 @@
         If x <= 1 Then
             ii = COM_FIELD_GAP + x * (COM_FIELD_GAP + COM_FIELD_WIDTH)
         Else
-            ii = COM_FIELD_GAP + x * COM_FIELD_GAP + (x - 1) * COM_FIELD_WIDTH + COM_LABEL_WIDTH
+            ii = 3 * COM_FIELD_GAP + COM_FIELD_WIDTH + COM_LABEL_WIDTH + (x - 2) * (COM_FIELD_WIDTH + COM_FIELD_GAP)
         End If
 
         If x = 0 Then
             If y <= 1 Then
-                jj = COM_FIELD_GAP + y * (COM_FIELD_GAP + COM_TITLE_HEIGHT)
+                jj = COM_FIELD_GAP + y * (COM_FIELD_GAP + COM_LIST_HEIGHT)
             Else
-                jj = 3 * COM_FIELD_GAP + COM_TITLE_HEIGHT + COM_LIST_HEIGHT + (y - 2) * (COM_FIELD_GAP + COM_FIELD_HEIGHT)
+                jj = 2 * COM_FIELD_GAP + COM_LIST_HEIGHT + (y - 2) * (COM_FIELD_GAP + COM_FIELD_HEIGHT)
             End If
         Else
             If y > 0 Then
@@ -151,10 +151,10 @@
 
         port.txt_field.Name = "port" + index.ToString() + "_txt"
         port.txt_field.Size = COM_FIELD_SIZE
-        port.txt_field.Location = coordinate(1, c)
+        port.txt_field.Location = coordinate(2, c)
 
         port.label.Text = "Port " + index.ToString() + ": "
-        port.label.Location = coordinate(2, c)
+        port.label.Location = coordinate(1, c)
         port.label.Size = COM_LABEL_SIZE
 
         Me.Controls.Add(port.txt_field)

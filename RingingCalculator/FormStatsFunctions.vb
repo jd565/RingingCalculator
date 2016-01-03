@@ -27,10 +27,12 @@
     Private STATS_VALUE_SIZE As New Size(STATS_FIELD_WIDTH, STATS_VALUE_HEIGHT)
     Private STATS_VALUE_OFFSET As New Point(0, STATS_KEY_HEIGHT + STATS_PAIR_GAP)
 
-    Friend button As Button
+    Friend btn_close As Button
+    Friend btn_save As Button
+    Friend save_dialog As SaveFileDialog
 
     Public Sub generate(parent As Form)
-        Me.button = New Button
+        Me.btn_close = New Button
         Dim x As Integer = 0
         Dim y As Integer = 0
         Dim frm_lights As New frmLights
@@ -39,6 +41,9 @@
         frm_lights.generate(Me)
 
         Statistics.reset_stats_fields()
+
+        Me.btn_close = New Button
+        Me.btn_save = New Button
 
         Me.add_key_value_labels(Statistics.changes_key, Statistics.changes_value, "Changes", x, y)
         x += 1
@@ -75,15 +80,20 @@
         x += 1
         y += 1
 
-        Me.button.Size = New Size(STATS_FIELD_WIDTH, STATS_FIELD_HEIGHT)
-        Me.button.Location = coordinate(1, y)
-        Me.button.Text = "Close"
-        AddHandler Me.button.Click, AddressOf close_parent_form
+        Me.btn_close.Size = New Size(STATS_FIELD_WIDTH, STATS_FIELD_HEIGHT)
+        Me.btn_close.Location = coordinate(1, y)
+        Me.btn_close.Text = "Close"
+        AddHandler Me.btn_close.Click, AddressOf close_parent_form
+
+        Me.btn_save.Size = New Size(STATS_FIELD_WIDTH, STATS_FIELD_HEIGHT)
+        Me.btn_save.Location = coordinate(0, y)
+        Me.btn_save.Text = "Save performance"
+        AddHandler Me.btn_save.Click, AddressOf Me.save_perf
 
         y += 1
 
-        Me.Controls.Add(button)
-
+        Me.Controls.Add(btn_close)
+        Me.Controls.Add(btn_save)
 
         Me.Text = "Statistics"
         Me.Name = "frmStats"
@@ -114,5 +124,10 @@
         Return New Point(STATS_FIELD_GAP + x * (STATS_FIELD_GAP + STATS_FIELD_WIDTH),
                         STATS_FIELD_GAP + y * (STATS_FIELD_GAP + STATS_FIELD_HEIGHT))
     End Function
+
+    ' Function to save the data when the ubtton is pressed
+    Private Sub save_perf(b As Button, e As EventArgs)
+        Saving.save_statistics()
+    End Sub
 
 End Class

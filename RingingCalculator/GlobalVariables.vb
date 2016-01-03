@@ -3,17 +3,19 @@
     Public Shared COM_ports As New List(Of COMPort)
     Public Shared config_loaded As Boolean = False
     Public Shared switch As New Switch("switch1")
-    Public Shared start_time As DateTime
-    Public Shared recording As Boolean = False
+    Public Shared method_started As Boolean = False
     Public Shared debounce_time As Integer = 25
     Public Shared changes_per_peal As Integer = 5040
     Public Shared changes_per_lead As Integer = 40
     Public Shared changes_per_course As Integer = 360
     Public Shared leads_per_course As Integer = 9
     Public Shared cpm_string_format As String = "##0.0"
-    Public Shared time_string_format As String = "hh\:mm"
+    Public Shared hours_and_mins As String = "hh\:mm"
+    Public Shared hours_mins_seconds As String = "hh\:mm\:ss"
+    Public Shared full_time As String = "hh\:mm\:ss\.ff"
     Public Shared bell_light_time As Integer = 200
-    Public Shared previous_changetime As ChangeTime
+    Public Shared start_row As Integer = 0
+    Public Shared start_time As DateTime
 
     ' Function to reset the global variables, and clear all lists.
     Public Shared Sub reset()
@@ -22,7 +24,7 @@
         GlobalVariables.COM_ports.Clear()
         GlobalVariables.config_loaded = False
         GlobalVariables.switch = New Switch("switch1")
-        GlobalVariables.recording = False
+        GlobalVariables.method_started = False
     End Sub
 
     Public Shared Sub wait(time As Integer)

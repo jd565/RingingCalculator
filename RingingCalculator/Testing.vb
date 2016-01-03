@@ -181,7 +181,7 @@ Module Testing
         GlobalVariables.switch = New Switch("switch1")
 
         ' Set all global variables to their inital values
-        GlobalVariables.recording = False
+        GlobalVariables.method_started = False
         GlobalVariables.debounce_time = 25
 
         ' Close all forms apart from the main one

@@ -88,7 +88,7 @@
         Me.Text = "Ringing Simulator"
         Me.Name = "frmBells"
         Me.Font = DEFAULT_FONT
-        Me.ClientSize = New Size(coordinate(ii, 6))
+        Me.ClientSize = New Size(coordinate(Math.Max(ii, 2), 6))
         parent.AddOwnedForm(Me)
         Me.Parent_frm = parent
         AddHandler Me.FormClosing, AddressOf dispose_of_form

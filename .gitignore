@@ -56,3 +56,5 @@ RingingCalculator/obj/Debug/RingingCalculator.vbprojResolveAssemblyReference.cac
 RingingCalculator/bin/Debug/RingingCalculator.exe
 .vs/RingingCalculator/v14/.suo
 RingingCalculator/bin/Debug/RingingCalculator.pdb
+*.conf
+RingingCalculator/bin/Debug/ringing_stats.txt

@@ -43,7 +43,7 @@
         For ii As Integer = 0 To hash.Count - 1
             change_time = New ChangeTime(Me.rows.Last.bells(ii).bell,
                                          Me.rows.Count + 1,
-                                         New TimeSpan(0, 0, hash(ii)))
+                                         New DateTime(0, 0, 0, 0, 0, hash(ii)))
             next_row.add(change_time)
         Next
         next_row.sort()
@@ -63,7 +63,7 @@
         For ii As Integer = 0 To hash.Count - 1
             change_time = New ChangeTime(ii + 1,
                                          1,
-                                         New TimeSpan(0, 0, hash(ii)))
+                                         New DateTime(0, 0, 0, 0, 0, hash(ii)))
             next_row.add(change_time)
         Next
         next_row.sort()

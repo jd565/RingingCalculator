@@ -11,7 +11,7 @@ Public Class Row
     ' Function to return the time for this row
     ' taken as the time in ms of the first bell
     ' in this row.
-    Public ReadOnly Property time As TimeSpan
+    Public ReadOnly Property time As DateTime
         Get
             Return bells(0).time
         End Get

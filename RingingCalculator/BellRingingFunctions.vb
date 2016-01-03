@@ -104,27 +104,24 @@
     ' This checks for either:
     '   There is only 1 bell, so start now
     '   We have hit 21.
-    ' To achieve this, we store off the previous changetime for all bells that ring,
-    ' Then compare against the previous one.
-    Public Function should_we_start_recording(ct As ChangeTime) As Boolean
+    Public Function has_method_started(change_id As Integer) As Boolean
+        Dim row As Row = Statistics.rows(change_id)
+
         If GlobalVariables.bells.Count = 1 Then
-            Console.WriteLine("Start recording.")
-            GlobalVariables.recording = True
+            Console.WriteLine("Method has started")
+            GlobalVariables.method_started = True
+            GlobalVariables.start_row = change_id
+            GlobalVariables.start_time = Statistics.rows(change_id).time
             Return True
         End If
-        If GlobalVariables.previous_changetime IsNot Nothing Then
-            If GlobalVariables.previous_changetime.bell = 2 And
-                    ct.bell = 1 Then
-                Console.WriteLine("Start recording.")
-                GlobalVariables.recording = True
-                GlobalVariables.start_time = DateTime.Now()
-                GlobalVariables.bells(GlobalVariables.previous_changetime.bell - 1).change_times.Add(
-                    GlobalVariables.previous_changetime)
-                bell_has_just_rung(GlobalVariables.bells(GlobalVariables.previous_changetime.bell - 1))
-                Return True
-            End If
+
+        If row.bells(0).bell = 2 And row.bells(1).bell = 1 Then
+            Console.WriteLine("Method has started")
+            GlobalVariables.method_started = True
+            GlobalVariables.start_row = change_id
+            GlobalVariables.start_time = Statistics.rows(change_id - 1).time
+            Return True
         End If
-        GlobalVariables.previous_changetime = ct
         Return False
     End Function
 
