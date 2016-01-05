@@ -133,6 +133,7 @@
         course_peal_speed = New TimeSpan(course_speed.Ticks * GlobalVariables.changes_per_peal / GlobalVariables.changes_per_course)
         Statistics.last_course_peal_speed_value.Text = course_peal_speed.ToString(GlobalVariables.hours_and_mins)
         Statistics.last_course_time_value.Text = course_speed.ToString(GlobalVariables.hours_and_mins)
+        Statistics.courses_value.Text = Statistics.courses.ToString
     End Sub
 
     ' Function to return the string representation of the bell number

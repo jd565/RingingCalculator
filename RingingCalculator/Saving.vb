@@ -2,14 +2,14 @@
 
     'Function to save a method you have just rung
     ' Takes an input of how often you want to print a row
-    Public Sub save_statistics(Optional frequency As Integer = 1)
+    Public Sub save_statistics(Optional name As String = "ringingcalculator.txt", Optional frequency As Integer = 1)
         Dim current_index As Integer = 0
         Dim time_format As String = GlobalVariables.full_time
         Dim ii As Integer = 1
         Dim file = My.Computer.FileSystem.OpenTextFileWriter(
-            "ringing_stats.txt", False)
+            name, False)
         If frequency < 1 Then
-            Console.WriteLine("frequency is negative")
+            Console.WriteLine("Frequency is negative")
             GoTo EXIT_LABEL
         End If
         file.WriteLine("{0} changes rung in {1}.",

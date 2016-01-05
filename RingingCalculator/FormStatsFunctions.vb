@@ -29,10 +29,14 @@
 
     Friend btn_close As Button
     Friend btn_save As Button
-    Friend save_dialog As SaveFileDialog
+    Friend save_file As SaveFileDialog
+    Friend btn_stop As Button
 
     Public Sub generate(parent As Form)
         Me.btn_close = New Button
+        Me.btn_stop = New Button
+        Me.btn_save = New Button
+        Me.save_file = New SaveFileDialog
         Dim x As Integer = 0
         Dim y As Integer = 0
         Dim frm_lights As New frmLights
@@ -42,9 +46,6 @@
 
         Statistics.reset_stats_fields()
 
-        Me.btn_close = New Button
-        Me.btn_save = New Button
-
         Me.add_key_value_labels(Statistics.changes_key, Statistics.changes_value, "Changes", x, y)
         x += 1
 
@@ -52,8 +53,7 @@
         x += 1
 
         Me.add_key_value_labels(Statistics.time_key, Statistics.time_value, "Time", x, y)
-        x = 0
-        y += 1
+        x += 1
 
         Me.add_key_value_labels(Statistics.peal_speed_key, Statistics.peal_speed_value, "Peal Speed", x, y)
         x += 1
@@ -67,6 +67,10 @@
         x += 1
 
         Me.add_key_value_labels(Statistics.last_course_time_key, Statistics.last_course_time_value, "Last Course Time", x, y)
+
+        x += 1
+
+        Me.add_key_value_labels(Statistics.courses_key, Statistics.courses_value, "Courses", x, y)
 
         x = 0
         y += 1
@@ -90,15 +94,27 @@
         Me.btn_save.Text = "Save performance"
         AddHandler Me.btn_save.Click, AddressOf Me.save_perf
 
+        Me.btn_stop.Size = New Size(STATS_FIELD_WIDTH, STATS_FIELD_HEIGHT)
+        Me.btn_stop.Location = coordinate(2, y)
+        Me.btn_stop.Text = "Stop"
+        AddHandler Me.btn_stop.Click, AddressOf Me.stop_rec
+
+        'save_dialog
+        Me.save_file.FileName = "ringingcalculator.txt"
+        Me.save_file.Filter = "txt files|*.txt|All files|*.*"
+        Me.save_file.Title = "Save Performance"
+        Me.save_file.DefaultExt = "txt"
+
         y += 1
 
         Me.Controls.Add(btn_close)
         Me.Controls.Add(btn_save)
+        Me.Controls.Add(btn_stop)
 
         Me.Text = "Statistics"
         Me.Name = "frmStats"
         Me.Font = New Font(DEFAULT_FONT.OriginalFontName, STATS_FONT_SIZE, DEFAULT_FONT.Style)
-        Me.ClientSize = New Size(coordinate(3, y))
+        Me.ClientSize = New Size(coordinate(5, y))
         parent.AddOwnedForm(Me)
         AddHandler Me.FormClosing, AddressOf dispose_of_form
         Me.Show()
@@ -125,9 +141,19 @@
                         STATS_FIELD_GAP + y * (STATS_FIELD_GAP + STATS_FIELD_HEIGHT))
     End Function
 
-    ' Function to save the data when the ubtton is pressed
+    ' Function to save the data when the button is pressed
     Private Sub save_perf(b As Button, e As EventArgs)
-        Saving.save_statistics()
+        If Me.save_file.ShowDialog() = DialogResult.OK Then
+            Saving.save_statistics(Me.save_file.FileName)
+            MsgBox("Performance saved.",, "File Saved")
+        Else
+            MsgBox("Performance not saved.",, "Save Performance")
+        End If
+    End Sub
+
+    ' Function to stop recording
+    Private Sub stop_rec(b As Button, e As EventArgs)
+        GlobalVariables.switch.stop_running()
     End Sub
 
 End Class

@@ -3,6 +3,12 @@
 
     Public Shared changes As Integer = 0
 
+    Public Shared ReadOnly Property courses As Integer
+        Get
+            Return Statistics.changes \ GlobalVariables.changes_per_course
+        End Get
+    End Property
+
     Public Shared ReadOnly Property leads As Integer
         Get
             Return Statistics.changes \ GlobalVariables.changes_per_lead
@@ -29,6 +35,8 @@
     Public Shared changes_per_minute_value As Label
     Public Shared last_minute_changes_key As Label
     Public Shared last_minute_changes_value As Label
+    Public Shared courses_key As Label
+    Public Shared courses_value As Label
 
     Public Shared Sub reset_stats()
         Statistics.rows.Clear()
@@ -56,6 +64,8 @@
         Statistics.changes_per_minute_value = New Label
         Statistics.last_minute_changes_key = New Label
         Statistics.last_minute_changes_value = New Label
+        Statistics.courses_key = New Label
+        Statistics.courses_value = New Label
     End Sub
 
 End Class

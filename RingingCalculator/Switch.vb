@@ -66,9 +66,14 @@
     End Sub
 
     ' Function to handle when the program stops recording
-    Private Sub stop_running()
+    Public Sub stop_running()
         Me.switch_running = False
         Console.WriteLine("Stopped running")
+
+        ' If we are stopping and the row is full then stop here.
+        If Statistics.rows.Last.row_is_full Then
+            GlobalVariables.method_started = False
+        End If
     End Sub
 
     ' Function to handle when the configure button is pressed.

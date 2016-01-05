@@ -16,10 +16,10 @@
     'Required by the Windows Form Designer
     Private components As System.ComponentModel.IContainer
 
-    Const LIGHT_FIELD_GAP As Integer = 40
-    Const LIGHT_LABEL_HEIGHT As Integer = 50
-    Const LIGHT_FIELD_HEIGHT As Integer = LIGHT_LABEL_HEIGHT
-    Const LIGHT_FIELD_WIDTH As Integer = 100
+    Const LIGHT_FIELD_GAP As Integer = 10
+    Const LIGHT_LABEL_HEIGHT As Integer = 20
+    Const LIGHT_FIELD_HEIGHT As Integer = 50
+    Const LIGHT_FIELD_WIDTH As Integer = 70
     Const LIGHT_LIGHT_DIAMETER As Integer = 50
     Private LIGHT_LABEL_SIZE As New Size(LIGHT_FIELD_WIDTH, LIGHT_LABEL_HEIGHT)
     Private LIGHT_GENERAL_SIZE As New Size(LIGHT_FIELD_WIDTH, LIGHT_FIELD_HEIGHT)
@@ -60,8 +60,12 @@
     End Sub
 
     Private Function coordinate(x As Integer, y As Integer) As Point
-        Return New Point(LIGHT_FIELD_GAP + x * (LIGHT_FIELD_GAP + LIGHT_FIELD_WIDTH),
-                         LIGHT_FIELD_GAP + y * (LIGHT_FIELD_GAP + LIGHT_FIELD_HEIGHT))
+        Dim ii As Integer = LIGHT_FIELD_GAP + x * (LIGHT_FIELD_GAP + LIGHT_FIELD_WIDTH)
+        Dim jj As Integer
+
+        If y <= 1 Then jj = LIGHT_FIELD_GAP + y * (LIGHT_FIELD_GAP + LIGHT_LABEL_HEIGHT)
+        If y > 1 Then jj = LIGHT_LABEL_HEIGHT + 2 * LIGHT_FIELD_GAP + (y - 1) * (LIGHT_FIELD_GAP + LIGHT_FIELD_HEIGHT)
+        Return New Point(ii, jj)
     End Function
 
 End Class
