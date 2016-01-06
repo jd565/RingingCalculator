@@ -67,9 +67,10 @@
     End Function
 
     Private Sub update_changes(change_id As Integer, Optional force As Boolean = False)
-        Dim clm As Integer
         Dim time_diff As TimeSpan
         Dim cpm_val As Double
+        Dim clm_diff As TimeSpan
+        Dim clm_val As Double
 
         ' If we haven't started the method then the start time may not be properly set.
         ' Use the time of the first change for this instead.
@@ -85,16 +86,19 @@
             End If
         End If
 
-            Statistics.changes += 1
+        If change_id > 10 Then
+            clm_diff = Statistics.rows(change_id).time.Subtract(Statistics.rows(change_id - 10).time)
+            clm_val = 10 / time_diff.TotalMinutes
+        Else
+            clm_val = 0
+        End If
+
+        Statistics.changes += 1
         Statistics.changes_value.Text = Statistics.changes.ToString
         Statistics.time = time_diff
         Statistics.time_value.Text = Statistics.time.ToString(GlobalVariables.hours_and_mins)
         Statistics.changes_per_minute_value.Text = cpm_val.ToString(GlobalVariables.cpm_string_format)
-        clm = get_changes_last_minute(change_id)
-        ' get_changes_last_minute returns 0 if a minute has not elapsed, or the number of changes can't be found
-        If clm > 0 Then
-            Statistics.last_minute_changes_value.Text = clm.ToString()
-        End If
+        Statistics.last_minute_changes_value.Text = clm_val.ToString(GlobalVariables.cpm_string_format)
     End Sub
 
     ' Function to check whether this is a lead end and update the statistics.
@@ -127,9 +131,15 @@
         If (Statistics.changes) Mod GlobalVariables.changes_per_course <> 0 Then Exit Sub
 
         Dim course_speed As TimeSpan
+        Dim start_time_of_course As DateTime
         Dim course_peal_speed As TimeSpan
-        course_speed = Statistics.rows(change_id).time -
-                       Statistics.rows(change_id + 1 - GlobalVariables.changes_per_course).time
+
+        If change_id < GlobalVariables.changes_per_course Then
+            start_time_of_course = Statistics.rows(0).time
+        Else
+            start_time_of_course = Statistics.rows(change_id - GlobalVariables.changes_per_course).time
+        End If
+        course_speed = Statistics.rows(change_id).time.Subtract(start_time_of_course)
         course_peal_speed = New TimeSpan(course_speed.Ticks * GlobalVariables.changes_per_peal / GlobalVariables.changes_per_course)
         Statistics.last_course_peal_speed_value.Text = course_peal_speed.ToString(GlobalVariables.hours_and_mins)
         Statistics.last_course_time_value.Text = course_speed.ToString(GlobalVariables.hours_and_mins)

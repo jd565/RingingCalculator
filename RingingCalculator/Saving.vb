@@ -6,6 +6,9 @@
         Dim current_index As Integer = 0
         Dim time_format As String = GlobalVariables.full_time
         Dim ii As Integer = 1
+        Dim row As String
+        Dim total_time As TimeSpan
+        Dim lead_time As TimeSpan
         Dim file = My.Computer.FileSystem.OpenTextFileWriter(
             name, False)
         If frequency < 1 Then
@@ -24,19 +27,24 @@
                        "Time at lead end".PadRight(20) &
                        "Time of lead".PadRight(20))
         current_index = GlobalVariables.changes_per_lead + GlobalVariables.start_row - 1
+        row = Statistics.rows(current_index).print
+        total_time = Statistics.rows(current_index).time.Subtract(GlobalVariables.start_time)
+        lead_time = Statistics.rows(current_index).time.Subtract(GlobalVariables.start_time)
         file.WriteLine(ii.ToString.PadRight(20, "-") &
-                       Statistics.rows(current_index).print.PadRight(20, "-") &
-                       Statistics.rows(current_index).time.ToString(time_format).PadRight(20, "-") &
-                       Statistics.rows(current_index).time.ToString(time_format).PadRight(20, "-"))
+                       row.PadRight(20, "-") &
+                       total_time.ToString(time_format).PadRight(20, "-") &
+                       lead_time.ToString(time_format).PadRight(20, "-"))
         current_index += GlobalVariables.changes_per_lead
         ii += 1
         While current_index < Statistics.rows.Count
+            row = Statistics.rows(current_index).print
+            total_time = Statistics.rows(current_index).time.Subtract(GlobalVariables.start_time)
+            lead_time = Statistics.rows(current_index).time.Subtract(
+                               Statistics.rows(current_index - GlobalVariables.changes_per_lead).time)
             file.WriteLine(ii.ToString.PadRight(20, "-") &
-                           Statistics.rows(current_index).print.PadRight(20, "-") &
-                           Statistics.rows(current_index).time.ToString(time_format).PadRight(20, "-") &
-                           (Statistics.rows(current_index).time -
-                               Statistics.rows(current_index - GlobalVariables.changes_per_lead).time).
-                               ToString(time_format).PadRight(20, "-"))
+                           row.PadRight(20, "-") &
+                           total_time.ToString(time_format).PadRight(20, "-") &
+                           lead_time.ToString(time_format).PadRight(20, "-"))
             ii += 1
             current_index += GlobalVariables.changes_per_lead
         End While
