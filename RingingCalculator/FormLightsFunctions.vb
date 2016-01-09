@@ -28,7 +28,11 @@
     Private LIGHT_LIGHT_OFFSET As New Point((LIGHT_FIELD_WIDTH - LIGHT_LIGHT_SIZE.Width) / 2,
                                            (LIGHT_FIELD_HEIGHT - LIGHT_LIGHT_SIZE.Height) / 2)
 
-    Public Sub generate(parent As Form)
+    Public Sub New(frm As Form, top As Integer)
+        Me.generate(frm, top)
+    End Sub
+
+    Private Sub generate(parent As Form, top As Integer)
         Dim bell_label As Label
         Dim ii As Integer = 0
 
@@ -57,6 +61,7 @@
         parent.AddOwnedForm(Me)
         AddHandler Me.FormClosing, AddressOf dispose_of_form
         Me.Show()
+        Me.Location = New Point(0, top)
     End Sub
 
     Private Function coordinate(x As Integer, y As Integer) As Point

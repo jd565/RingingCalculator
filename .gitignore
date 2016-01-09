@@ -58,3 +58,4 @@ RingingCalculator/bin/Debug/RingingCalculator.exe
 RingingCalculator/bin/Debug/RingingCalculator.pdb
 *.conf
 RingingCalculator/bin/Debug/ringing_stats.txt
+RingingCalculator/bin/Debug/test_save.txt

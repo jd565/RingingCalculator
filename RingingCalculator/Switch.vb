@@ -55,14 +55,15 @@
         ' If there is no loaded config then do not start
         If Not GlobalVariables.config_loaded Then Exit Sub
 
-        Dim frm As New frmStats
+        Dim frm As frmStats
+
         For Each bell In GlobalVariables.bells
             bell.reset()
         Next
         Statistics.reset_stats()
         Me.switch_running = True
         Console.WriteLine("Started running.")
-        frm.generate(frmPerf)
+        frm = New frmStats(frmPerf)
     End Sub
 
     ' Function to handle when the program stops recording

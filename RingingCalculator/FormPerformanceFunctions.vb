@@ -43,8 +43,14 @@
     Friend load_config As ToolStripButton
     Friend new_config As ToolStripButton
     Friend edit_config As ToolStripButton
+#If DEBUG Then
+    Friend btn_test As ToolStripButton
+#End If
 
     Public Sub New()
+        If Not GlobalVariables.statistics_init Then
+            Statistics.init()
+        End If
         Me.InitializeComponent()
     End Sub
 
@@ -144,6 +150,10 @@
         Me.main_menu.Items.Add(Me.config_button)
         Me.main_menu.Height = PERF_MENU_HEIGHT
 
+#If DEBUG Then
+        Me.add_testing_button()
+#End If
+
         Me.Controls.Add(lbl_changes_per_lead)
         Me.Controls.Add(changes_per_lead)
         Me.Controls.Add(lbl_changes_per_Peal)
@@ -225,7 +235,7 @@
             End If
             GlobalVariables.config_loaded = True
         End If
-            Me.close_all_children()
+        Me.close_all_children()
         Me.maybe_show_btn_start()
     End Sub
 
@@ -244,6 +254,19 @@
         Console.WriteLine("maybe_show_btn_start, config_loaded: {0}", GlobalVariables.config_loaded)
         Me.btn_start.Enabled = GlobalVariables.config_loaded
         Me.btn_start.Visible = GlobalVariables.config_loaded
+    End Sub
+
+    Private Sub add_testing_button()
+        Me.btn_test = New ToolStripButton
+        Me.btn_test.Name = "testing"
+        Me.btn_test.Text = "Run Tests"
+        AddHandler Me.btn_test.Click, AddressOf Me.run_tests
+
+        Me.main_menu.Items.Add(Me.btn_test)
+    End Sub
+
+    Private Sub run_tests(o As Object, e As EventArgs)
+        Testing.run_tests(Me)
     End Sub
 
 End Class

@@ -17,26 +17,21 @@
     Public Shared time As TimeSpan
     Public Shared peal_speed As TimeSpan
 
-    Public Shared changes_key As Label
-    Public Shared changes_value As Label
-    Public Shared leads_key As Label
-    Public Shared leads_value As Label
-    Public Shared time_key As Label
-    Public Shared time_value As Label
-    Public Shared peal_speed_key As Label
-    Public Shared peal_speed_value As Label
-    Public Shared lead_end_row_key As Label
-    Public Shared lead_end_row_value As Label
-    Public Shared last_course_time_key As Label
-    Public Shared last_course_time_value As Label
-    Public Shared last_course_peal_speed_key As Label
-    Public Shared last_course_peal_speed_value As Label
-    Public Shared changes_per_minute_key As Label
-    Public Shared changes_per_minute_value As Label
-    Public Shared last_minute_changes_key As Label
-    Public Shared last_minute_changes_value As Label
-    Public Shared courses_key As Label
-    Public Shared courses_value As Label
+    Public Shared key_vals As New Dictionary(Of String, KeyValueLabel)
+
+    Public Shared Sub init()
+        Statistics.key_vals("Changes") = (New KeyValueLabel(True, "Changes"))
+        Statistics.key_vals("Leads") = (New KeyValueLabel(True, "Leads"))
+        Statistics.key_vals("Time") = (New KeyValueLabel(True, "Time"))
+        Statistics.key_vals("Peal Speed") = (New KeyValueLabel(True, "Peal Speed"))
+        Statistics.key_vals("Lead End Row") = (New KeyValueLabel(True, "Lead End Row"))
+        Statistics.key_vals("Last Course Time") = (New KeyValueLabel(True, "Last Course Time"))
+        Statistics.key_vals("Last Course Peal Speed") = (New KeyValueLabel(True, "Last Course Peal Speed"))
+        Statistics.key_vals("Changes Per Minute") = (New KeyValueLabel(True, "Changes Per Minute"))
+        Statistics.key_vals("Last Minute Changes") = (New KeyValueLabel(True, "Last Minute Changes"))
+        Statistics.key_vals("Courses") = (New KeyValueLabel(True, "Courses"))
+        GlobalVariables.statistics_init = True
+    End Sub
 
     Public Shared Sub reset_stats()
         Statistics.rows.Clear()
@@ -46,26 +41,9 @@
     End Sub
 
     Public Shared Sub reset_stats_fields()
-        Statistics.changes_key = New Label
-        Statistics.changes_value = New Label
-        Statistics.leads_key = New Label
-        Statistics.leads_value = New Label
-        Statistics.time_key = New Label
-        Statistics.time_value = New Label
-        Statistics.peal_speed_key = New Label
-        Statistics.peal_speed_value = New Label
-        Statistics.lead_end_row_key = New Label
-        Statistics.lead_end_row_value = New Label
-        Statistics.last_course_time_key = New Label
-        Statistics.last_course_time_value = New Label
-        Statistics.last_course_peal_speed_key = New Label
-        Statistics.last_course_peal_speed_value = New Label
-        Statistics.changes_per_minute_key = New Label
-        Statistics.changes_per_minute_value = New Label
-        Statistics.last_minute_changes_key = New Label
-        Statistics.last_minute_changes_value = New Label
-        Statistics.courses_key = New Label
-        Statistics.courses_value = New Label
+        For Each kvp As KeyValuePair(Of String, KeyValueLabel) In Statistics.key_vals
+            kvp.Value.new_fields()
+        Next
     End Sub
 
 End Class

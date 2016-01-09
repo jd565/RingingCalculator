@@ -1,17 +1,23 @@
-﻿' This module contains functions to run tests on the program.
+﻿#If DEBUG Then
+' This module contains functions to run tests on the program.
 ' Select the test you want to run in the run_tests function.
 Module Testing
 
+    Public test_mode As Boolean = False
+
     ' Main function for running the tests
     Public Sub run_tests(parent As Form)
+        Testing.test_mode = True
         'frmBells_tests(parent)
         'test_wait(2000)
         'test_print_big_row()
         test_ring_hunt_mini()
         'test_notation()
-        test_method_gen()
+        'test_method_gen()
+        Testing.test_mode = False
     End Sub
 
+    ' Tests generating a method and prints all the rows to screen
     Private Sub test_method_gen()
         Dim method As New Method("x36x14x12x36x14x56 le 12", 6)
         method.generate()
@@ -21,6 +27,7 @@ Module Testing
         Next
     End Sub
 
+    ' Tests generating a set of rows from place notation
     Private Sub test_notation()
         Dim n As New PlaceNotation("71.71.71.7 le 1")
         n.parse()
@@ -42,27 +49,36 @@ Module Testing
         Next
     End Sub
 
+    ' Rings plain hunt on 4
     Private Sub test_ring_hunt_mini()
         Dim bells As Integer = 4
         Dim ports As Integer = 1
-        Dim frm As New frmBells
+        Dim pp As PortPin
 
         global_variables_test(bells, ports)
 
-        frm.generate(frmPerf)
+        frmPerf.changes_per_lead.Text = "2"
+        frmPerf.leads_per_course.Text = "2"
 
         Dim switch_port_pin As New PortPin("COM1", 0)
-        configure_switch_test(switch_port_pin)
+        GlobalVariables.switch.port_pin = switch_port_pin
 
         Dim bell_port_pin As New List(Of PortPin)
         For ii As Integer = 1 To bells
-            bell_port_pin.Add(New PortPin("COM2", ii))
+            pp = New PortPin("COM2", ii)
+            bell_port_pin.Add(pp)
+            GlobalVariables.bells(ii - 1).port_pin = pp
         Next
-        configure_bells_test(bell_port_pin)
 
-        start_timer_test(switch_port_pin)
+        GlobalVariables.config_loaded = True
+
+        test_start_timer(switch_port_pin)
 
         Dim hunt_mini As New List(Of Array)
+        hunt_mini.Add({1, 2, 3, 4})
+        hunt_mini.Add({1, 2, 3, 4})
+        hunt_mini.Add({1, 2, 3, 4})
+        hunt_mini.Add({1, 2, 3, 4})
         hunt_mini.Add({2, 1, 4, 3})
         hunt_mini.Add({2, 4, 1, 3})
         hunt_mini.Add({4, 2, 3, 1})
@@ -70,6 +86,7 @@ Module Testing
         hunt_mini.Add({3, 4, 1, 2})
         hunt_mini.Add({3, 1, 4, 2})
         hunt_mini.Add({1, 3, 2, 4})
+        hunt_mini.Add({1, 2, 3, 4})
 
         For Each row In hunt_mini
             test_ring_this_row(row, bell_port_pin)
@@ -77,17 +94,13 @@ Module Testing
 
         test_stop_timer(switch_port_pin)
 
-        test_ring_this_row({1, 2, 3, 4}, bell_port_pin)
-
         test_save_rows()
-
-        test_save_config()
 
     End Sub
 
     ' Function to test saving the rows to a file
     Private Sub test_save_rows()
-        save_statistics()
+        save_statistics("test_save.txt")
     End Sub
 
     ' Function to test saving the config
@@ -112,7 +125,7 @@ Module Testing
         Next
         configure_bells_test(bell_port_pin)
 
-        start_timer_test(switch_port_pin)
+        test_start_timer(switch_port_pin)
 
         test_ring_this_row({2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}, bell_port_pin)
 
@@ -146,7 +159,7 @@ Module Testing
         bell_state_change_test_not_running(GlobalVariables.bells(1), bell_port_pin(1))
 
         ' Start the timer
-        start_timer_test(switch_port_pin)
+        test_start_timer(switch_port_pin)
 
         ' Test that the state of bells doesn't change
         test_bell_does_not_change_state(GlobalVariables.bells(2), bell_port_pin(2))
@@ -228,7 +241,7 @@ Module Testing
         Timer.Enabled = False
     End Sub
 
-    Private Sub start_timer_test(port_pin As PortPin)
+    Private Sub test_start_timer(port_pin As PortPin)
         port_pin_changed(port_pin)
         Debug.Assert(GlobalVariables.switch.is_running)
         ' Unpress switch
@@ -367,3 +380,4 @@ Module Testing
     End Sub
 
 End Module
+#End If

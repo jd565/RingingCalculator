@@ -72,7 +72,7 @@
         Me.Controls.Add(Me.label)
         Me.Controls.Add(Me.button)
 
-        Me.ClientSize = New Size(coordinate(3, Math.Max(ii, 2)))
+        Me.ClientSize = New Size(coordinate(3, Math.Max(ii, 3)))
         parent.AddOwnedForm(Me)
         Me.parent_frm = parent
         Me.Text = "COM port settings"

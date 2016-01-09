@@ -112,6 +112,7 @@
     <Compile Include="GeneralFormFunctions.vb" />
     <Compile Include="GlobalVariables.vb" />
     <Compile Include="Input.vb" />
+    <Compile Include="KeyValueLabel.vb" />
     <Compile Include="Method.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">

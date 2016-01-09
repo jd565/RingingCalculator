@@ -45,9 +45,17 @@
         For Each port In Me.COM_ports
             GlobalVariables.COM_ports.Add(port.initilaize())
         Next
-        If GlobalVariables.connect_COM_ports() = False Then
-            Return False
+#If DEBUG Then
+        If Not Testing.test_mode Then
+            If GlobalVariables.connect_COM_ports() = False Then
+                Return False
+            End If
         End If
+#Else
+        If GlobalVariables.connect_COM_ports() = False Then
+                Return False
+            End If
+#End If
 
         ' Wait for 50ms. Connecting the COM ports may cause the pins to swap states
         ' We wait so that the state change can't be linked to a bell or switch.

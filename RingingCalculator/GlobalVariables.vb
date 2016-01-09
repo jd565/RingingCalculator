@@ -12,10 +12,11 @@
     Public Shared cpm_string_format As String = "##0.0"
     Public Shared hours_and_mins As String = "hh\:mm"
     Public Shared hours_mins_seconds As String = "hh\:mm\:ss"
-    Public Shared full_time As String = "hh\:mm\:ss\.ff"
+    Public Shared full_time As String = "hh\:mm\:ss\.f"
     Public Shared bell_light_time As Integer = 200
     Public Shared start_row As Integer = 0
     Public Shared start_time As DateTime
+    Public Shared statistics_init As Boolean = False
 
     ' Function to reset the global variables, and clear all lists.
     Public Shared Sub reset()

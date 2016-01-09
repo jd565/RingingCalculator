@@ -37,8 +37,16 @@
 
     ' Function to return the coordinate of a point on the grid
     Private Function coordinate(x As Integer, y As Integer) As Point
-        Return New Point(BELL_FIELD_GAP + x * (BELL_FIELD_GAP + BELL_FIELD_WIDTH),
-                         BELL_FIELD_GAP + y * (BELL_FIELD_GAP + BELL_FIELD_HEIGHT))
+        Dim ii As Integer
+        Dim jj As Integer
+        ii = BELL_FIELD_GAP + x * (BELL_FIELD_GAP + BELL_FIELD_WIDTH)
+
+        If y <= 1 Then
+            jj = BELL_FIELD_GAP + y * (BELL_FIELD_GAP + BELL_FIELD_HEIGHT)
+        Else
+            jj = 3 * BELL_FIELD_GAP + BELL_FIELD_HEIGHT + BELL_LABEL_HEIGHT + (y - 2) * (BELL_FIELD_GAP + BELL_FIELD_HEIGHT)
+        End If
+        Return New Point(ii, jj)
     End Function
 
     ' Function to generate the bells form with the required number of bells
@@ -76,9 +84,11 @@
         ' btn_ok
         Me.btn_ok.Name = "btn_ok"
         Me.btn_ok.Size = BELL_GENERAL_SIZE
-        Me.btn_ok.Location = coordinate(0, 5)
+        Me.btn_ok.Location = coordinate(0, 6)
         Me.btn_ok.Text = "OK"
         AddHandler Me.btn_ok.Click, AddressOf Me.btn_ok_click
+
+        Me.AutoScroll = True
 
         Me.Controls.Add(GlobalVariables.switch.button)
         Me.Controls.Add(debounce_time)
@@ -88,12 +98,13 @@
         Me.Text = "Ringing Simulator"
         Me.Name = "frmBells"
         Me.Font = DEFAULT_FONT
-        Me.ClientSize = New Size(coordinate(Math.Max(ii, 2), 6))
+        Me.ClientSize = New Size(coordinate(Math.Max(ii, 2), 7)) + New Size(BELL_FIELD_GAP, 0)
         parent.AddOwnedForm(Me)
         Me.Parent_frm = parent
         AddHandler Me.FormClosing, AddressOf dispose_of_form
 
         Me.Show()
+        Me.Location = New Point(0, 0)
         parent.Hide()
 
     End Sub
@@ -102,26 +113,42 @@
     ' and named using bell_name
     Private Sub add_bell_field(x As Integer, bell As Bell)
         bell.new_fields()
+        Dim name As New Label
+        Dim y As Integer = 1
+
+        ' name
+        name.Text = "Bell " & bell.bell_number.ToString
+        name.Size = BELL_LABEL_SIZE
+        name.Location = coordinate(x, y)
+        name.Name = "txt_" & bell.name
+
+        y += 1
 
         ' Hnadstroke delay
         bell.fields.handstroke_delay.Size = BELL_UPDOWN_SIZE
-        bell.fields.handstroke_delay.Location = coordinate(x, 1) + BELL_UPDOWN_OFFSET
+        bell.fields.handstroke_delay.Location = coordinate(x, y) + BELL_UPDOWN_OFFSET
         bell.fields.handstroke_label.Size = BELL_LABEL_SIZE
-        bell.fields.handstroke_label.Location = coordinate(x, 1)
+        bell.fields.handstroke_label.Location = coordinate(x, y)
+
+        y += 1
 
         ' Backstroke delay
         bell.fields.backstroke_delay.Size = BELL_UPDOWN_SIZE
-        bell.fields.backstroke_delay.Location = coordinate(x, 2) + BELL_UPDOWN_OFFSET
+        bell.fields.backstroke_delay.Location = coordinate(x, y) + BELL_UPDOWN_OFFSET
         bell.fields.backstroke_label.Size = BELL_LABEL_SIZE
-        bell.fields.backstroke_label.Location = coordinate(x, 2)
+        bell.fields.backstroke_label.Location = coordinate(x, y)
+
+        y += 1
 
         ' configure port pin button
         bell.fields.button.Size = BELL_GENERAL_SIZE
-        bell.fields.button.Location = coordinate(x, 3)
+        bell.fields.button.Location = coordinate(x, y)
+
+        y += 1
 
         ' Light
         bell.fields.blob.Size = BELL_LIGHT_SIZE
-        bell.fields.blob.Location = coordinate(x, 4) + BELL_LIGHT_OFFSET
+        bell.fields.blob.Location = coordinate(x, y) + BELL_LIGHT_OFFSET
 
         Me.Controls.Add(bell.fields.button)
         Me.Controls.Add(bell.fields.handstroke_delay)
@@ -129,6 +156,7 @@
         Me.Controls.Add(bell.fields.backstroke_delay)
         Me.Controls.Add(bell.fields.backstroke_label)
         Me.Controls.Add(bell.fields.canvas)
+        Me.Controls.Add(name)
 
     End Sub
 
