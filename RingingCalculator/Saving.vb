@@ -15,10 +15,11 @@
             Console.WriteLine("Frequency is negative")
             GoTo EXIT_LABEL
         End If
-        file.WriteLine("{0} changes rung in {1}.",
-                       Statistics.changes.ToString,
-                       Statistics.time.ToString(time_format))
-        file.WriteLine("Printing every {0} rows.", frequency)
+        file.WriteLine("Changes: {0}", Statistics.changes)
+        file.WriteLine("Leads: {0}", Statistics.leads)
+        file.WriteLine("Courses: {0}", Statistics.courses)
+        file.WriteLine("Time: " & Statistics.time.ToString(time_format))
+        file.WriteLine("Changes per minute: " & Statistics.changes_per_minute.ToString(GlobalVariables.cpm_string_format))
         file.WriteLine()
 
         ' Print out the numbers of the lead ends and the time taken for them
@@ -50,6 +51,7 @@
         End While
 
         file.WriteLine()
+        file.WriteLine("Printing every {0} rows.", frequency)
 
         ' Start printing at the first frequency.
         ' We require the -1 to move it to a 0 based index.

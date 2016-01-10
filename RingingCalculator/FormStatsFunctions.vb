@@ -25,16 +25,20 @@
     Private STATS_PAIR_GAP As Integer = 15
     Private STATS_FIELD_HEIGHT As Integer = STATS_VALUE_HEIGHT + STATS_KEY_HEIGHT + STATS_PAIR_GAP
     Private STATS_FIELD_GAP As Integer = 30
+    Private STATS_MENU_HEIGHT As Integer = 25
     Private STATS_KEY_SIZE As New Size(STATS_FIELD_WIDTH, STATS_KEY_HEIGHT)
     Private STATS_VALUE_SIZE As New Size(STATS_FIELD_WIDTH, STATS_VALUE_HEIGHT)
     Private STATS_VALUE_OFFSET As New Point(0, STATS_KEY_HEIGHT + STATS_PAIR_GAP)
 
     Private rows As Integer
 
-    Friend btn_close As Button
-    Friend btn_save As Button
+    Friend btn_close As ToolStripButton
+    Friend btn_save As ToolStripButton
     Friend save_file As SaveFileDialog
     Friend btn_stop As Button
+    Friend main_menu As MenuStrip
+    Friend kvl_lpc As KeyValueLabel
+    Friend kvl_cpl As KeyValueLabel
 
     Public Sub New(frm As Form)
         If Not GlobalVariables.statistics_init Then
@@ -44,10 +48,13 @@
     End Sub
 
     Public Sub generate(parent As Form)
-        Me.btn_close = New Button
+        Me.btn_close = New ToolStripButton
         Me.btn_stop = New Button
-        Me.btn_save = New Button
+        Me.btn_save = New ToolStripButton
         Me.save_file = New SaveFileDialog
+        Me.main_menu = New MenuStrip
+        Me.kvl_cpl = New KeyValueLabel(True, "Changes Per Lead")
+        Me.kvl_lpc = New KeyValueLabel(True, "Leads per Change")
         Dim x As Integer = 0
         Dim y As Integer = 0
         Dim frm_lights As frmLights
@@ -60,8 +67,13 @@
             End If
         Next
 
+        Me.add_key_value_labels(Me.kvl_lpc)
+        Me.kvl_lpc.value.Text = GlobalVariables.leads_per_course.ToString
+        Me.add_key_value_labels(Me.kvl_cpl)
+        Me.kvl_cpl.value.Text = GlobalVariables.changes_per_lead.ToString
+
         Me.btn_close.Text = "Close"
-        AddHandler Me.btn_close.Click, AddressOf close_parent_form
+        AddHandler Me.btn_close.Click, AddressOf Me.close_form
 
         Me.btn_save.Text = "Save performance"
         AddHandler Me.btn_save.Click, AddressOf Me.save_perf
@@ -77,9 +89,19 @@
         Me.save_file.Title = "Save Performance"
         Me.save_file.DefaultExt = "txt"
 
-        Me.Controls.Add(btn_close)
-        Me.Controls.Add(btn_save)
+        'save_dialog
+        Me.save_file.FileName = "ringingcalculator.conf"
+        Me.save_file.Filter = "Conf files|*.conf|All files|*.*"
+        Me.save_file.Title = "Configuration File"
+        Me.save_file.DefaultExt = "conf"
+
+        'Menu
+        Me.main_menu.Items.Add(Me.btn_close)
+        Me.main_menu.Items.Add(Me.btn_save)
+        Me.main_menu.Height = STATS_MENU_HEIGHT
+
         Me.Controls.Add(btn_stop)
+        Me.Controls.Add(Me.main_menu)
 
         Me.Text = "Statistics"
         Me.Name = "frmStats"
@@ -156,14 +178,11 @@
             y += 1
         End If
 
-        Me.btn_close.Size = New Size(STATS_FIELD_WIDTH, STATS_FIELD_HEIGHT)
-        Me.btn_close.Location = coordinate(1, y)
-
-        Me.btn_save.Size = New Size(STATS_FIELD_WIDTH, STATS_FIELD_HEIGHT)
-        Me.btn_save.Location = coordinate(0, y)
+        Me.set_key_value_size_loc(Me.kvl_cpl, coordinate(1, y))
+        Me.set_key_value_size_loc(Me.kvl_lpc, coordinate(2, y))
 
         Me.btn_stop.Size = New Size(STATS_FIELD_WIDTH, STATS_FIELD_HEIGHT)
-        Me.btn_stop.Location = coordinate(2, y)
+        Me.btn_stop.Location = coordinate(0, y)
 
         Me.set_max_font()
 
@@ -195,7 +214,7 @@
 
     ' Function to return the coordinate of a certain row and column
     Private Function coordinate(x As Integer, y As Integer) As Point
-        Return New Point(STATS_FIELD_GAP + x * (STATS_FIELD_GAP + STATS_FIELD_WIDTH),
+        Return New Point(STATS_FIELD_GAP + STATS_MENU_HEIGHT + x * (STATS_FIELD_GAP + STATS_FIELD_WIDTH),
                         STATS_FIELD_GAP + y * (STATS_FIELD_GAP + STATS_FIELD_HEIGHT))
     End Function
 
@@ -210,8 +229,12 @@
     End Sub
 
     ' Function to stop recording
-    Private Sub stop_rec(b As Button, e As EventArgs)
+    Private Sub stop_rec(s As Object, e As EventArgs)
         GlobalVariables.switch.stop_running()
+    End Sub
+
+    Private Sub close_form(o As Object, e As EventArgs)
+        Me.Close()
     End Sub
 
 End Class

@@ -16,6 +16,7 @@
     End Property
     Public Shared time As TimeSpan
     Public Shared peal_speed As TimeSpan
+    Public Shared changes_per_minute As Double
 
     Public Shared key_vals As New Dictionary(Of String, KeyValueLabel)
 

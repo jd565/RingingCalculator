@@ -68,7 +68,6 @@
 
     Private Sub update_changes(change_id As Integer, Optional force As Boolean = False)
         Dim time_diff As TimeSpan
-        Dim cpm_val As Double
         Dim clm_diff As TimeSpan
         Dim clm_val As Double
         Dim time As Label = Statistics.key_vals("Time").value
@@ -81,13 +80,13 @@
         ' Use the time of the first change for this instead.
         If GlobalVariables.method_started Then
             time_diff = Statistics.rows(change_id).time.Subtract(GlobalVariables.start_time)
-            cpm_val = (change_id + 1) / (time_diff.TotalMinutes)
+            Statistics.changes_per_minute = (change_id + 1) / (time_diff.TotalMinutes)
         Else
             time_diff = Statistics.rows(change_id).time.Subtract(Statistics.rows(0).time)
             If change_id <> 0 Then
-                cpm_val = (change_id) / (time_diff.TotalMinutes)
+                Statistics.changes_per_minute = (change_id) / (time_diff.TotalMinutes)
             Else
-                cpm_val = 0
+                Statistics.changes_per_minute = 0
             End If
         End If
 
@@ -102,7 +101,7 @@
         changes.Text = Statistics.changes.ToString
         Statistics.time = time_diff
         time.Text = Statistics.time.ToString(GlobalVariables.hours_and_mins)
-        cpm.Text = cpm_val.ToString(GlobalVariables.cpm_string_format)
+        cpm.Text = Statistics.changes_per_minute.ToString(GlobalVariables.cpm_string_format)
         clm.Text = clm_val.ToString(GlobalVariables.cpm_string_format)
     End Sub
 
