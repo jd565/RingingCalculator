@@ -11,10 +11,73 @@ Module Testing
         'frmBells_tests(parent)
         'test_wait(2000)
         'test_print_big_row()
-        test_ring_hunt_mini()
+        'test_ring_hunt_mini()
         'test_notation()
         'test_method_gen()
+        test_input_tracer(parent)
         Testing.test_mode = False
+    End Sub
+
+    'Tests the input tracer method
+    Private Sub test_input_tracer(p As Form)
+        Dim frm As New frmInputTracer(p)
+        Dim real_pp As New PortPin("COM1", 2)
+        Dim fake_pp As New PortPin("COM1", 1)
+        Dim state As Integer
+
+        state = frm.status
+        port_pin_changed(real_pp)
+        Debug.Assert(state <> frm.status)
+        state = frm.status
+        port_pin_changed(fake_pp)
+        Debug.Assert(state = frm.status)
+        test_wait(300)
+        port_pin_changed(real_pp)
+        Debug.Assert(state <> frm.status)
+        test_wait(250)
+        frm.reset.PerformClick()
+        Debug.Assert(frm.status = 0)
+        frm.debounce_enable.Checked = True
+        state = frm.status
+        port_pin_changed(real_pp)
+        port_pin_changed(real_pp)
+        Debug.Assert(state <> frm.status)
+        frm.reset.PerformClick()
+        frm.hold_enable.Checked = True
+        test_wait(100)
+        port_pin_changed(real_pp)
+        test_wait(10)
+        port_pin_changed(real_pp)
+        test_wait(5)
+        port_pin_changed(real_pp)
+        test_wait(25)
+        port_pin_changed(real_pp)
+        test_wait(30)
+        port_pin_changed(real_pp)
+        test_wait(10)
+        port_pin_changed(real_pp)
+        test_wait(15)
+        port_pin_changed(real_pp)
+        test_wait(10)
+        port_pin_changed(real_pp)
+        frm.debounce_enable.Checked = True
+        frm.debounce_value.Value = 100
+        test_wait(5500)
+        port_pin_changed(real_pp)
+        test_wait(10)
+        port_pin_changed(real_pp)
+        test_wait(5)
+        port_pin_changed(real_pp)
+        test_wait(25)
+        port_pin_changed(real_pp)
+        test_wait(30)
+        port_pin_changed(real_pp)
+        test_wait(10)
+        port_pin_changed(real_pp)
+        test_wait(15)
+        port_pin_changed(real_pp)
+        test_wait(10)
+        port_pin_changed(real_pp)
     End Sub
 
     ' Tests generating a method and prints all the rows to screen

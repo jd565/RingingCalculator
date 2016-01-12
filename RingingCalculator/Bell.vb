@@ -90,6 +90,9 @@
             Me.fields.blob.BackColor = Color.Blue
             start_new_timer(GlobalVariables.bell_light_time, AddressOf Me.gray_blob)
         End If
+        If state Mod 2 = 1 And Not GlobalVariables.switch.is_running Then
+            My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Beep)
+        End If
     End Sub
 
     ' Function to change the colour of the blob back to gray

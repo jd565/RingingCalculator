@@ -17,6 +17,7 @@
     Public Shared start_row As Integer = 0
     Public Shared start_time As DateTime
     Public Shared statistics_init As Boolean = False
+    Public Shared input_tracer As Boolean = False
 
     ' Function to reset the global variables, and clear all lists.
     Public Shared Sub reset()

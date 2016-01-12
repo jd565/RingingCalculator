@@ -28,6 +28,8 @@
 
     ' Function to handle a pin on a COM port changing.
     Public Sub port_pin_changed(port_pin As PortPin)
+        Dim frm As frmInputTracer
+
         Console.WriteLine("Port pin has changed")
 
         ' A pin on a port changing can mean a few things:
@@ -36,7 +38,12 @@
         ' The switch is being configured and this event sets the config
         ' The switch is being pressed to start or stop recording
         ' We are recording and a bell has just been rung
-
+        If GlobalVariables.input_tracer Then
+            frm = find_form(GetType(frmInputTracer))
+            If frm IsNot Nothing Then
+                frm.port_pin_triggered(port_pin)
+            End If
+        End If
         If event_rings_bell(port_pin) Then
             Exit Sub
         End If
