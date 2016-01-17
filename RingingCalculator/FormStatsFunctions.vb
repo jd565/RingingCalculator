@@ -54,7 +54,7 @@
         Me.save_file = New SaveFileDialog
         Me.main_menu = New MenuStrip
         Me.kvl_cpl = New KeyValueLabel(True, "Changes Per Lead")
-        Me.kvl_lpc = New KeyValueLabel(True, "Leads per Change")
+        Me.kvl_lpc = New KeyValueLabel(True, "Leads per Course")
         Dim x As Integer = 0
         Dim y As Integer = 0
         Dim frm_lights As frmLights
@@ -219,7 +219,7 @@
     End Function
 
     ' Function to save the data when the button is pressed
-    Private Sub save_perf(b As Button, e As EventArgs)
+    Private Sub save_perf(o As Object, e As EventArgs)
         If Me.save_file.ShowDialog() = DialogResult.OK Then
             Saving.save_statistics(Me.save_file.FileName)
             MsgBox("Performance saved.",, "File Saved")

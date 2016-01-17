@@ -11,10 +11,10 @@ Module Testing
         'frmBells_tests(parent)
         'test_wait(2000)
         'test_print_big_row()
-        'test_ring_hunt_mini()
+        test_ring_hunt_mini()
         'test_notation()
         'test_method_gen()
-        test_input_tracer(parent)
+        'test_input_tracer(parent)
         Testing.test_mode = False
     End Sub
 
@@ -121,7 +121,7 @@ Module Testing
         global_variables_test(bells, ports)
 
         frmPerf.changes_per_lead.Text = "2"
-        frmPerf.leads_per_course.Text = "2"
+        frmPerf.leads_per_course.Text = "200"
 
         Dim switch_port_pin As New PortPin("COM1", 0)
         GlobalVariables.switch.port_pin = switch_port_pin

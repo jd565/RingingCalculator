@@ -75,12 +75,12 @@
         Dim cpm As Label = Statistics.key_vals("Changes Per Minute").value
         Dim clm As Label = Statistics.key_vals("Last Minute Changes").value
 
-
+        Statistics.changes += 1
         ' If we haven't started the method then the start time may not be properly set.
         ' Use the time of the first change for this instead.
         If GlobalVariables.method_started Then
             time_diff = Statistics.rows(change_id).time.Subtract(GlobalVariables.start_time)
-            Statistics.changes_per_minute = (change_id + 1) / (time_diff.TotalMinutes)
+            Statistics.changes_per_minute = Statistics.changes / (time_diff.TotalMinutes)
         Else
             time_diff = Statistics.rows(change_id).time.Subtract(Statistics.rows(0).time)
             If change_id <> 0 Then
@@ -97,12 +97,12 @@
             clm_val = 0
         End If
 
-        Statistics.changes += 1
         changes.Text = Statistics.changes.ToString
         Statistics.time = time_diff
         time.Text = Statistics.time.ToString(GlobalVariables.hours_and_mins)
         cpm.Text = Statistics.changes_per_minute.ToString(GlobalVariables.cpm_string_format)
         clm.Text = clm_val.ToString(GlobalVariables.cpm_string_format)
+
     End Sub
 
     ' Function to check whether this is a lead end and update the statistics.
