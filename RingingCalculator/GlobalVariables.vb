@@ -14,7 +14,7 @@
     Public Shared hours_mins_seconds As String = "hh\:mm\:ss"
     Public Shared full_time As String = "hh\:mm\:ss\.f"
     Public Shared bell_light_time As Integer = 200
-    Public Shared start_row As Integer = 0
+    Public Shared start_index As Integer = 0
     Public Shared start_time As DateTime
     Public Shared statistics_init As Boolean = False
     Public Shared input_tracer As Boolean = False

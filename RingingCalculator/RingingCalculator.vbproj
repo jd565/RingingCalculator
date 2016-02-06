@@ -110,6 +110,9 @@
     <Compile Include="FormPerformanceFunctions.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FormPerfStats.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormStatsFunctions.vb">
       <SubType>Form</SubType>
     </Compile>

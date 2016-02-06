@@ -117,7 +117,8 @@
         If GlobalVariables.bells.Count = 1 Then
             Console.WriteLine("Method has started")
             GlobalVariables.method_started = True
-            GlobalVariables.start_row = change_id
+            Statistics.changes = 0
+            GlobalVariables.start_index = change_id
             GlobalVariables.start_time = Statistics.rows(change_id).time
             Return True
         End If
@@ -125,7 +126,8 @@
         If row.bells(0).bell = 2 And row.bells(1).bell = 1 Then
             Console.WriteLine("Method has started")
             GlobalVariables.method_started = True
-            GlobalVariables.start_row = change_id
+            Statistics.changes = 0
+            GlobalVariables.start_index = change_id
             GlobalVariables.start_time = Statistics.rows(change_id - 1).time
             Return True
         End If

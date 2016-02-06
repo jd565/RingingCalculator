@@ -33,8 +33,7 @@
     Private rows As Integer
 
     Friend btn_close As ToolStripButton
-    Friend btn_save As ToolStripButton
-    Friend save_file As SaveFileDialog
+    Friend btn_view_stats As ToolStripButton
     Friend btn_stop As Button
     Friend main_menu As MenuStrip
     Friend kvl_lpc As KeyValueLabel
@@ -50,8 +49,7 @@
     Public Sub generate(parent As Form)
         Me.btn_close = New ToolStripButton
         Me.btn_stop = New Button
-        Me.btn_save = New ToolStripButton
-        Me.save_file = New SaveFileDialog
+        Me.btn_view_stats = New ToolStripButton
         Me.main_menu = New MenuStrip
         Me.kvl_cpl = New KeyValueLabel(True, "Changes Per Lead")
         Me.kvl_lpc = New KeyValueLabel(True, "Leads per Course")
@@ -75,29 +73,17 @@
         Me.btn_close.Text = "Close"
         AddHandler Me.btn_close.Click, AddressOf Me.close_form
 
-        Me.btn_save.Text = "Save performance"
-        AddHandler Me.btn_save.Click, AddressOf Me.save_perf
+        Me.btn_view_stats.Text = "View performance"
+        AddHandler Me.btn_view_stats.Click, AddressOf Me.view_perf_stats
 
         Me.btn_stop.Text = "Stop"
         AddHandler Me.btn_stop.Click, AddressOf Me.stop_rec
 
         Me.set_sizes()
 
-        'save_dialog
-        Me.save_file.FileName = "ringingcalculator.txt"
-        Me.save_file.Filter = "txt files|*.txt|All files|*.*"
-        Me.save_file.Title = "Save Performance"
-        Me.save_file.DefaultExt = "txt"
-
-        'save_dialog
-        Me.save_file.FileName = "ringingcalculator.conf"
-        Me.save_file.Filter = "Conf files|*.conf|All files|*.*"
-        Me.save_file.Title = "Configuration File"
-        Me.save_file.DefaultExt = "conf"
-
         'Menu
         Me.main_menu.Items.Add(Me.btn_close)
-        Me.main_menu.Items.Add(Me.btn_save)
+        Me.main_menu.Items.Add(Me.btn_view_stats)
         Me.main_menu.Height = STATS_MENU_HEIGHT
 
         Me.Controls.Add(btn_stop)
@@ -219,13 +205,8 @@
     End Function
 
     ' Function to save the data when the button is pressed
-    Private Sub save_perf(o As Object, e As EventArgs)
-        If Me.save_file.ShowDialog() = DialogResult.OK Then
-            Saving.save_statistics(Me.save_file.FileName)
-            MsgBox("Performance saved.",, "File Saved")
-        Else
-            MsgBox("Performance not saved.",, "Save Performance")
-        End If
+    Private Sub view_perf_stats(o As Object, e As EventArgs)
+        Dim frm As frmPerfStats = New frmPerfStats(Me)
     End Sub
 
     ' Function to stop recording

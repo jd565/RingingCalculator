@@ -82,17 +82,18 @@ Module Testing
 
     ' Tests generating a method and prints all the rows to screen
     Private Sub test_method_gen()
-        Dim method As New Method("x36x14x12x36x14x56 le 12", 6)
+        Dim method As New Method("b &-3-4-25-36-4-5-6-7", 8)
         method.generate()
         Debug.WriteLine(method.rows.Count)
         For Each row In method.rows
             Debug.WriteLine(row.print())
         Next
+        Saving.save_statistics("method_test.txt",, method)
     End Sub
 
     ' Tests generating a set of rows from place notation
     Private Sub test_notation()
-        Dim n As New PlaceNotation("71.71.71.7 le 1")
+        Dim n As New PlaceNotation("b &-3-4-25-36-4-5-6-7", 8)
         n.parse()
         For Each s In n.main_block
             Debug.Write(s.notation & ",")
@@ -100,12 +101,12 @@ Module Testing
         Debug.WriteLine("")
 
         For Each s In n.main_block
-            Debug.Write(s.fill_notation(7) & ",")
+            Debug.Write(s.fill_notation(8) & ",")
         Next
         Debug.WriteLine("")
 
         For Each s In n.main_block
-            For Each i In s.change_hash(7)
+            For Each i In s.change_hash(8)
                 Debug.Write(i.ToString & ", ")
             Next
             Debug.WriteLine("")
@@ -117,6 +118,7 @@ Module Testing
         Dim bells As Integer = 4
         Dim ports As Integer = 1
         Dim pp As PortPin
+        Dim frm As frmStats
 
         global_variables_test(bells, ports)
 
@@ -156,6 +158,9 @@ Module Testing
         Next
 
         test_stop_timer(switch_port_pin)
+
+        frm = find_form(GetType(frmStats))
+        frm.btn_view_stats.PerformClick()
 
         test_save_rows()
 

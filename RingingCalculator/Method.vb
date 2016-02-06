@@ -5,7 +5,7 @@
     Public changes_per_lead As Integer
 
     Public Sub New(pn As String, bells As Integer)
-        Me.place_notation = New PlaceNotation(pn)
+        Me.place_notation = New PlaceNotation(pn, bells)
         Me.bells = bells
         Me.changes_per_lead = Me.place_notation.main_block.Count + Me.place_notation.lead_end.Count
     End Sub
@@ -43,7 +43,7 @@
         For ii As Integer = 0 To hash.Count - 1
             change_time = New ChangeTime(Me.rows.Last.bells(ii).bell,
                                          Me.rows.Count + 1,
-                                         New DateTime(0, 0, 0, 0, 0, hash(ii)))
+                                         New DateTime(hash(ii)))
             next_row.add(change_time)
         Next
         next_row.sort()
@@ -63,7 +63,7 @@
         For ii As Integer = 0 To hash.Count - 1
             change_time = New ChangeTime(ii + 1,
                                          1,
-                                         New DateTime(0, 0, 0, 0, 0, hash(ii)))
+                                         New DateTime(hash(ii)))
             next_row.add(change_time)
         Next
         next_row.sort()
