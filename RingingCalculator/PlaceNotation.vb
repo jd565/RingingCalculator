@@ -2,8 +2,7 @@
     Public full_notation As String
     Public main_block As New List(Of Notation)
     Public lead_end As New List(Of Notation)
-    Public bob_end As New List(Of Notation)
-    Public single_end As New List(Of Notation)
+    Public call_ends As New List(Of CallNotation)
     Public bells As Integer
 
     Public Sub New(notation As String, Optional bells As Integer = 0)
@@ -128,20 +127,20 @@
             Me.lead_end = temp_pn.main_block
             temp = "4"
             temp_pn = New PlaceNotation(temp)
-            Me.bob_end = temp_pn.main_block
+            Me.call_ends.Add(New CallNotation(temp_pn.main_block, "-"))
             temp = "1234"
             temp_pn = New PlaceNotation(temp)
-            Me.single_end = temp_pn.main_block
+            Me.call_ends.Add(New CallNotation(temp_pn.main_block, "s"))
         ElseIf (c(0) >= "g" And c(0) <= "m") Or c(0) = "r" Or c(0) = "s" Then
             temp = bell_number_to_string(Me.bells)
             temp_pn = New PlaceNotation(temp)
             Me.lead_end = temp_pn.main_block
             temp = bell_number_to_string(Me.bells - 2)
             temp_pn = New PlaceNotation(temp)
-            Me.bob_end = temp_pn.main_block
+            Me.call_ends.Add(New CallNotation(temp_pn.main_block, "-"))
             temp = bell_number_to_string(Me.bells - 2) + bell_number_to_string(Me.bells - 1) + bell_number_to_string(Me.bells)
             temp_pn = New PlaceNotation(temp)
-            Me.single_end = temp_pn.main_block
+            Me.call_ends.Add(New CallNotation(temp_pn.main_block, "s"))
         End If
 
         If rev_block <> -1 Then
@@ -259,7 +258,7 @@
                 ii += 1
             End While
             temp_pn = New PlaceNotation(temp)
-            Me.bob_end = temp_pn.main_block
+            Me.call_ends.Add(New CallNotation(temp_pn.main_block, "-"))
         End If
 
         ' Check for a specified single
@@ -276,7 +275,7 @@
                 ii += 1
             End While
             temp_pn = New PlaceNotation(temp)
-            Me.single_end = temp_pn.main_block
+            Me.call_ends.Add(New CallNotation(temp_pn.main_block, "s"))
         End If
 
         If rev_block <> -1 Then
@@ -331,7 +330,7 @@ Public Class Notation
     ' Function to provide the hash of how bells move.
     ' The hash index is the position you are in the current row,
     ' the value at that location is your next position.
-    ' e.g. change 1234->2143 has hash {2, 1, 3, 4}.
+    ' e.g. change 1234->2143 has hash {2, 1, 4, 3}.
     ' the hash is the same for 4321->3412.
     ' It is important to remember that arrays are 0-indexed.
     Public Function change_hash(bells As Integer) As List(Of Integer)
@@ -384,4 +383,41 @@ Public Class Notation
 EXIT_LABEL:
         Return hash.ToList
     End Function
+
+    ''' <summary>
+    ''' Generate the hash for a list of notation.
+    ''' </summary>
+    ''' <param name="bells">Number of bells</param>
+    ''' <param name="notation_list">List of Notation</param>
+    ''' <returns>Integer hash list</returns>
+    Public Shared Function full_list_hash(bells As Integer, notation_list As List(Of Notation)) As List(Of Integer)
+        Dim hash As Integer()
+        Dim temp_hash As Integer()
+        Dim ii As Integer
+        ReDim hash(bells - 1)
+        ReDim temp_hash(bells - 1)
+        For ii = 0 To bells - 1
+            hash(ii) = ii + 1
+        Next
+        For Each note In notation_list
+            ii = 0
+            hash.CopyTo(temp_hash, 0)
+            For Each bell In note.change_hash(bells)
+                hash(bell - 1) = temp_hash(ii)
+                ii += 1
+            Next
+        Next
+        Return hash.ToList
+    End Function
 End Class
+
+Public Class CallNotation
+    Public notation As List(Of Notation)
+    Public call_string As String
+
+    Public Sub New(notation As List(Of Notation), call_string As String)
+        Me.notation = notation
+        Me.call_string = call_string
+    End Sub
+End Class
+

@@ -15,7 +15,93 @@ Module Testing
         'test_notation()
         'test_method_gen()
         'test_input_tracer(parent)
+        'test_place_stats()
+        'test_composition()
+        'test_composed_method()
+        test_peal(parent)
         Testing.test_mode = False
+    End Sub
+
+    Private Sub test_peal(parent As Form)
+        Dim frm As New frmMethod(parent)
+        frm.place_notation.Text = "b &-3-4-25-36-4-5-6-7"
+        frm.bells_text.Text = "8"
+
+        ' This is the composition for a peal of Cambridge Major
+        ' found from http://ringing.org/main/pages/peals/major/single/cambridge
+        '5,090 Cambridge Surprise Major
+        'Robert D S Brown
+        '
+        '234567   V  B  I  M  W  F  H
+        '34256                      2 
+        '45362             2  2     3 
+        '56423             2  2     3 
+        '62534             2  2     3 
+        '23645       -              3 
+        '63542             -          
+        '34625       -                
+        '756324                  -  - 
+        '(324567)  -  -  -     s        
+        frm.composition.Text = "5  3  2  M  W  4  H" & vbCrLf & "                  2 " & vbCrLf & "         2  2     3 " & vbCrLf & "         2  2     3 " & vbCrLf & "         2  2     3 " & vbCrLf & "   -              3 " & vbCrLf & "         -          " & vbCrLf & "   -                " & vbCrLf & "               -  - " & vbCrLf & "-  -  -     s  "
+    End Sub
+
+    Private Sub test_composed_method()
+        Dim frm As frmPerfStats
+        Dim full_comp As String = "W H" & Chr(13) & Chr(10) & "  3"
+        Dim method As New Method("b &-3-4-25-36-4-5-6-7", 8)
+        method.add_composition(full_comp)
+        method.generate()
+        Debug.WriteLine(method.rows.Count)
+        For Each row In method.rows
+            Debug.WriteLine(row.print())
+        Next
+        frm = New frmPerfStats(frmPerf, method)
+    End Sub
+
+    Private Sub test_composition()
+        Dim comp As Composition
+        Dim full_comp As String = "W M  H" & Chr(13) & Chr(10) & "- 2" & vbCrLf & "  -  2s"
+        comp = New Composition(full_comp)
+        For Each c In comp.composition
+            Debug.WriteLine(c.call_to_make & " at " & c.location)
+        Next
+    End Sub
+
+    Private Sub test_place_stats()
+        Dim place_stats As New List(Of PlaceStats)
+        Dim place_stats1 As New PlaceStats
+        Dim place_stats2 As New PlaceStats
+
+        place_stats1.add(1000, True)
+        place_stats1.add(2000, True)
+        place_stats1.add(3000, True)
+        place_stats1.add(4000, True)
+        place_stats1.add(5000, False)
+        place_stats1.add(6000, False)
+        place_stats1.add(7000, False)
+        place_stats1.add(8000, False)
+        Debug.Assert(place_stats1.h_average = 2500)
+        Debug.Assert(place_stats1.b_average = 6500)
+        Debug.Assert(place_stats1.average = 4500)
+        place_stats2.add(8000, True)
+        place_stats2.add(7000, True)
+        place_stats2.add(6000, True)
+        place_stats2.add(5000, True)
+        place_stats2.add(4000, False)
+        place_stats2.add(3000, False)
+        place_stats2.add(2000, False)
+        place_stats2.add(1000, False)
+        Debug.Assert(place_stats2.h_average = 6500)
+        Debug.Assert(place_stats2.b_average = 2500)
+        Debug.Assert(place_stats2.average = 4500)
+
+        place_stats.Add(place_stats1)
+        place_stats.Add(place_stats2)
+
+        Debug.Assert(place_stats.Average(Function(s) s.h_average) = 4500)
+        Debug.Assert(place_stats.Average(Function(s) s.b_average) = 4500)
+        Debug.Assert(place_stats.Average(Function(s) s.average) = 4500)
+
     End Sub
 
     'Tests the input tracer method
@@ -82,13 +168,14 @@ Module Testing
 
     ' Tests generating a method and prints all the rows to screen
     Private Sub test_method_gen()
+        Dim frm As frmPerfStats
         Dim method As New Method("b &-3-4-25-36-4-5-6-7", 8)
         method.generate()
         Debug.WriteLine(method.rows.Count)
         For Each row In method.rows
             Debug.WriteLine(row.print())
         Next
-        Saving.save_statistics("method_test.txt",, method)
+        frm = New frmPerfStats(frmPerf, method)
     End Sub
 
     ' Tests generating a set of rows from place notation
@@ -282,17 +369,23 @@ Module Testing
     End Sub
 
     Private Sub test_ring_this_row(row As Array, bell_ports As List(Of PortPin))
-        Dim gap_between_bells As Integer = 150
+        Randomize()
         Dim output_string As String
-        For Each ii In row
-            port_pin_changed(bell_ports(ii - 1))
-            test_wait(gap_between_bells)
+        For ii = 0 To row.Length - 1
+            port_pin_changed(bell_ports(row(ii) - 1))
+
+            ' This sets the delay of bell 1 to be larger than the others
+            If ii <> row.Length - 1 AndAlso row(ii + 1) = 1 Then
+                test_wait(Math.Floor(10 * Rnd()) + 155)
+            Else
+                test_wait(Math.Floor(10 * Rnd()) + 145)
+            End If
         Next
-        For Each ii In row
-            port_pin_changed(bell_ports(ii - 1))
-            test_wait(gap_between_bells)
+        For ii = 0 To row.Length - 1
+            port_pin_changed(bell_ports(row(ii) - 1))
+            test_wait(Math.Floor(10 * Rnd()) + 145)
         Next
-        output_string = Statistics.rows(Statistics.changes - 1).print
+        output_string = Statistics.rows.Last.print
         Debug.WriteLine(output_string)
     End Sub
 

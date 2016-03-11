@@ -1,12 +1,15 @@
+Imports RingingCalculator
+
 Public Class Row
-    Public bells as new List(of ChangeTime)
+    Implements IComparable(Of Row)
+    Public bells As New List(Of ChangeTime)
 
     ' Function to return the number of bells in this row
-    public readonly property size as integer
-	get
-	    return bells.count
-	end get
-    end Property
+    Public ReadOnly Property size As Integer
+        Get
+            Return bells.Count
+        End Get
+    End Property
 
     ' Function to return the time for this row
     ' taken as the time in ms of the first bell
@@ -24,7 +27,7 @@ Public Class Row
     End Property
 
     ' Function to add a bell to this row
-    Public Sub add(change_time As changetime)
+    Public Sub add(change_time As ChangeTime)
         bells.Add(change_time)
     End Sub
 
@@ -58,4 +61,36 @@ Public Class Row
         Next
         Return True
     End Function
-End class
+
+    Public Overloads Overrides Function Equals(obj As Object) As Boolean
+        If obj Is Nothing OrElse Not Me.GetType() Is obj.GetType() Then
+            Return False
+        End If
+
+        Dim other_row As Row = CType(obj, Row)
+        If Me.size <> other_row.size Then
+            Return False
+        End If
+        For ii = 0 To Me.size - 1
+            If Me.bells(ii).bell <> other_row.bells(ii).bell Then
+                Return False
+            End If
+        Next
+        Return True
+    End Function
+
+    Public Shared Function list_is_true(rows As List(Of Row)) As Boolean
+        For ii = 0 To rows.Count - 2
+            For jj = ii + 1 To rows.Count - 1
+                If rows(ii).Equals(rows(jj)) Then
+                    Return False
+                End If
+            Next
+        Next
+        Return True
+    End Function
+
+    Public Function CompareTo(other As Row) As Integer Implements IComparable(Of Row).CompareTo
+        Throw New NotImplementedException()
+    End Function
+End Class

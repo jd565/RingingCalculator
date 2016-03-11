@@ -44,6 +44,7 @@
     Friend new_config As ToolStripButton
     Friend edit_config As ToolStripButton
     Friend input_trace As ToolStripButton
+    Friend method As ToolStripButton
 #If DEBUG Then
     Friend btn_test As ToolStripButton
 #End If
@@ -79,6 +80,7 @@
         Me.new_config = New ToolStripButton
         Me.edit_config = New ToolStripButton
         Me.input_trace = New ToolStripButton
+        Me.method = New ToolStripButton
 
         ' Changes per lead
         lbl_changes_per_lead.Text = "Changes per lead:"
@@ -148,6 +150,11 @@
         Me.input_trace.Text = "Input Trace"
         AddHandler Me.input_trace.Click, AddressOf Me.input_trace_click
 
+        'method
+        Me.method.Name = "method"
+        Me.method.Text = "Method"
+        AddHandler Me.method.Click, AddressOf Me.method_click
+
         'Menu
         Me.config_button.Text = "Configuration"
         Me.config_button.DropDown = Me.config_options
@@ -156,6 +163,7 @@
         Me.config_options.Items.AddRange(New ToolStripItem() {Me.new_config, Me.load_config, Me.edit_config})
         Me.main_menu.Items.Add(Me.config_button)
         Me.main_menu.Items.Add(Me.input_trace)
+        Me.main_menu.Items.Add(Me.method)
         Me.main_menu.Height = PERF_MENU_HEIGHT
 
 #If DEBUG Then
@@ -279,6 +287,10 @@
 
     Private Sub input_trace_click(o As Object, e As EventArgs)
         Dim frm As New frmInputTracer(Me)
+    End Sub
+
+    Private Sub method_click(o As Object, e As EventArgs)
+        Dim frm As New frmMethod(Me)
     End Sub
 
 End Class

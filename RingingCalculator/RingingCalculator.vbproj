@@ -104,6 +104,9 @@
     <Compile Include="FormLightsFunctions.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FormMethod.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormNewConfFunctions.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -150,6 +153,9 @@
     <Compile Include="Testing.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="FormPerfStats.resx">
+      <DependentUpon>FormPerfStats.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>

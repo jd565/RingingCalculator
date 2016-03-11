@@ -38,3 +38,4 @@ C:\Users\Martin\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\R
 C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\Newtonsoft.Json.dll
 C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\Newtonsoft.Json.pdb
 C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.frmPerfStats.resources

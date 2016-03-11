@@ -45,7 +45,7 @@ EXIT_LABEL:
 
         If method IsNot Nothing Then
             changes = method.rows.Count
-            leads = changes Mod method.changes_per_lead
+            leads = changes \ method.changes_per_lead
             cpl = method.changes_per_lead
             start_idx = 0
             rows = method.rows
@@ -64,13 +64,18 @@ EXIT_LABEL:
 
         out_string += ("Changes: " & changes & vbCrLf)
         out_string += ("Leads: " & leads & vbCrLf)
+        out_string += ("Changes per lead: " & cpl & vbCrLf)
+        If RingingCalculator.Row.list_is_true(rows) Then
+            out_string += ("This performance is true" & vbCrLf)
+        Else
+            out_string += ("This performance is not true" & vbCrLf)
+        End If
         If method Is Nothing Then
             out_string += ("Courses: " & courses & vbCrLf)
             out_string += ("Time: " & time.ToString(time_format) & vbCrLf)
             out_string += ("Changes per minute: " & cpm.ToString(GlobalVariables.cpm_string_format) & vbCrLf)
 
 #If DEBUG Then
-            out_string += ("Changes per lead: " & GlobalVariables.changes_per_lead & vbCrLf)
             out_string += ("Changes per course: " & GlobalVariables.changes_per_course & vbCrLf)
             out_string += ("Leads per course: " & GlobalVariables.leads_per_course & vbCrLf)
             out_string += ("Method started at row: " & start_idx + 1 & vbCrLf)
@@ -107,6 +112,48 @@ EXIT_LABEL:
         End While
 
         out_string += vbCrLf
+
+        If method Is Nothing Then
+            ' Add in the bell delay stats.
+            out_string += "Bell delay statistics:" & vbCrLf
+            out_string += "                  "
+            For ii = 0 To rows(0).size - 1
+                out_string += ("Bell " & (ii + 1).ToString).PadLeft(9)
+            Next
+            out_string += vbCrLf
+            out_string += "Average delay:".PadRight(18)
+            For ii = 0 To rows(0).size - 1
+                out_string += Statistics.bell_stats(ii).average.ToString("####0").PadLeft(9, "-")
+            Next
+            out_string += vbCrLf
+            out_string += "Average deviation:".PadRight(18)
+            For ii = 0 To rows(0).size - 1
+                out_string += Statistics.bell_stats(ii).std_dev.ToString("##0.##").PadLeft(9, "-")
+            Next
+            out_string += vbCrLf
+            out_string += "Handstroke delay:".PadRight(18)
+            For ii = 0 To rows(0).size - 1
+                out_string += Statistics.bell_stats(ii).h_average.ToString("####0").PadLeft(9, "-")
+            Next
+            out_string += vbCrLf
+            out_string += "Backstroke delay:".PadRight(18)
+            For ii = 0 To rows(0).size - 1
+                out_string += Statistics.bell_stats(ii).b_average.ToString("####0").PadLeft(9, "-")
+            Next
+            out_string += vbCrLf
+            out_string += "Handstroke lead:".PadRight(18)
+            For ii = 0 To rows(0).size - 1
+                out_string += Statistics.bell_lead_stats(ii).h_average.ToString("####0").PadLeft(9, "-")
+            Next
+            out_string += vbCrLf
+            out_string += "Backstroke lead:".PadRight(18)
+            For ii = 0 To rows(0).size - 1
+                out_string += Statistics.bell_lead_stats(ii).b_average.ToString("####0").PadLeft(9, "-")
+            Next
+            out_string += vbCrLf
+            out_string += vbCrLf
+        End If
+
         out_string += ("Printing every " & frequency & " rows." & vbCrLf)
 
         ' Start printing at the first frequency.
@@ -118,6 +165,9 @@ EXIT_LABEL:
         While current_index < rows.Count
             out_string += ((current_index + 1).ToString.PadRight(6, " ") &
                            rows(current_index).print & vbCrLf)
+            If (current_index + 1) Mod cpl = 0 And current_index > 0 Then
+                out_string += ("-".PadLeft(6 + rows(0).size, "-") & vbCrLf)
+            End If
             current_index += frequency
         End While
 

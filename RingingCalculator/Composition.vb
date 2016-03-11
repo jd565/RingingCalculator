@@ -1,4 +1,4 @@
-﻿Public Class ringing_call
+﻿Public Class RingingCall
     ' This class holds information about each call
     Public location As String
     Public call_to_make As String
@@ -17,7 +17,13 @@ Public Class Composition
     Public full_composition As String
 
     ' The parsed composition string
-    Public composition As List(Of ringing_call)
+    Public composition As List(Of RingingCall)
+
+    Public Sub New(full_comp As String)
+        Me.full_composition = full_comp
+        Me.composition = New List(Of RingingCall)
+        Me.parse()
+    End Sub
 
     ' Function to parse the full notation into a string
     Public Sub parse()
@@ -25,22 +31,22 @@ Public Class Composition
         Dim call_indicies As New List(Of Integer)
         Dim calls As New List(Of String)
         Dim temp As String = ""
-        Dim sep_list As Char() = {" ", "\n", "\r"}
+        Dim sep_list As Char() = {" ", vbCr, vbLf}
         Dim line_index As Integer = 0
         Dim call_index As Integer
-        Dim c As ringing_call
+        Dim c As RingingCall
 
         ' Parse the top line to populate the calls and call_indicies
-        While (Me.full_composition(ii) <> CChar("\n"))
+        While Me.full_composition(ii) <> vbLf
             If (sep_list.Contains(Me.full_composition(ii))) Then
                 If temp <> "" Then
                     calls.Add(temp)
-                    call_indicies.Add(ii - temp.Count)
+                    call_indicies.Add(ii - temp.Length)
                 End If
                 temp = ""
-                ii += 1
+            Else
+                temp += Me.full_composition(ii)
             End If
-            temp += Me.full_composition(ii)
             ii += 1
         End While
 
@@ -48,10 +54,10 @@ Public Class Composition
 
         ' Now look through the next lines for the rest of the composition.
         ' if we find a -, number or s that lines up with a call then add it to our list
-        While (ii + line_index < Me.full_composition.Count)
+        While (ii + line_index < Me.full_composition.Length)
             temp = ""
-            c = New ringing_call
-            If Me.full_composition(ii + line_index) = "\n" Then
+            c = New RingingCall
+            If Me.full_composition(ii + line_index) = vbLf Then
                 ' We want to look through line by line so set the line index
                 ' to the start of the line you're looking through and the index as the
                 ' distance into this line.
@@ -63,6 +69,9 @@ Public Class Composition
                 While Not (sep_list.Contains(Me.full_composition(ii + line_index)))
                     temp += Me.full_composition(ii + line_index)
                     ii += 1
+                    If ii + line_index >= Me.full_composition.Length Then
+                        Exit While
+                    End If
                 End While
                 call_index = call_indicies.IndexOf(ii - temp.Length)
                 c.location = calls(call_index)
@@ -78,7 +87,7 @@ Public Class Composition
                         Me.composition.Add(c)
                     Else
                         ' Length 1 but a number. This is multiple bobs at this location
-                        c.call_to_make = "b"
+                        c.call_to_make = "-"
                         For jj As Integer = 1 To Val(temp(0))
                             Me.composition.Add(c)
                         Next
