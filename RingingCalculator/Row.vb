@@ -72,22 +72,28 @@ Public Class Row
             Return False
         End If
         For ii = 0 To Me.size - 1
-            If Me.bells(ii).bell <> other_row.bells(ii).bell Then
+            If Me.bells(ii).bell = other_row.bells(ii).bell Then
+            Else
                 Return False
             End If
         Next
         Return True
     End Function
 
-    Public Shared Function list_is_true(rows As List(Of Row)) As Boolean
+    Public Shared Function list_is_true(rows As List(Of Row), Optional ByRef false_row_ids As List(Of Integer) = Nothing) As Boolean
+        Dim rc As Boolean = True
         For ii = 0 To rows.Count - 2
             For jj = ii + 1 To rows.Count - 1
                 If rows(ii).Equals(rows(jj)) Then
-                    Return False
+                    If false_row_ids IsNot Nothing Then
+                        If Not false_row_ids.Contains(ii) Then false_row_ids.Add(ii)
+                        If Not false_row_ids.Contains(jj) Then false_row_ids.Add(jj)
+                    End If
+                    rc = False
                 End If
             Next
         Next
-        Return True
+        Return rc
     End Function
 
     Public Function CompareTo(other As Row) As Integer Implements IComparable(Of Row).CompareTo

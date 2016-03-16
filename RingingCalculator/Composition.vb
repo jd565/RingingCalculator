@@ -64,14 +64,14 @@ Public Class Composition
                 line_index = ii + line_index + 1
                 ii = 0
             End If
-            If (call_indicies.Contains(ii) And Not sep_list.Contains(Me.full_composition(ii + line_index))) Then
+            If (ii + line_index < Me.full_composition.Length AndAlso
+                call_indicies.Contains(ii) And
+                Not sep_list.Contains(Me.full_composition(ii + line_index))) Then
                 ' There is a call at this location. Add the call to the list
-                While Not (sep_list.Contains(Me.full_composition(ii + line_index)))
+                While (ii + line_index < Me.full_composition.Length AndAlso
+                       Not sep_list.Contains(Me.full_composition(ii + line_index)))
                     temp += Me.full_composition(ii + line_index)
                     ii += 1
-                    If ii + line_index >= Me.full_composition.Length Then
-                        Exit While
-                    End If
                 End While
                 call_index = call_indicies.IndexOf(ii - temp.Length)
                 c.location = calls(call_index)

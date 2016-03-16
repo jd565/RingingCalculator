@@ -37,6 +37,7 @@ EXIT_LABEL:
         Dim rows As List(Of Row)
         Dim start_time As Date
         Dim out_string As String = ""
+        Dim false_row_ids As New List(Of Integer)
 
         If frequency < 1 Then
             Console.WriteLine("Frequency is negative")
@@ -65,11 +66,6 @@ EXIT_LABEL:
         out_string += ("Changes: " & changes & vbCrLf)
         out_string += ("Leads: " & leads & vbCrLf)
         out_string += ("Changes per lead: " & cpl & vbCrLf)
-        If RingingCalculator.Row.list_is_true(rows) Then
-            out_string += ("This performance is true" & vbCrLf)
-        Else
-            out_string += ("This performance is not true" & vbCrLf)
-        End If
         If method Is Nothing Then
             out_string += ("Courses: " & courses & vbCrLf)
             out_string += ("Time: " & time.ToString(time_format) & vbCrLf)
@@ -154,6 +150,19 @@ EXIT_LABEL:
             out_string += vbCrLf
         End If
 
+        If RingingCalculator.Row.list_is_true(rows, false_row_ids) Then
+            out_string += ("This performance is true" & vbCrLf)
+        Else
+            out_string += ("This performance is not true" & vbCrLf)
+            out_string += "False rows: " & vbCrLf
+            For Each index In false_row_ids
+                out_string += ((index + 1).ToString.PadRight(6, " ") &
+                           rows(index).print & vbCrLf)
+            Next
+        End If
+
+        out_string += vbCrLf
+
         out_string += ("Printing every " & frequency & " rows." & vbCrLf)
 
         ' Start printing at the first frequency.
@@ -164,7 +173,14 @@ EXIT_LABEL:
 #End If
         While current_index < rows.Count
             out_string += ((current_index + 1).ToString.PadRight(6, " ") &
-                           rows(current_index).print & vbCrLf)
+                           rows(current_index).print)
+            Try
+                If false_row_ids.Contains(current_index) Then
+                    out_string += " <- False row"
+                End If
+            Catch ex As Exception
+            End Try
+            out_string += vbCrLf
             If (current_index + 1) Mod cpl = 0 And current_index > 0 Then
                 out_string += ("-".PadLeft(6 + rows(0).size, "-") & vbCrLf)
             End If

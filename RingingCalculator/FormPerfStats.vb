@@ -105,7 +105,9 @@
         Me.chart_area = New DataVisualization.Charting.ChartArea("ca")
         Me.choose_bell_label = New Label
 
-        Statistics.generate_place_delays()
+        If method Is Nothing Then
+            Statistics.generate_place_delays()
+        End If
 
         'perf_details
         Me.perf_details.Size = PSTATS_TB_SIZE
