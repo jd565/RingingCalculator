@@ -92,7 +92,7 @@
 
         If change_id > 10 Then
             clm_diff = Statistics.rows(change_id).time.Subtract(Statistics.rows(change_id - 10).time)
-            clm_val = 10 / time_diff.TotalMinutes
+            clm_val = 10 / clm_diff.TotalMinutes
         Else
             clm_val = 0
         End If

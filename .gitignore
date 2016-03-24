@@ -59,3 +59,4 @@ RingingCalculator/bin/Debug/RingingCalculator.pdb
 *.conf
 RingingCalculator/bin/Debug/ringing_stats.txt
 RingingCalculator/bin/Debug/test_save.txt
+RingingCalculator/bin/Debug/RingingCalculator.vshost.exe.manifest
