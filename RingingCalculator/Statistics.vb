@@ -100,9 +100,11 @@
         Dim row As Row = Statistics.rows(row_idx)
         Dim num_bells As Integer = Statistics.rows(0).size
         If place = 1 Then
-            delay = row.bells(0).time.Subtract(Statistics.rows(row_idx - 1).bells(num_bells - 1).time).TotalMilliseconds
+            If row_idx <> 0 Then
+                delay = row.bells(0).time.Subtract(Statistics.rows(row_idx - 1).bells(num_bells - 1).time).TotalMilliseconds
+            End If
         Else
-            delay = row.bells(place - 1).time.Subtract(row.bells(place - 2).time).TotalMilliseconds
+                delay = row.bells(place - 1).time.Subtract(row.bells(place - 2).time).TotalMilliseconds
         End If
 
         Return delay
