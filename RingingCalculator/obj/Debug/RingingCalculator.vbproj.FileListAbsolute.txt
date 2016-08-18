@@ -32,10 +32,12 @@ C:\Users\Martin\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\R
 C:\Users\Martin\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\RingingCalculator.xml
 C:\Users\Martin\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\Microsoft.VisualBasic.PowerPacks.xml
 C:\Users\Martin\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.vbprojResolveAssemblyReference.cache
-C:\Users\Martin\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.frmMain.resources
 C:\Users\Martin\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.Resources.resources
 C:\Users\Martin\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.vbproj.GenerateResource.Cache
 C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\Newtonsoft.Json.dll
 C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\Newtonsoft.Json.pdb
 C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.frmPerfStats.resources
+C:\Users\Martin\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\Newtonsoft.Json.pdb
+C:\Users\Martin\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Martin\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.frmPerfStats.resources

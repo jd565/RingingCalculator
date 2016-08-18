@@ -11,14 +11,14 @@ Module Testing
         'frmBells_tests(parent)
         'test_wait(2000)
         'test_print_big_row()
-        'test_ring_hunt_mini()
+        test_ring_hunt_mini()
         'test_notation()
         'test_method_gen()
         'test_input_tracer(parent)
         'test_place_stats()
         'test_composition()
         'test_composed_method()
-        test_peal(parent)
+        'test_peal(parent)
         Testing.test_mode = False
     End Sub
 

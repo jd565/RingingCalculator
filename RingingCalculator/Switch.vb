@@ -62,14 +62,14 @@
         Next
         Statistics.reset_stats()
         Me.switch_running = True
-        Console.WriteLine("Started running.")
+        RcDebug.debug_print("Started running.")
         frm = New frmStats(frmPerf)
     End Sub
 
     ' Function to handle when the program stops recording
     Public Sub stop_running()
         Me.switch_running = False
-        Console.WriteLine("Stopped running")
+        RcDebug.debug_print("Stopped running")
 
         Try
             ' If we are stopping and the row is full then stop here.

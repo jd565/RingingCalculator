@@ -34,7 +34,7 @@
     Public Function initialize() As Boolean
         ' Start by checking we are in a decent state
         If GlobalVariables.switch.is_running Then
-            Console.WriteLine("tried to initialize from config but we are running")
+            RcDebug.debug_print("tried to initialize from config but we are running")
             Return False
         End If
 

@@ -21,7 +21,7 @@
     End Property
 
     Protected Sub debounce_timer_tick(timer As Timer, e As EventArgs)
-        Console.WriteLine("debounce timer popped")
+        RcDebug.debug_print("debounce timer popped")
         timer.Enabled = False
         Me.debounce_state_value = False
     End Sub

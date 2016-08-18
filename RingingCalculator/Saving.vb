@@ -40,7 +40,7 @@ EXIT_LABEL:
         Dim false_row_ids As New List(Of Integer)
 
         If frequency < 1 Then
-            Console.WriteLine("Frequency is negative")
+            RcDebug.debug_print("Frequency is negative")
             Return Nothing
         End If
 
