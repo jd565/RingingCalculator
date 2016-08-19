@@ -18,8 +18,59 @@ Module Testing
         'test_place_stats()
         'test_composition()
         'test_composed_method()
-        test_peal(parent)
+        'test_peal(parent)
+        test_ring_cambridge_minor()
         Testing.test_mode = False
+    End Sub
+
+    Private Sub test_ring_cambridge_minor()
+        Dim method As New Method("&-36-14-12-36-14-56 le12", 6)
+        method.generate()
+        Dim cam_minor As New List(Of Array)
+        Dim row_array(5) As Integer
+        Dim ii As Integer
+        cam_minor.Add({1, 2, 3, 4, 5, 6})
+        cam_minor.Add({1, 2, 3, 4, 5, 6})
+        For Each row In method.rows
+            cam_minor.Add({row.bells(0).bell, row.bells(1).bell, row.bells(2).bell, row.bells(3).bell, row.bells(4).bell, row.bells(5).bell})
+        Next
+        cam_minor.Add({1, 2, 3, 4, 5, 6})
+        cam_minor.Add({1, 2, 3, 4, 5, 6})
+
+        Dim bells As Integer = 6
+        Dim ports As Integer = 2
+        Dim pp As PortPin
+        Dim frm As frmStats
+
+        global_variables_test(bells, ports)
+
+        frmPerf.changes_per_lead.Text = "24"
+        frmPerf.leads_per_course.Text = "5"
+
+        Dim switch_port_pin As New PortPin("COM1", 0)
+        GlobalVariables.switch.port_pin = switch_port_pin
+
+        Dim bell_port_pin As New List(Of PortPin)
+        For ii = 1 To bells
+            pp = New PortPin("COM2", ii)
+            bell_port_pin.Add(pp)
+            GlobalVariables.bells(ii - 1).port_pin = pp
+        Next
+
+        GlobalVariables.config_loaded = True
+
+        test_start_timer(switch_port_pin)
+
+        For Each row In cam_minor
+            test_ring_this_row(row, bell_port_pin, 25)
+        Next
+
+        'test_stop_timer(switch_port_pin)
+
+        frm = find_form(GetType(frmStats))
+        frm.btn_view_stats.PerformClick()
+
+        test_save_rows()
     End Sub
 
     Private Sub test_peal(parent As Form)
@@ -368,7 +419,7 @@ Module Testing
         End While
     End Sub
 
-    Private Sub test_ring_this_row(row As Array, bell_ports As List(Of PortPin))
+    Private Sub test_ring_this_row(row As Array, bell_ports As List(Of PortPin), Optional delay As Integer = 155)
         Randomize()
         Dim output_string As String
         For ii = 0 To row.Length - 1
@@ -376,14 +427,14 @@ Module Testing
 
             ' This sets the delay of bell 1 to be larger than the others
             If ii <> row.Length - 1 AndAlso row(ii + 1) = 1 Then
-                test_wait(Math.Floor(10 * Rnd()) + 155)
+                test_wait(Math.Floor(10 * Rnd()) + delay)
             Else
-                test_wait(Math.Floor(10 * Rnd()) + 145)
+                test_wait(Math.Floor(10 * Rnd()) + delay - 10)
             End If
         Next
         For ii = 0 To row.Length - 1
             port_pin_changed(bell_ports(row(ii) - 1))
-            test_wait(Math.Floor(10 * Rnd()) + 145)
+            test_wait(Math.Floor(10 * Rnd()) + delay)
         Next
         output_string = Statistics.rows.Last.print
         Debug.WriteLine(output_string)

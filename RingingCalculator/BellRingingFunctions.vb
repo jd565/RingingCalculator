@@ -128,7 +128,11 @@
             GlobalVariables.method_started = True
             Statistics.changes = 0
             GlobalVariables.start_index = change_id
-            GlobalVariables.start_time = Statistics.rows(change_id - 1).time
+            Try
+                GlobalVariables.start_time = Statistics.rows(change_id - 1).time
+            Catch ex As Exception
+                GlobalVariables.start_time = DateTime.Now()
+            End Try
             Return True
         End If
         Return False

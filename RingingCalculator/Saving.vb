@@ -59,7 +59,7 @@ EXIT_LABEL:
             cpm = Statistics.changes_per_minute
             cpl = GlobalVariables.changes_per_lead
             start_idx = GlobalVariables.start_index
-            rows = Statistics.rows
+            rows = Statistics.rows.GetRange(start_idx, Statistics.rows.Count - (start_idx + 1))
             start_time = GlobalVariables.start_time
         End If
 
@@ -70,13 +70,8 @@ EXIT_LABEL:
             out_string += ("Courses: " & courses & vbCrLf)
             out_string += ("Time: " & time.ToString(time_format) & vbCrLf)
             out_string += ("Changes per minute: " & cpm.ToString(GlobalVariables.cpm_string_format) & vbCrLf)
-
-#If DEBUG Then
             out_string += ("Changes per course: " & GlobalVariables.changes_per_course & vbCrLf)
             out_string += ("Leads per course: " & GlobalVariables.leads_per_course & vbCrLf)
-            out_string += ("Method started at row: " & start_idx + 1 & vbCrLf)
-#End If
-
         End If
         out_string += vbCrLf
 
@@ -85,7 +80,7 @@ EXIT_LABEL:
                        "Row".PadRight(18) &
                        "Time at lead end".PadRight(20) &
                        "Time of lead".PadRight(12) & vbCrLf)
-        current_index = cpl - 1 + start_idx
+        current_index = cpl - 1
         row = rows(current_index).print
         total_time = rows(current_index).time.Subtract(start_time)
         lead_time = rows(current_index).time.Subtract(start_time)
@@ -167,10 +162,7 @@ EXIT_LABEL:
 
         ' Start printing at the first frequency.
         ' We require the -1 to move it to a 0 based index.
-        current_index = frequency - 1 + start_idx
-#If DEBUG Then
         current_index = frequency - 1
-#End If
         While current_index < rows.Count
             out_string += ((current_index + 1).ToString.PadRight(6, " ") &
                            rows(current_index).print)

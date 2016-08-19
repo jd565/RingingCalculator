@@ -97,14 +97,15 @@
     ' This is called a lot by the relevant functions.
     Private Shared Function calc_row_place_delay(place As Integer, row_idx As Integer) As Integer
         Dim delay As Integer
-        Dim row As Row = Statistics.rows(row_idx)
+        Dim row As Row
         Dim num_bells As Integer = Statistics.rows(0).size
+        If place < 1 Or place > num_bells Then Throw New ArgumentException("Invalid place: " & place.ToString)
+        If row_idx <= 1 Or row_idx >= Statistics.rows.Count Then Throw New ArgumentException("Invalid row index: " & row_idx.ToString)
+        row = Statistics.rows(row_idx)
         If place = 1 Then
-            If row_idx > 0 Then
-                delay = row.bells(0).time.Subtract(Statistics.rows(row_idx - 1).bells(num_bells - 1).time).TotalMilliseconds
-            End If
+            delay = row.bells(0).time.Subtract(Statistics.rows(row_idx - 1).bells(num_bells - 1).time).TotalMilliseconds
         Else
-                delay = row.bells(place - 1).time.Subtract(row.bells(place - 2).time).TotalMilliseconds
+            delay = row.bells(place - 1).time.Subtract(row.bells(place - 2).time).TotalMilliseconds
         End If
 
         Return delay

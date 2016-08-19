@@ -212,6 +212,10 @@
     ' Function to stop recording
     Private Sub stop_rec(s As Object, e As EventArgs)
         GlobalVariables.switch.stop_running()
+        If Not GlobalVariables.switch.is_running Then
+            Me.btn_stop.Enabled = False
+            Me.btn_stop.Visible = False
+        End If
     End Sub
 
     Private Sub close_form(o As Object, e As EventArgs)
