@@ -62,7 +62,8 @@
     ' Function to handle the delay timers popping.
     Private Sub delay_timer_timeout(timer As Timer, e As EventArgs)
         Dim ct As ChangeTime
-        Console.WriteLine("{0} delay timer timeout", Me.name)
+        RcDebug.debug_entry("delay_timer_timeout")
+        RcDebug.debug_print(Me.name)
 
         ' Whatever we do we stop the timer.
         timer.Enabled = False
@@ -78,6 +79,7 @@
             End If
         End If
         Me.update_blob()
+        RcDebug.debug_exit()
     End Sub
 
     ' Function to update the colour of the blob
@@ -115,17 +117,17 @@
     ' We want to start a timer based on the delay of the bell, which will ensure that
     ' the bell changes state when it sounds.
     Public Overrides Sub trigger_input()
-        Console.WriteLine("{0} triggered", Me.name)
+        RcDebug.debug_print(Me.name & " triggered")
 
         ' Only do something if the debounce timer isn't running
         If Me.debounce_state = True Then
-            Console.WriteLine("Debounce drop")
+            RcDebug.debug_print("Debounce drop")
             Exit Sub
         End If
         start_debounce_timer(AddressOf Me.debounce_timer_tick)
         Me.debounce_state_value = True
 
-        Console.WriteLine("State {0}", Me.state)
+        RcDebug.debug_print("State " & Me.state)
         ' Depending on the state we need different times on the timer.
         If Me.state \ 2 = 0 Then
             start_new_timer(handstroke_delay, AddressOf delay_timer_timeout)

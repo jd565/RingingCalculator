@@ -53,6 +53,7 @@
         If Not GlobalVariables.statistics_init Then
             Statistics.init()
         End If
+        RcDebug.debug_init()
         Me.InitializeComponent()
     End Sub
 
@@ -188,7 +189,7 @@
 
     Private Sub changes_per_lead_changed(txt As TextBox, e As EventArgs)
         If GlobalVariables.switch.is_running Then
-            Console.WriteLine("Tried to change changes per lead, but we are running")
+            RcDebug.debug_print("Tried to change changes per lead, but we are running")
             txt.Text = GlobalVariables.changes_per_lead
         Else
             GlobalVariables.changes_per_lead = Val(txt.Text)
@@ -198,7 +199,7 @@
 
     Private Sub leads_per_course_changed(txt As TextBox, e As EventArgs)
         If GlobalVariables.switch.is_running Then
-            Console.WriteLine("Tried to change leads per course, but we are running")
+            RcDebug.debug_print("Tried to change leads per course, but we are running")
             txt.Text = GlobalVariables.leads_per_course
         Else
             GlobalVariables.leads_per_course = Val(txt.Text)
@@ -208,7 +209,7 @@
 
     Private Sub changes_per_peal_changed(txt As TextBox, e As EventArgs)
         If GlobalVariables.switch.is_running Then
-            Console.WriteLine("Tried to change peal length, but we are running")
+            RcDebug.debug_print("Tried to change peal length, but we are running")
             txt.Text = GlobalVariables.changes_per_peal
         Else
             GlobalVariables.changes_per_peal = Val(txt.Text)
@@ -267,9 +268,11 @@
     End Sub
 
     Private Sub maybe_show_btn_start()
-        Console.WriteLine("maybe_show_btn_start, config_loaded: {0}", GlobalVariables.config_loaded)
+        RcDebug.debug_entry("maybe_show_btn_start")
+        RcDebug.debug_print("config_loaded: " & GlobalVariables.config_loaded)
         Me.btn_start.Enabled = GlobalVariables.config_loaded
         Me.btn_start.Visible = GlobalVariables.config_loaded
+        RcDebug.debug_exit()
     End Sub
 
     Private Sub add_testing_button()

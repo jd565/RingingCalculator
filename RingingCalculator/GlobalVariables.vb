@@ -99,7 +99,7 @@
                 port.Open()
                 port.RtsEnable = True
             Catch ex As Exception
-                Console.WriteLine("Tried to open port " & port.PortName & ", but failed.")
+                RcDebug.debug_print("Tried to open port " & port.PortName & ", but failed.")
                 MsgBox("Failed to open port " & port.PortName & ".",, "Error")
                 success = False
             End Try

@@ -16,7 +16,7 @@
         'we assume that if the place notation starts with a small letter that is not x then we are
         'parsing something from the microsiril library.
         If Me.full_notation(0) >= CChar("a") And Me.full_notation(0) <= CChar("z") And Me.full_notation(0) <> CChar("x") Then
-            Console.WriteLine("microSiril notation")
+            RcDebug.debug_print("microSiril notation")
             Me.parse_microsiril()
             Exit Sub
         End If
@@ -24,11 +24,11 @@
         'However this may still be microSiril but start with e.g. 3z. Check if the string contains a z.
         'There is not a reason to include a z in the place notation other than this.
         If Me.full_notation.Contains("z") Then
-            Console.WriteLine("microSiril notation")
+            RcDebug.debug_print("microSiril notation")
             Me.parse_microsiril()
             Exit Sub
         End If
-        Console.WriteLine("standard notation")
+        RcDebug.debug_print("standard notation")
         Me.parse_standard()
     End Sub
 
@@ -47,7 +47,7 @@
         Dim nop_block As Boolean = False
 
         If Me.bells = 0 Then
-            Console.WriteLine("no bells, cannot parse")
+            RcDebug.debug_print("no bells, cannot parse")
             Exit Sub
         End If
 
@@ -92,7 +92,7 @@
                 End If
 
                 If separating_chars.Contains(c(ii + 1)) Or c(ii + 1) = "-" Then
-                    Console.WriteLine("found separator")
+                    RcDebug.debug_print("found separator")
                     block_done = True
                 ElseIf (bell_string_to_number(c(ii + 1)) < bell_string_to_number(c(ii))) Then
                     block_done = True
@@ -202,7 +202,7 @@
                 End If
 
                 If (separating_chars.Contains(c(ii + 1)) Or x.Contains(c(ii + 1))) Then
-                    Console.WriteLine("found separator")
+                    RcDebug.debug_print("found separator")
                     block_done = True
                 ElseIf (bell_string_to_number(c(ii + 1)) < bell_string_to_number(c(ii))) Then
                     block_done = True

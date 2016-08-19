@@ -12,14 +12,14 @@
             Try
                 frm.Invoke(New port_pin_changed_del(AddressOf port_pin_changed_wrapper), New Object() {port, e})
             Catch ex As System.InvalidOperationException
-                Console.WriteLine("Hit an InvalidOperationException")
+                RcDebug.debug_print("Hit an InvalidOperationException")
             End Try
         Else
             ' Even if we are on the active form this still may throw an exception, so catch it here
             Try
                 port_pin_changed(port_pin)
             Catch ex As System.InvalidOperationException
-                Console.WriteLine("Hit an InvalidOperationException")
+                RcDebug.debug_print("Hit an InvalidOperationException")
             End Try
         End If
     End Sub
@@ -30,7 +30,7 @@
     Public Sub port_pin_changed(port_pin As PortPin)
         Dim frm As frmInputTracer
 
-        Console.WriteLine("Port pin has changed")
+        RcDebug.debug_print("Port pin has changed")
 
         ' A pin on a port changing can mean a few things:
         ' A bell is waiting to be configured and this event sets the configuration
@@ -61,7 +61,7 @@
         Dim frm As frmConfigure
         frm = find_form(GetType(frmConfigure))
         If frm IsNot Nothing Then
-            Console.WriteLine("Configuring {0}", frm.input.name)
+            RcDebug.debug_print("Configuring " & frm.input.name)
             frm.input.configure(port_pin)
             frm.item_has_been_configured()
             Return True
@@ -75,7 +75,7 @@
     Private Function event_rings_bell(port_pin As PortPin) As Boolean
         For Each bell In GlobalVariables.bells
             If port_pin.Equals(bell.port_pin) Then
-                Console.WriteLine("Ringing bell {0}", bell.bell_number)
+                RcDebug.debug_print("Ringing bell " & bell.bell_number)
                 bell.trigger_input()
                 Return True
             End If
@@ -86,7 +86,7 @@
     ' Function to check if the port matches the switch.
     Private Function event_triggers_switch(port_pin As PortPin) As Boolean
         If port_pin.Equals(GlobalVariables.switch.port_pin) Then
-            Console.WriteLine("Triggering switch.")
+            RcDebug.debug_print("Triggering switch.")
             GlobalVariables.switch.trigger_input()
             Return True
         End If
@@ -115,7 +115,7 @@
         Dim row As Row = Statistics.rows(change_id)
 
         If GlobalVariables.bells.Count = 1 Then
-            Console.WriteLine("Method has started")
+            RcDebug.debug_print("Method has started")
             GlobalVariables.method_started = True
             Statistics.changes = 0
             GlobalVariables.start_index = change_id
@@ -124,7 +124,7 @@
         End If
 
         If row.bells(0).bell = 2 And row.bells(1).bell = 1 Then
-            Console.WriteLine("Method has started")
+            RcDebug.debug_print("Method has started")
             GlobalVariables.method_started = True
             Statistics.changes = 0
             GlobalVariables.start_index = change_id

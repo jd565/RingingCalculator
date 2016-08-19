@@ -183,11 +183,11 @@
     Public Sub port_pin_triggered(pp As PortPin)
         ' If the debounce state is triggered then log and do nothing
         If Me.debounce_triggered Then
-            Console.WriteLine("debounce drop")
+            RcDebug.debug_print("debounce drop")
             Exit Sub
         End If
 
-        Console.WriteLine("input tracer pp trig")
+        RcDebug.debug_print("input tracer pp trig")
 
         ' Only start debounce if it is enabled and non-zero
         If Me.debounce > 0 Then

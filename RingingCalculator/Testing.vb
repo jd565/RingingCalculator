@@ -11,7 +11,7 @@ Module Testing
         'frmBells_tests(parent)
         'test_wait(2000)
         'test_print_big_row()
-        'test_ring_hunt_mini()
+        test_ring_hunt_mini()
         'test_notation()
         'test_method_gen()
         'test_input_tracer(parent)

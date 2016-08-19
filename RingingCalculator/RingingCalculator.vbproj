@@ -89,6 +89,7 @@
     <Compile Include="ChangeTime.vb" />
     <Compile Include="Composition.vb" />
     <Compile Include="Config.vb" />
+    <Compile Include="RcDebug.vb" />
     <Compile Include="FormBellsFunctions.vb">
       <SubType>Form</SubType>
     </Compile>

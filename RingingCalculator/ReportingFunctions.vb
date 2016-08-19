@@ -4,7 +4,7 @@
     ' This happens for every row, and the sorted row is put into the rows
     ' list.
     Public Sub row_is_full(change_id As Integer)
-        Console.WriteLine("Row is full")
+        RcDebug.debug_print("Row is full")
         Statistics.rows(change_id).sort()
 
         ' Check if this row is the start of the method
@@ -123,7 +123,7 @@
         End If
 
         time_diff = Statistics.rows(change_id).time.Subtract(start_time)
-        Console.WriteLine("Update lead end stats")
+        RcDebug.debug_print("Update lead end stats")
 
         Statistics.peal_speed = New TimeSpan(time_diff.Ticks * changes_per_peal / Statistics.changes)
         le_row.Text = Statistics.rows(change_id).print
