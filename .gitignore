@@ -41,8 +41,3 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
-
-*.suo
-.vs/RingingCalculator/v14/.suo
-RingingCalculator/bin
-RingingCalculator/obj
