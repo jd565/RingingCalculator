@@ -71,9 +71,17 @@
         Dim handstroke As Boolean
         Dim delay As Integer
 
+        RcDebug.debug_entry("generate_place_delays")
+
         Statistics.create_place_stats()
 
-        For jj = GlobalVariables.start_index To Statistics.rows.Count - 1
+        'Make sure to not try and calculate stats on the first row.
+        ' The lead delay for this stroke does not make sense, so skip the whole row
+        Dim start_row_index As Integer = GlobalVariables.start_index
+        RcDebug.debug_print("Start index is " & start_row_index)
+        If start_row_index = 0 Then start_row_index = 1
+
+        For jj = start_row_index To Statistics.rows.Count - 1
             handstroke = False
             If Statistics.rows(jj).bells(0).change Mod 2 = 1 Then
                 handstroke = True
@@ -99,15 +107,32 @@
         Dim delay As Integer
         Dim row As Row
         Dim num_bells As Integer = Statistics.rows(0).size
-        If place < 1 Or place > num_bells Then Throw New ArgumentException("Invalid place: " & place.ToString)
-        If row_idx <= 1 Or row_idx >= Statistics.rows.Count Then Throw New ArgumentException("Invalid row index: " & row_idx.ToString)
+
+        RcDebug.debug_entry("calc_row_place_delay")
+        RcDebug.debug_print("Passed in row index is " & row_idx)
+        RcDebug.debug_print("Passed in place is " & place)
+        If place < 1 Or place > num_bells Then
+            RcDebug.debug_exit()
+            Throw New ArgumentException("Invalid place: " & place.ToString)
+        End If
+        If row_idx >= Statistics.rows.Count Then
+            RcDebug.debug_exit()
+            Throw New ArgumentException("Invalid row index: " & row_idx.ToString)
+        End If
+
+        If row_idx < 1 Then
+            RcDebug.debug_exit()
+            Return 0
+        End If
+
         row = Statistics.rows(row_idx)
-        If place = 1 Then
+            If place = 1 Then
             delay = row.bells(0).time.Subtract(Statistics.rows(row_idx - 1).bells(num_bells - 1).time).TotalMilliseconds
         Else
             delay = row.bells(place - 1).time.Subtract(row.bells(place - 2).time).TotalMilliseconds
         End If
 
+        RcDebug.debug_exit()
         Return delay
     End Function
 

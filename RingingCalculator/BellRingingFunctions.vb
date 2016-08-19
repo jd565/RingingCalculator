@@ -112,7 +112,9 @@
     '   There is only 1 bell, so start now
     '   We have hit 21.
     Public Function has_method_started(change_id As Integer) As Boolean
+        RcDebug.debug_entry("has_method_started")
         Dim row As Row = Statistics.rows(change_id)
+        Dim rc As Boolean = False
 
         If GlobalVariables.bells.Count = 1 Then
             RcDebug.debug_print("Method has started")
@@ -120,7 +122,8 @@
             Statistics.changes = 0
             GlobalVariables.start_index = change_id
             GlobalVariables.start_time = Statistics.rows(change_id).time
-            Return True
+            rc = True
+            GoTo EXIT_LABEL
         End If
 
         If row.bells(0).bell = 2 And row.bells(1).bell = 1 Then
@@ -128,14 +131,18 @@
             GlobalVariables.method_started = True
             Statistics.changes = 0
             GlobalVariables.start_index = change_id
+            RcDebug.debug_print("Start index is " & change_id)
             Try
                 GlobalVariables.start_time = Statistics.rows(change_id - 1).time
             Catch ex As Exception
                 GlobalVariables.start_time = DateTime.Now()
             End Try
-            Return True
+            rc = True
+            GoTo EXIT_LABEL
         End If
-        Return False
+
+EXIT_LABEL:
+        Return rc
     End Function
 
     ' Function to call when a bell has just rung
