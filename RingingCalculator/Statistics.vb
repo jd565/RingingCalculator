@@ -1,7 +1,22 @@
 ﻿Public Class Statistics
     Public Shared rows As New List(Of Row)
 
-    Public Shared changes As Integer = 0
+    Public Shared ReadOnly Property stop_idx As Integer
+        Get
+            Dim idx As Integer = GlobalVariables.stop_index
+            If idx = 0 Then idx = Statistics.rows.Count - 1
+            If idx < 0 Then Return 0
+            Return idx
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property changes As Integer
+        Get
+            Dim num_changes As Integer = Statistics.stop_idx - GlobalVariables.start_index + 1
+            If num_changes < 0 Then num_changes = 0
+            Return num_changes
+        End Get
+    End Property
 
     Public Shared ReadOnly Property courses As Integer
         Get
@@ -14,9 +29,31 @@
             Return Statistics.changes \ GlobalVariables.changes_per_lead
         End Get
     End Property
-    Public Shared time As TimeSpan
-    Public Shared peal_speed As TimeSpan
-    Public Shared changes_per_minute As Double
+
+    Public Shared ReadOnly Property time As TimeSpan
+        Get
+            Dim calc_time As TimeSpan
+            If Statistics.rows.Count < Statistics.stop_idx Then Return TimeSpan.Zero
+            calc_time = Statistics.rows(Statistics.stop_idx).time.Subtract(GlobalVariables.start_time)
+            If calc_time < TimeSpan.Zero Then Return TimeSpan.Zero
+            Return calc_time
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property peal_speed As TimeSpan
+        Get
+            If Statistics.changes = 0 Then Return TimeSpan.Zero
+            Return TimeSpan.FromMilliseconds(Statistics.time.TotalMilliseconds * GlobalVariables.changes_per_peal / Statistics.changes)
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property changes_per_minute As Double
+        Get
+            If Statistics.time = TimeSpan.Zero Then Return 0
+            Return Statistics.changes / Statistics.time.TotalMinutes
+        End Get
+    End Property
+
     Public Shared place_stats As New List(Of PlaceStats)
     Public Shared bell_stats As New List(Of PlaceStats)
     Public Shared bell_lead_stats As New List(Of PlaceStats)
@@ -39,9 +76,6 @@
 
     Public Shared Sub reset_stats()
         Statistics.rows.Clear()
-        Statistics.time = TimeSpan.Zero
-        Statistics.peal_speed = TimeSpan.Zero
-        Statistics.changes = 0
         Statistics.place_stats.Clear()
         Statistics.bell_stats.Clear()
         Statistics.bell_lead_stats.Clear()
@@ -78,10 +112,13 @@
         'Make sure to not try and calculate stats on the first row.
         ' The lead delay for this stroke does not make sense, so skip the whole row
         Dim start_row_index As Integer = GlobalVariables.start_index
+        Dim stop_row_index As Integer = GlobalVariables.stop_index
         RcDebug.debug_print("Start index is " & start_row_index)
+        RcDebug.debug_print("Stop index is " & stop_row_index)
         If start_row_index = 0 Then start_row_index = 1
+        If stop_row_index = 0 Then stop_row_index = Statistics.rows.Count - 1
 
-        For jj = start_row_index To Statistics.rows.Count - 1
+        For jj = start_row_index To stop_row_index
             handstroke = False
             If Statistics.rows(jj).bells(0).change Mod 2 = 1 Then
                 handstroke = True
@@ -99,6 +136,7 @@
                 End If
             Next
         Next
+        RcDebug.debug_exit()
     End Sub
 
     ' Function to calculate the delay for a certain place in a certain row.

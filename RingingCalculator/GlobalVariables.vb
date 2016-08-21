@@ -16,6 +16,7 @@
     Public Shared bell_light_time As Integer = 200
     Public Shared start_index As Integer = 0
     Public Shared start_time As DateTime
+    Public Shared stop_index As Integer = 0
     Public Shared statistics_init As Boolean = False
     Public Shared input_tracer As Boolean = False
 

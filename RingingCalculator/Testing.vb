@@ -290,6 +290,8 @@ Module Testing
         hunt_mini.Add({3, 1, 4, 2})
         hunt_mini.Add({1, 3, 2, 4})
         hunt_mini.Add({1, 2, 3, 4})
+        hunt_mini.Add({1, 2, 3, 4})
+        hunt_mini.Add({1, 2, 3, 4})
 
         For Each row In hunt_mini
             test_ring_this_row(row, bell_port_pin)

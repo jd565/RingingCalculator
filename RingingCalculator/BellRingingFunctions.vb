@@ -111,25 +111,20 @@
     ' This checks for either:
     '   There is only 1 bell, so start now
     '   We have hit 21.
-    Public Function has_method_started(change_id As Integer) As Boolean
-        RcDebug.debug_entry("has_method_started")
+    Public Sub maybe_start_method(change_id As Integer)
+        RcDebug.debug_entry("maybe_start_method")
         Dim row As Row = Statistics.rows(change_id)
-        Dim rc As Boolean = False
 
         If GlobalVariables.bells.Count = 1 Then
             RcDebug.debug_print("Method has started")
             GlobalVariables.method_started = True
-            Statistics.changes = 0
             GlobalVariables.start_index = change_id
             GlobalVariables.start_time = Statistics.rows(change_id).time
-            rc = True
-            GoTo EXIT_LABEL
         End If
 
         If row.bells(0).bell = 2 And row.bells(1).bell = 1 Then
             RcDebug.debug_print("Method has started")
             GlobalVariables.method_started = True
-            Statistics.changes = 0
             GlobalVariables.start_index = change_id
             RcDebug.debug_print("Start index is " & change_id)
             Try
@@ -137,13 +132,10 @@
             Catch ex As Exception
                 GlobalVariables.start_time = DateTime.Now()
             End Try
-            rc = True
-            GoTo EXIT_LABEL
         End If
 
-EXIT_LABEL:
-        Return rc
-    End Function
+        RcDebug.debug_exit()
+    End Sub
 
     ' Function to call when a bell has just rung
     ' We add the bell straight to the row we expect it to be in
@@ -167,5 +159,25 @@ EXIT_LABEL:
             row_is_full(change_id)
         End If
     End Sub
+
+    Public Function check_if_method_finished(row_idx As Integer) As Boolean
+        ' Don't try and access a negative index
+        If row_idx < 1 Then Return False
+
+        Dim this_row As Row = Statistics.rows(row_idx)
+        Dim last_row As Row = Statistics.rows(row_idx - 1)
+
+        RcDebug.debug_entry("check_if_method_finished")
+        If this_row.is_this_rounds() And last_row.is_this_rounds() Then
+            RcDebug.debug_print("Found end of method at " & row_idx - 1)
+            RcDebug.debug_print("End of method row: " & last_row.print)
+            GlobalVariables.stop_index = row_idx - 1
+            RcDebug.debug_exit()
+            Return True
+        End If
+
+        RcDebug.debug_exit()
+        Return False
+    End Function
 
 End Module

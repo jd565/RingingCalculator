@@ -9,10 +9,7 @@
 
         ' Check if this row is the start of the method
         If Not GlobalVariables.method_started Then
-            If has_method_started(change_id) Then
-                ' We want to reset the number of changes at the start of the method
-                Statistics.changes = 0
-            End If
+            maybe_start_method(change_id)
         End If
 
         update_changes(change_id)
@@ -23,6 +20,7 @@
         End If
         If GlobalVariables.method_started Then
             maybe_update_lead_statistics(change_id)
+            If check_if_method_finished(change_id) Then GlobalVariables.method_started = False
         End If
 
     End Sub
@@ -67,28 +65,12 @@
     End Function
 
     Private Sub update_changes(change_id As Integer, Optional force As Boolean = False)
-        Dim time_diff As TimeSpan
         Dim clm_diff As TimeSpan
         Dim clm_val As Double
         Dim time As Label = Statistics.key_vals("Time").value
         Dim changes As Label = Statistics.key_vals("Changes").value
         Dim cpm As Label = Statistics.key_vals("Changes Per Minute").value
         Dim clm As Label = Statistics.key_vals("Last Minute Changes").value
-
-        Statistics.changes += 1
-        ' If we haven't started the method then the start time may not be properly set.
-        ' Use the time of the first change for this instead.
-        If GlobalVariables.method_started Then
-            time_diff = Statistics.rows(change_id).time.Subtract(GlobalVariables.start_time)
-            Statistics.changes_per_minute = Statistics.changes / (time_diff.TotalMinutes)
-        Else
-            time_diff = Statistics.rows(change_id).time.Subtract(Statistics.rows(0).time)
-            If change_id <> 0 Then
-                Statistics.changes_per_minute = (change_id) / (time_diff.TotalMinutes)
-            Else
-                Statistics.changes_per_minute = 0
-            End If
-        End If
 
         If change_id > 10 Then
             clm_diff = Statistics.rows(change_id).time.Subtract(Statistics.rows(change_id - 10).time)
@@ -98,7 +80,6 @@
         End If
 
         changes.Text = Statistics.changes.ToString
-        Statistics.time = time_diff
         time.Text = Statistics.time.ToString(GlobalVariables.hours_and_mins)
         cpm.Text = Statistics.changes_per_minute.ToString(GlobalVariables.cpm_string_format)
         clm.Text = clm_val.ToString(GlobalVariables.cpm_string_format)
@@ -125,7 +106,6 @@
         time_diff = Statistics.rows(change_id).time.Subtract(start_time)
         RcDebug.debug_print("Update lead end stats")
 
-        Statistics.peal_speed = New TimeSpan(time_diff.Ticks * changes_per_peal / Statistics.changes)
         le_row.Text = Statistics.rows(change_id).print
         leads.Text = Statistics.leads.ToString
         peal_speed.Text = Statistics.peal_speed.ToString(GlobalVariables.hours_and_mins)

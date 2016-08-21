@@ -1,5 +1,7 @@
 ﻿Module Saving
 
+    Private time_format As String = GlobalVariables.full_time
+
     'Function to save a method you have just rung
     ' Takes an input of how often you want to print a row
     Public Sub save_statistics(Optional name As String = "ringingcalculator.txt",
@@ -22,11 +24,7 @@ EXIT_LABEL:
     Public Function statistics_string(Optional frequency As Integer = 1,
                                       Optional method As Method = Nothing) As String
         Dim current_index As Integer = 0
-        Dim time_format As String = GlobalVariables.full_time
         Dim ii As Integer = 1
-        Dim row As String
-        Dim total_time As TimeSpan
-        Dim lead_time As TimeSpan
         Dim changes As Integer
         Dim leads As Integer
         Dim courses As Integer
@@ -52,15 +50,16 @@ EXIT_LABEL:
             rows = method.rows
             start_time = New DateTime(0)
         Else
-            changes = Statistics.changes
-            leads = Statistics.leads
-            courses = Statistics.courses
-            time = Statistics.time
             cpm = Statistics.changes_per_minute
             cpl = GlobalVariables.changes_per_lead
             start_idx = GlobalVariables.start_index
-            rows = Statistics.rows.GetRange(start_idx, Statistics.rows.Count - (start_idx + 1))
+            changes = Statistics.changes
+            rows = Statistics.rows.GetRange(start_idx, changes)
+            leads = Statistics.leads
             start_time = GlobalVariables.start_time
+            time = Statistics.time
+            cpm = Statistics.changes_per_minute
+            courses = Statistics.courses
         End If
 
         out_string += ("Changes: " & changes & vbCrLf)
@@ -76,33 +75,7 @@ EXIT_LABEL:
         out_string += vbCrLf
 
         ' Print out the numbers of the lead ends and the time taken for them
-        out_string += ("Lead end".PadRight(12) &
-                       "Row".PadRight(18) &
-                       "Time at lead end".PadRight(20) &
-                       "Time of lead".PadRight(12) & vbCrLf)
-        current_index = cpl - 1
-        row = rows(current_index).print
-        total_time = rows(current_index).time.Subtract(start_time)
-        lead_time = rows(current_index).time.Subtract(start_time)
-        out_string += (ii.ToString.PadRight(12, "-") &
-                       row.PadRight(18, "-") &
-                       total_time.ToString(time_format).PadRight(20, "-") &
-                       lead_time.ToString(time_format).PadRight(12, "-") & vbCrLf)
-        current_index += cpl
-        ii += 1
-        While current_index < rows.Count
-            row = rows(current_index).print
-            total_time = rows(current_index).time.Subtract(start_time)
-            lead_time = rows(current_index).time.Subtract(rows(current_index - cpl).time)
-            out_string += (ii.ToString.PadRight(12, "-") &
-                           row.PadRight(18, "-") &
-                           total_time.ToString(time_format).PadRight(20, "-") &
-                           lead_time.ToString(time_format).PadRight(12, "-") & vbCrLf)
-            ii += 1
-            current_index += cpl
-        End While
-
-        out_string += vbCrLf
+        out_string += generate_lead_ends_output(cpl, rows, start_time)
 
         If method Is Nothing Then
             ' Add in the bell delay stats.
@@ -222,6 +195,42 @@ EXIT_LABEL:
         End If
         file.Close()
         Return ret
+    End Function
+
+    ' Function to generate string output for lead ands of stats form
+    Private Function generate_lead_ends_output(cpl As Integer,
+                                               rows As List(Of Row),
+                                               start_time As Date)
+        Dim out_string As String
+        Dim current_index As Integer
+        Dim row As String
+        Dim total_time As TimeSpan
+        Dim lead_time As TimeSpan
+        Dim ii As Integer = 0
+        out_string = ("Lead end".PadRight(12) &
+                      "Row".PadRight(18) &
+                      "Time at lead end".PadRight(20) &
+                      "Time of lead".PadRight(12) & vbCrLf)
+        current_index = cpl - 1
+        ii = 1
+        While current_index < rows.Count
+            row = rows(current_index).print
+            total_time = rows(current_index).time.Subtract(start_time)
+            If ii = 1 Then
+                lead_time = total_time
+            Else
+                lead_time = rows(current_index).time.Subtract(rows(current_index - cpl).time)
+            End If
+            out_string += (ii.ToString.PadRight(12, "-") &
+                           row.PadRight(18, "-") &
+                           total_time.ToString(time_format).PadRight(20, "-") &
+                           lead_time.ToString(time_format).PadRight(12, "-") & vbCrLf)
+            ii += 1
+            current_index += cpl
+        End While
+
+        out_string += vbCrLf
+        Return out_string
     End Function
 
 End Module

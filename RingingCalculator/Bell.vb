@@ -92,9 +92,14 @@
             Me.fields.blob.BackColor = Color.Blue
             start_new_timer(GlobalVariables.bell_light_time, AddressOf Me.gray_blob)
         End If
-        If state Mod 2 = 1 And Not GlobalVariables.switch.is_running Then
-            My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Beep)
-        End If
+
+        ' If focus on this is lost it may throw an exception. Catch it and ignore
+        Try
+            If state Mod 2 = 1 And Form.ActiveForm.GetType Is GetType(frmBells) Then
+                My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Beep)
+            End If
+        Catch
+        End Try
     End Sub
 
     ' Function to change the colour of the blob back to gray
