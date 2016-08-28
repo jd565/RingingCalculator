@@ -103,7 +103,7 @@
     Public Shared Sub generate_place_delays()
         Dim num_bells As Integer = Statistics.rows(0).size
         Dim handstroke As Boolean
-        Dim delay As Integer
+        Dim delay As UInteger
 
         RcDebug.debug_entry("generate_place_delays")
 
@@ -112,11 +112,10 @@
         'Make sure to not try and calculate stats on the first row.
         ' The lead delay for this stroke does not make sense, so skip the whole row
         Dim start_row_index As Integer = GlobalVariables.start_index
-        Dim stop_row_index As Integer = GlobalVariables.stop_index
+        Dim stop_row_index As Integer = Statistics.stop_idx
         RcDebug.debug_print("Start index is " & start_row_index)
         RcDebug.debug_print("Stop index is " & stop_row_index)
         If start_row_index = 0 Then start_row_index = 1
-        If stop_row_index = 0 Then stop_row_index = Statistics.rows.Count - 1
 
         For jj = start_row_index To stop_row_index
             handstroke = False
@@ -125,7 +124,11 @@
             End If
             For ii = 1 To num_bells
                 delay = calc_row_place_delay(ii, jj)
-                Statistics.place_stats(ii - 1).add(delay, handstroke)
+                Try
+                    Statistics.place_stats(ii - 1).add(delay, handstroke)
+                Catch e As Exception
+                    RcDebug.debug_print("Exception raised. ii: " & ii & ", delay: " & delay & ", handstroke: " & handstroke)
+                End Try
 
                 If ii > 1 Then
                     ' Add statistics to the bell stats if this isn't the lead.
@@ -141,8 +144,8 @@
 
     ' Function to calculate the delay for a certain place in a certain row.
     ' This is called a lot by the relevant functions.
-    Private Shared Function calc_row_place_delay(place As Integer, row_idx As Integer) As Integer
-        Dim delay As Integer
+    Private Shared Function calc_row_place_delay(place As Integer, row_idx As Integer) As UInteger
+        Dim delay As UInteger
         Dim row As Row
         Dim num_bells As Integer = Statistics.rows(0).size
 
@@ -164,10 +167,10 @@
         End If
 
         row = Statistics.rows(row_idx)
-            If place = 1 Then
-            delay = row.bells(0).time.Subtract(Statistics.rows(row_idx - 1).bells(num_bells - 1).time).TotalMilliseconds
+        If place = 1 Then
+            delay = CUInt(row.bells(0).time.Subtract(Statistics.rows(row_idx - 1).bells(num_bells - 1).time).TotalMilliseconds)
         Else
-            delay = row.bells(place - 1).time.Subtract(row.bells(place - 2).time).TotalMilliseconds
+            delay = CUInt(row.bells(place - 1).time.Subtract(row.bells(place - 2).time).TotalMilliseconds)
         End If
 
         RcDebug.debug_exit()
