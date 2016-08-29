@@ -148,6 +148,7 @@
         Dim delay As UInteger
         Dim row As Row
         Dim num_bells As Integer = Statistics.rows(0).size
+        Dim timespan_delay As TimeSpan
 
         RcDebug.debug_entry("calc_row_place_delay")
         RcDebug.debug_print("Passed in row index is " & row_idx)
@@ -168,9 +169,32 @@
 
         row = Statistics.rows(row_idx)
         If place = 1 Then
-            delay = CUInt(row.bells(0).time.Subtract(Statistics.rows(row_idx - 1).bells(num_bells - 1).time).TotalMilliseconds)
+            timespan_delay = row.bells(0).time.Subtract(Statistics.rows(row_idx - 1).bells(num_bells - 1).time)
         Else
-            delay = CUInt(row.bells(place - 1).time.Subtract(row.bells(place - 2).time).TotalMilliseconds)
+            timespan_delay = row.bells(place - 1).time.Subtract(row.bells(place - 2).time)
+        End If
+
+        delay = timespan_to_uint_milliseconds(timespan_delay)
+
+        RcDebug.debug_exit()
+        Return delay
+    End Function
+
+    Private Shared Function timespan_to_uint_milliseconds(tdelay As TimeSpan) As UInteger
+        Dim ddelay As Double
+        Dim delay As UInteger
+
+        RcDebug.debug_entry("timespan_to_uint_milliseconds")
+        ddelay = tdelay.TotalMilliseconds
+        RcDebug.debug_print("ddelay is " & ddelay)
+        If ddelay > UInteger.MaxValue Then
+            RcDebug.debug_exit()
+            Throw New ArgumentOutOfRangeException("Delay is too large for a UInteger. Delay: " & ddelay)
+        ElseIf ddelay < UInteger.MinValue Then
+            RcDebug.debug_exit()
+            Throw New ArgumentOutOfRangeException("Delay is too small for a UInteger. Delay: " & ddelay)
+        Else
+            delay = CUInt(ddelay)
         End If
 
         RcDebug.debug_exit()
