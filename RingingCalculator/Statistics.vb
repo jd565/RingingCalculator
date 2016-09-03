@@ -144,7 +144,7 @@
 
     ' Function to calculate the delay for a certain place in a certain row.
     ' This is called a lot by the relevant functions.
-    Private Shared Function calc_row_place_delay(place As Integer, row_idx As Integer) As UInteger
+    Private Shared Function calc_row_place_delay(place As Integer, row_idx As Integer) As Integer
         Dim delay As UInteger
         Dim row As Row
         Dim num_bells As Integer = Statistics.rows(0).size
@@ -174,27 +174,27 @@
             timespan_delay = row.bells(place - 1).time.Subtract(row.bells(place - 2).time)
         End If
 
-        delay = timespan_to_uint_milliseconds(timespan_delay)
+        delay = timespan_to_int_milliseconds(timespan_delay)
 
         RcDebug.debug_exit()
         Return delay
     End Function
 
-    Private Shared Function timespan_to_uint_milliseconds(tdelay As TimeSpan) As UInteger
+    Private Shared Function timespan_to_int_milliseconds(tdelay As TimeSpan) As Integer
         Dim ddelay As Double
-        Dim delay As UInteger
+        Dim delay As Integer
 
-        RcDebug.debug_entry("timespan_to_uint_milliseconds")
+        RcDebug.debug_entry("timespan_to_int_milliseconds")
         ddelay = tdelay.TotalMilliseconds
         RcDebug.debug_print("ddelay is " & ddelay)
-        If ddelay > UInteger.MaxValue Then
+        If ddelay > Integer.MaxValue Then
             RcDebug.debug_exit()
-            Throw New ArgumentOutOfRangeException("Delay is too large for a UInteger. Delay: " & ddelay)
-        ElseIf ddelay < UInteger.MinValue Then
+            Throw New ArgumentOutOfRangeException("Delay is too large for an Integer. Delay: " & ddelay)
+        ElseIf ddelay < Integer.MinValue Then
             RcDebug.debug_exit()
-            Throw New ArgumentOutOfRangeException("Delay is too small for a UInteger. Delay: " & ddelay)
+            Throw New ArgumentOutOfRangeException("Delay is too small for an Integer. Delay: " & ddelay)
         Else
-            delay = CUInt(ddelay)
+            delay = CInt(ddelay)
         End If
 
         RcDebug.debug_exit()
@@ -207,17 +207,17 @@ Public Class PlaceStats
     ' This class calculates stats for a single bell or place.
     ' This holds the average handstroke, backstroke and total delay in a list.
     ' The supplied properties provide means of adding, and retrieving stats from the class.
-    Private handstroke_delay As List(Of UInteger)
-    Private backstroke_delay As List(Of UInteger)
-    Private total_delay As List(Of UInteger)
+    Private handstroke_delay As List(Of Integer)
+    Private backstroke_delay As List(Of Integer)
+    Private total_delay As List(Of Integer)
 
     Public Sub New()
-        Me.handstroke_delay = New List(Of UInteger)
-        Me.backstroke_delay = New List(Of UInteger)
-        Me.total_delay = New List(Of UInteger)
+        Me.handstroke_delay = New List(Of Integer)
+        Me.backstroke_delay = New List(Of Integer)
+        Me.total_delay = New List(Of Integer)
     End Sub
 
-    Public Sub add(delay As UInteger, handstroke As Boolean)
+    Public Sub add(delay As Integer, handstroke As Boolean)
         Me.total_delay.Add(delay)
         If handstroke Then
             Me.handstroke_delay.Add(delay)
