@@ -145,7 +145,7 @@
     ' Function to calculate the delay for a certain place in a certain row.
     ' This is called a lot by the relevant functions.
     Private Shared Function calc_row_place_delay(place As Integer, row_idx As Integer) As Integer
-        Dim delay As UInteger
+        Dim delay As Integer
         Dim row As Row
         Dim num_bells As Integer = Statistics.rows(0).size
         Dim timespan_delay As TimeSpan

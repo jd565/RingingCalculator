@@ -7,10 +7,11 @@ C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\Newt
 C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\Microsoft.VisualBasic.PowerPacks.xml
 C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\Newtonsoft.Json.pdb
 C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\Newtonsoft.Json.xml
-C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.vbprojResolveAssemblyReference.cache
 C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.frmPerfStats.resources
 C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.Resources.resources
 C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.vbproj.GenerateResource.Cache
 C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.exe
 C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.xml
 C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.pdb
+C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\RingingCalculator.exe.CodeAnalysisLog.xml
+C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\RingingCalculator.exe.lastcodeanalysissucceeded
