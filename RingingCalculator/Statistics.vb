@@ -103,7 +103,7 @@
     Public Shared Sub generate_place_delays()
         Dim num_bells As Integer = Statistics.rows(0).size
         Dim handstroke As Boolean
-        Dim delay As UInteger
+        Dim delay As Integer
 
         RcDebug.debug_entry("generate_place_delays")
 

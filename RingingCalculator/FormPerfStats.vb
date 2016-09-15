@@ -116,7 +116,7 @@
         Me.perf_details.Multiline = True
         Me.perf_details.Text = statistics_string(, method)
         Me.perf_details.Name = "perf_details"
-        Me.perf_details.ScrollBars = ScrollBars.Vertical
+        Me.perf_details.ScrollBars = ScrollBars.Both
 
         'save_perf
         Me.save_perf.Size = PSTATS_BUTTON_SIZE
@@ -151,7 +151,7 @@
 
             'average_delay
             Me.average_delay.Name = "average_delay"
-            Me.average_delay.Text = "Average delay:"
+            Me.average_delay.Text = "Average delay (ms):"
             Me.average_delay.Size = PSTATS_FIELD_SIZE
             Me.average_delay.Location = coordinate(1, 2)
             Me.average_delay_val.Name = "average_delay_val"
@@ -160,7 +160,7 @@
 
             'handstroke_delay
             Me.handstroke_delay.Name = "handstroke_delay"
-            Me.handstroke_delay.Text = "Handstroke delay:"
+            Me.handstroke_delay.Text = "Handstroke delay (ms):"
             Me.handstroke_delay.Size = PSTATS_FIELD_SIZE
             Me.handstroke_delay.Location = coordinate(1, 3)
             Me.handstroke_delay_val.Name = "handstroke_delay_val"
@@ -169,7 +169,7 @@
 
             'backstroke_delay
             Me.backstroke_delay.Name = "backstroke_delay"
-            Me.backstroke_delay.Text = "Backstroke delay:"
+            Me.backstroke_delay.Text = "Backstroke delay (ms):"
             Me.backstroke_delay.Size = PSTATS_FIELD_SIZE
             Me.backstroke_delay.Location = coordinate(1, 4)
             Me.backstroke_delay_val.Name = "backstroke_delay_val"
@@ -178,7 +178,7 @@
 
             'handstroke_lead
             Me.handstroke_lead.Name = "handstroke_lead"
-            Me.handstroke_lead.Text = "Handstroke lead delay:"
+            Me.handstroke_lead.Text = "Handstroke lead delay (ms):"
             Me.handstroke_lead.Size = PSTATS_FIELD_SIZE
             Me.handstroke_lead.Location = coordinate(1, 5)
             Me.handstroke_lead_val.Name = "handstroke_lead_val"
@@ -187,7 +187,7 @@
 
             'backstroke_lead
             Me.backstroke_lead.Name = "backstroke_lead"
-            Me.backstroke_lead.Text = "Backstroke lead delay:"
+            Me.backstroke_lead.Text = "Backstroke lead delay (ms):"
             Me.backstroke_lead.Size = PSTATS_FIELD_SIZE
             Me.backstroke_lead.Location = coordinate(1, 6)
             Me.backstroke_lead_val.Name = "backstroke_lead_val"

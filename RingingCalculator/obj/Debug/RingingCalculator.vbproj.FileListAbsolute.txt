@@ -13,5 +13,4 @@ C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\Ring
 C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.exe
 C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.xml
 C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.pdb
-C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\RingingCalculator.exe.CodeAnalysisLog.xml
-C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\RingingCalculator.exe.lastcodeanalysissucceeded
+C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.vbprojResolveAssemblyReference.cache
