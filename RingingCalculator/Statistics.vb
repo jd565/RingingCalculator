@@ -228,16 +228,25 @@ Public Class PlaceStats
 
     Public ReadOnly Property h_average As Double
         Get
+            If Me.handstroke_delay.Count = 0 Then
+                Return 1
+            End If
             Return Me.handstroke_delay.Average(Function(input) input)
         End Get
     End Property
     Public ReadOnly Property b_average As Double
         Get
+            If Me.backstroke_delay.Count = 0 Then
+                Return 1
+            End If
             Return Me.backstroke_delay.Average(Function(input) input)
         End Get
     End Property
     Public ReadOnly Property average As Double
         Get
+            If Me.total_delay.Count = 0 Then
+                Return 1
+            End If
             Return Me.total_delay.Average(Function(input) input)
         End Get
     End Property
@@ -246,6 +255,9 @@ Public Class PlaceStats
         Get
             Dim mean As Double = Me.h_average
             Dim variance As Double
+            If Me.handstroke_delay.Count = 0 Then
+                Return 1
+            End If
             variance = Me.handstroke_delay.Average(Function(input) ((input - mean) ^ 2))
             Return Math.Sqrt(variance)
         End Get
@@ -254,6 +266,9 @@ Public Class PlaceStats
         Get
             Dim mean As Double = Me.b_average
             Dim variance As Double
+            If Me.backstroke_delay.Count = 0 Then
+                Return 1
+            End If
             variance = Me.backstroke_delay.Average(Function(input) ((input - mean) ^ 2))
             Return Math.Sqrt(variance)
         End Get
@@ -262,6 +277,9 @@ Public Class PlaceStats
         Get
             Dim mean As Double = Me.average
             Dim variance As Double
+            If Me.total_delay.Count = 0 Then
+                Return 1
+            End If
             variance = Me.total_delay.Average(Function(input) ((input - mean) ^ 2))
             Return Math.Sqrt(variance)
         End Get
