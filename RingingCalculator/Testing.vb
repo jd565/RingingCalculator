@@ -19,7 +19,9 @@ Module Testing
         'test_composition()
         'test_composed_method()
         'test_peal(parent)
-        test_ring_cambridge_minor()
+        ' test_ring_cambridge_minor()
+        test_ring_pb_triples()
+
         Testing.test_mode = False
     End Sub
 
@@ -71,6 +73,56 @@ Module Testing
         frm.btn_view_stats.PerformClick()
 
         test_save_rows()
+    End Sub
+
+    Private Sub test_ring_pb_triples()
+        Dim method As New Method("&78.18.78.18.78.18.78 le1278", 8)
+        method.generate()
+        Dim pb_triples As New List(Of Array)
+        Dim row_array(5) As Integer
+        Dim ii As Integer
+        pb_triples.Add({1, 2, 3, 4, 5, 6, 7, 8})
+        pb_triples.Add({1, 2, 3, 4, 5, 6, 7, 8})
+        For Each row In method.rows
+            pb_triples.Add({row.bells(0).bell, row.bells(1).bell, row.bells(2).bell, row.bells(3).bell, row.bells(4).bell, row.bells(5).bell, row.bells(6).bell, row.bells(7).bell})
+        Next
+        pb_triples.Add({1, 2, 3, 4, 5, 6, 7, 8})
+        pb_triples.Add({1, 2, 3, 4, 5, 6, 7, 8})
+
+        Dim bells As Integer = 8
+        Dim ports As Integer = 2
+        Dim pp As PortPin
+        Dim frm As frmStats
+
+        global_variables_test(bells, ports)
+
+        frmPerf.changes_per_lead.Text = "14"
+        frmPerf.leads_per_course.Text = "6"
+
+        Dim switch_port_pin As New PortPin("COM1", 0)
+        GlobalVariables.switch.port_pin = switch_port_pin
+
+        Dim bell_port_pin As New List(Of PortPin)
+        For ii = 1 To bells
+            pp = New PortPin("COM2", ii)
+            bell_port_pin.Add(pp)
+            GlobalVariables.bells(ii - 1).port_pin = pp
+        Next
+
+        GlobalVariables.config_loaded = True
+
+        test_start_timer(switch_port_pin)
+
+        For Each row In pb_triples
+            test_ring_this_row(row, bell_port_pin, 15)
+        Next
+
+        'test_stop_timer(switch_port_pin)
+
+        frm = find_form(GetType(frmStats))
+        'frm.btn_view_stats.PerformClick()
+
+        'test_save_rows()
     End Sub
 
     Private Sub test_peal(parent As Form)
