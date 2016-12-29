@@ -123,6 +123,7 @@
     ' the bell changes state when it sounds.
     Public Overrides Sub trigger_input()
         RcDebug.debug_print(Me.name & " triggered")
+        RcDebug.trace_input(Me.bell_number, Me.debounce_state)
 
         ' Only do something if the debounce timer isn't running
         If Me.debounce_state = True Then
