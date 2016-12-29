@@ -88,7 +88,6 @@ EXIT_LABEL:
         End If
 
         If method Is Nothing Then
-#If 0 Then
             ' Add in the bell delay stats.
             out_string += "Bell delay statistics:".PadRight(22) & vbCrLf
             out_string += " ".PadRight(22)
@@ -127,7 +126,6 @@ EXIT_LABEL:
             Next
             out_string += vbCrLf
             out_string += vbCrLf
-#End If
         End If
 
         If RingingCalculator.Row.list_is_true(rows, false_row_ids) Then

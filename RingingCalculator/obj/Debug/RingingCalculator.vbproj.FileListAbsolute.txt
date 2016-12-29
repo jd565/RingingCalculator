@@ -9,3 +9,7 @@ C:\Users\Martin\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\R
 C:\Users\Martin\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.xml
 C:\Users\Martin\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.pdb
 C:\Users\Martin\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.vbprojResolveAssemblyReference.cache
+C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\bin\Debug\RingingCalculator.exe.config
+C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.exe
+C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.xml
+C:\Users\Jon\Documents\GitHub\RingingCalculator\RingingCalculator\obj\Debug\RingingCalculator.pdb

@@ -62,7 +62,7 @@
         GlobalVariables.wait(50)
 
         ' Apply this config
-        GlobalVariables.switch = Switch.initialize()
+        GlobalVariables.switch = Me.Switch.initialize()
         GlobalVariables.debounce_time = Me.debounce_time
         GlobalVariables.changes_per_lead = Me.changes_per_lead
         GlobalVariables.leads_per_course = Me.leads_per_course

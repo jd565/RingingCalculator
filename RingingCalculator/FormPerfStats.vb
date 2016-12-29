@@ -106,7 +106,7 @@
         Me.choose_bell_label = New Label
 
         If method Is Nothing Then
-            'Statistics.generate_place_delays()
+            Statistics.generate_place_delays()
         End If
 
         'perf_details
@@ -132,7 +132,6 @@
         Me.save_file.DefaultExt = "txt"
 
         If method Is Nothing Then
-#If 0 Then
             'choose_bell_label
             Me.choose_bell_label.Name = "choose_bell_label"
             Me.choose_bell_label.Text = "Show stats for bell:"
@@ -322,7 +321,6 @@
             Me.Controls.Add(Me.backstroke_dlead_val)
             Me.Controls.Add(Me.choose_bell_label)
             Me.Controls.Add(Me.chart)
-#End If
         End If
 
         'frm
