@@ -12,11 +12,14 @@
     Public Sub trace_input(bell_number As Integer, debounce As Boolean)
         Dim print_string As String
         Dim d_str As String = ""
+        Dim t_str As String
+
+        t_str = DateTime.Now().ToString("hh:mm:ss.fff")
 
         If debounce = True Then
             d_str = "Ignored"
         End If
-        print_string = "Bell: " & Str(bell_number).PadRight(2, " ") & d_str & vbCrLf
+        print_string = "Bell: " & Str(bell_number).PadRight(4, " ") & t_str & " " & d_str & vbCrLf
         My.Computer.FileSystem.WriteAllText("input_tracing.log", print_string, True)
     End Sub
 
